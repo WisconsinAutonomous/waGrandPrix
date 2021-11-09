@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  waGrandPrix-dev:
+    hostname: 'waGrandPrix-dev'
+    build:
+      context: ./docker/
+      dockerfile: dev.dockerfile
+      args:
+        USERSHELL: zsh
+      network: host
+    volumes:
+      - .:/root/waGrandPrix
+      - ${HOME}/.ssh/:/root/.ssh/
+      - ${HOME}/.gitconfig:/root/.gitconfig
+    tty: true
+    working_dir: /root/
+    environment:
+      DISPLAY: "host.docker.internal:0" 
+  ros2-tutorial:
+    hostname: 'ros2-tutorial'
+    build:
+      context: ./docker/
+      dockerfile: ros2_tutorial.dockerfile
+      network: host
+      args:
+        USERSHELL: zsh
+    volumes:
+      - ./misc/ros2_tutorial:/root/dev_ws
+      - ${HOME}/.ssh/:/root/.ssh/
+      - ${HOME}/.gitconfig:/root/.gitconfig
+    tty: true
+    working_dir: /root/
+    environment:
+      DISPLAY: "host.docker.internal:0" 
+
