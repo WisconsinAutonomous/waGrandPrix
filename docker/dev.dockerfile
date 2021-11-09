@@ -12,11 +12,17 @@ RUN sed -i 's|deb http://.*ubuntu.com.* \(focal.*\)|deb mirror://mirrors.ubuntu.
 RUN apt update && apt upgrade -y && apt install -y expect
 
 # Install some packages
-RUN apt install -y tmux vim ssh git git-lfs zsh ros-$ROSDISTRO-rviz-common ros-$ROSDISTRO-rviz2
-RUN apt install -y python3-pip gxmessage
+RUN apt install -y tmux vim ssh git git-lfs zsh ros-$ROSDISTRO-rviz-common ros-$ROSDISTRO-rviz2 
+RUN apt install -y python3-pip gxmessage nodejs npm
+
+# Install hygen to create boilerplate code
+RUN npm install -g hygen
 
 # Install some python packages
-RUN pip install numpy pandas matplotlib
+RUN pip install numpy pandas matplotlib python-can
+
+# Some weird stuff for bison
+RUN pip install bson && pip install hyperopt && pip install hyperas && sudo pip uninstall bson && pip install pymongo
 
 # Various arguments and user settings
 ARG USERSHELL
@@ -27,6 +33,9 @@ ARG USERSHELLPROFILE="/root/.${USERSHELL}rc"
 RUN sed -i 's|source|#source|g' /ros_entrypoint.sh
 RUN echo ". /opt/ros/$ROSDISTRO/setup.sh" >> $USERSHELLPROFILE
 RUN /bin/bash -c "source /opt/ros/foxy/setup.bash"
+
+# Environment
+ENV HYGEN_TMPLS=/root/waGrandPrix/_templates
 
 # Run the customize script so people can customize their shell, if they desire
 COPY files/* /tmp/

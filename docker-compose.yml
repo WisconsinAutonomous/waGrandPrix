@@ -1,7 +1,7 @@
 version: "3.9"
 services:
-  waGrandPrix-dev:
-    hostname: 'waGrandPrix-dev'
+  wagrandprix-dev:
+    hostname: 'wagrandprix-dev'
     build:
       context: ./docker/
       dockerfile: dev.dockerfile
@@ -24,6 +24,10 @@ services:
       network: host
       args:
         USERSHELL: zsh
+    ports:
+      - "9090:9090"
+    expose:
+      - "9090"
     volumes:
       - ./misc/ros2_tutorial:/root/dev_ws
       - ${HOME}/.ssh/:/root/.ssh/
