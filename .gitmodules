@@ -2,3 +2,12 @@
 	path = workspace/src/external/rosbridge_suite
 	url = https://github.com/RobotWebTools/rosbridge_suite.git
 	branch = ros2
+[submodule "workspace/src/external/sick_scan2"]
+	path = workspace/src/external/sick_scan2
+	url = git@github.com:SICKAG/sick_scan2.git
+[submodule "workspace/src/external/zed-ros2-wrapper"]
+	path = workspace/src/external/zed-ros2-wrapper
+	url = git@github.com:stereolabs/zed-ros2-wrapper.git
+[submodule "workspace/src/external/sbg_ros2_driver"]
+	path = workspace/src/external/sbg_ros2_driver
+	url = git@github.com:SBG-Systems/sbg_ros2_driver.git
