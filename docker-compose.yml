@@ -3,8 +3,8 @@ services:
   wagrandprix-dev:
     hostname: 'wagrandprix-dev'
     build:
-      context: ./docker/
-      dockerfile: dev.dockerfile
+      context: ./
+      dockerfile: ./docker/dev.dockerfile
       args:
         USERSHELL: zsh
       network: host

@@ -12,11 +12,13 @@ RUN sed -i 's|deb http://.*ubuntu.com.* \(focal.*\)|deb mirror://mirrors.ubuntu.
 RUN apt update && apt upgrade -y && apt install -y expect
 
 # Install some packages
-RUN apt install -y tmux vim ssh git git-lfs zsh python3-pip gxmessage nodejs npm libboost-all-dev
-RUN apt install -y gnupg2 lsb-release curl 
+RUN apt install -y tmux vim ssh git git-lfs zsh python3-pip gxmessage nodejs npm
 
-# Install some ros stuff
-RUN apt install -y ros-$ROSDISTRO-example-interfaces ros-$ROSDISTRO-cv-bridge ros-$ROSDISTRO-diagnostic-updater ros-$ROSDISTRO-image-transport ros-$ROSDISTRO-xacro
+# Install needed ros packages
+# TODO: This will only install packages currently on git
+COPY workspace/src /tmp/workspace/src/
+RUN cd /tmp/workspace && rosdep install --from-paths src --ignore-src -r -y
+RUN cd /tmp/ && rm -rf workspace
 
 # Install hygen to create boilerplate code
 RUN npm install -g hygen
@@ -25,7 +27,7 @@ RUN npm install -g hygen
 RUN pip install numpy pandas matplotlib python-can autobahn tornado twisted Pillow
 
 # Some weird stuff for bison
-RUN pip install bson && pip install hyperopt && pip install hyperas && sudo pip uninstall bson && pip install pymongo
+RUN pip install bson && pip install hyperopt && pip install hyperas && pip uninstall bson -y && pip install pymongo
 
 # Various arguments and user settings
 ARG USERSHELL
@@ -41,7 +43,7 @@ RUN /bin/bash -c "source /opt/ros/foxy/setup.bash"
 ENV HYGEN_TMPLS=/root/waGrandPrix/_templates
 
 # Run the customize script so people can customize their shell, if they desire
-COPY files/* /tmp/
+COPY docker/files/* /tmp/
 RUN [ -f /tmp/customize.sh ] && $USERSHELL /tmp/customize.sh || $USERSHELL /tmp/customize.sh.template
 
 WORKDIR /root/
