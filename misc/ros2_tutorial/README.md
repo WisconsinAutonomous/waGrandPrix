@@ -6,7 +6,7 @@ You _do not_ need to go through the tutorial titled [Configuring your ROS 2 envi
 
 ## Running the Docker Container
 
-Make sure you are in the WAutoDrive repository!
+Make sure you are in the waGrandPrix repository!
 
 ### Building
 
