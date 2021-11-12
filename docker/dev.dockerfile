@@ -12,14 +12,17 @@ RUN sed -i 's|deb http://.*ubuntu.com.* \(focal.*\)|deb mirror://mirrors.ubuntu.
 RUN apt update && apt upgrade -y && apt install -y expect
 
 # Install some packages
-RUN apt install -y tmux vim ssh git git-lfs zsh ros-$ROSDISTRO-rviz-common ros-$ROSDISTRO-rviz2 
-RUN apt install -y python3-pip gxmessage nodejs npm
+RUN apt install -y tmux vim ssh git git-lfs zsh python3-pip gxmessage nodejs npm libboost-all-dev
+RUN apt install -y gnupg2 lsb-release curl 
+
+# Install some ros stuff
+RUN apt install -y ros-$ROSDISTRO-example-interfaces ros-$ROSDISTRO-cv-bridge ros-$ROSDISTRO-diagnostic-updater ros-$ROSDISTRO-image-transport ros-$ROSDISTRO-xacro
 
 # Install hygen to create boilerplate code
 RUN npm install -g hygen
 
 # Install some python packages
-RUN pip install numpy pandas matplotlib python-can
+RUN pip install numpy pandas matplotlib python-can autobahn tornado twisted Pillow
 
 # Some weird stuff for bison
 RUN pip install bson && pip install hyperopt && pip install hyperas && sudo pip uninstall bson && pip install pymongo

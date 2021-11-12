@@ -10,8 +10,8 @@ services:
       network: host
     volumes:
       - .:/root/waGrandPrix
-      - ${HOME}/.ssh/:/root/.ssh/
-      - ${HOME}/.gitconfig:/root/.gitconfig
+      - ~/.ssh/:/root/.ssh/
+      - ~/.gitconfig:/root/.gitconfig
     tty: true
     working_dir: /root/
     environment:
@@ -30,8 +30,8 @@ services:
       - "9090"
     volumes:
       - ./misc/ros2_tutorial:/root/dev_ws
-      - ${HOME}/.ssh/:/root/.ssh/
-      - ${HOME}/.gitconfig:/root/.gitconfig
+      - ~/.ssh/:/root/.ssh/
+      - ~/.gitconfig:/root/.gitconfig
     tty: true
     working_dir: /root/
     environment:
