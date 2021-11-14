@@ -56,6 +56,7 @@ setup(
     entry_points={
         "console_scripts": [
             "wasim_stub = perception_py.wasim_stub:main",
+            "camera_publisher = perception_py.camera_publisher:main",
         ],
     },
 )

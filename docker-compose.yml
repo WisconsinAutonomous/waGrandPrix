@@ -8,6 +8,8 @@ services:
       args:
         USERSHELL: zsh
       network: host
+    ports:
+      - "8888:8888"
     volumes:
       - .:/root/waGrandPrix
       - ~/.ssh/:/root/.ssh/
@@ -24,13 +26,9 @@ services:
       network: host
       args:
         USERSHELL: zsh
-    ports:
-      - "9090:9090"
-    expose:
-      - "9090"
     volumes:
       - ./misc/ros2_tutorial:/root/dev_ws
-      - ~/.ssh/:/root/.ssh/
+      - ~/.ssh:/root/.ssh
       - ~/.gitconfig:/root/.gitconfig
     tty: true
     working_dir: /root/

@@ -24,7 +24,7 @@ RUN cd /tmp/ && rm -rf workspace
 RUN npm install -g hygen
 
 # Install some python packages
-RUN pip install numpy pandas matplotlib python-can autobahn tornado twisted Pillow
+RUN pip install numpy pandas matplotlib python-can autobahn tornado twisted Pillow simplejpeg psutil opencv-python
 
 # Some weird stuff for bison
 RUN pip install bson && pip install hyperopt && pip install hyperas && pip uninstall bson -y && pip install pymongo
@@ -37,6 +37,7 @@ ARG USERSHELLPROFILE="/root/.${USERSHELL}rc"
 # ROS Setup
 RUN sed -i 's|source|#source|g' /ros_entrypoint.sh
 RUN echo ". /opt/ros/$ROSDISTRO/setup.sh" >> $USERSHELLPROFILE
+RUN echo "[ -f /root/waGrandPrix/workspace/install/setup.$USERSHELL ] && . /root/waGrandPrix/workspace/install/setup.$USERSHELL" >> $USERSHELLPROFILE
 RUN /bin/bash -c "source /opt/ros/foxy/setup.bash"
 
 # Environment
