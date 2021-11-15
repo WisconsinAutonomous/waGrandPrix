@@ -4,6 +4,8 @@ The ROS2 docker container is meant to help people get quickly setup with the [RO
 
 You _do not_ need to go through the tutorial titled [Configuring your ROS 2 environment](https://docs.ros.org/en/foxy/Tutorials/Configuring-ROS2-Environment.html). The docker container has been set up so that this step can be skipped.
 
+Windows users will need to follow this tutorial using a linux environment set up with [WSL](https://docs.microsoft.com/en-us/windows/wsl/about) 
+
 ## Running the Docker Container
 
 Make sure you are in the waGrandPrix repository!
