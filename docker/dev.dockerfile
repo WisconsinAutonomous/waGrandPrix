@@ -1,21 +1,19 @@
 FROM ros:foxy
 
-LABEL maintainer="Aaron Young <aryoung5@wisc.edu"
+LABEL maintainer="Wisconsin Autonomous <wisconsinautonomous@studentorg.wisc.edu"
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG ROSDISTRO=foxy
 
 # Use mirrors instead of main server
 RUN sed -i 's|deb http://.*ubuntu.com.* \(focal.*\)|deb mirror://mirrors.ubuntu.com/mirrors.txt \1|g' /etc/apt/sources.list
 
 # Check for updates
-RUN apt update && apt upgrade -y && apt install -y expect
+RUN apt update && apt upgrade -y
 
 # Install some packages
 RUN apt install -y tmux vim ssh git git-lfs zsh python3-pip gxmessage nodejs npm
 
 # Install needed ros packages
-# TODO: This will only install packages currently on git
 COPY workspace/src /tmp/workspace/src/
 RUN cd /tmp/workspace && rosdep install --from-paths src --ignore-src -r -y
 RUN cd /tmp/ && rm -rf workspace
