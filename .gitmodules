@@ -14,3 +14,6 @@
 [submodule "workspace/src/external/rosboard"]
 	path = workspace/src/external/rosboard
 	url = git@github.com:dheera/rosboard.git
+[submodule "workspace/src/external/wa_simulator_ros_bridge"]
+	path = workspace/src/external/wa_simulator_ros_bridge
+	url = git@github.com:wisconsinautonomous/wa_simulator_ros_bridge.git
