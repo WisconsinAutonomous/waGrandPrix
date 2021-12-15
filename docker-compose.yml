@@ -12,9 +12,14 @@ services:
       - "8888:8888"
     volumes:
       - .:/root/waGrandPrix
-      - ~/.ssh/:/root/.ssh/
-      - ~/.gitconfig:/root/.gitconfig
     tty: true
     working_dir: /root/
-    environment:
-      DISPLAY: "host.docker.internal:0" 
+    networks:
+      - sim
+  wasim:
+    hostname: 'wasim'
+    image: wiscauto/wa_simulator:latest
+    networks:
+      - sim
+networks:
+  sim:
