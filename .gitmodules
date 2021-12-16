@@ -1,7 +1,3 @@
-[submodule "workspace/src/external/rosbridge_suite"]
-	path = workspace/src/external/rosbridge_suite
-	url = https://github.com/RobotWebTools/rosbridge_suite.git
-	branch = ros2
 [submodule "workspace/src/external/sick_scan2"]
 	path = workspace/src/external/sick_scan2
 	url = git@github.com:SICKAG/sick_scan2.git
