@@ -2,6 +2,7 @@ FROM ros:foxy
 
 LABEL maintainer="Wisconsin Autonomous <wisconsinautonomous@studentorg.wisc.edu"
 
+ARG ROSDISTRO=foxy
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Use mirrors instead of main server
@@ -22,7 +23,7 @@ RUN cd /tmp/ && rm -rf workspace
 RUN npm install -g hygen
 
 # Install some python packages
-RUN pip install numpy pandas matplotlib python-can autobahn tornado twisted Pillow simplejpeg psutil opencv-python
+RUN pip install numpy==1.19 pandas matplotlib python-can autobahn tornado twisted Pillow simplejpeg psutil opencv-python wa_simulator
 
 # Some weird stuff for bison
 RUN pip install bson && pip install hyperopt && pip install hyperas && pip uninstall bson -y && pip install pymongo

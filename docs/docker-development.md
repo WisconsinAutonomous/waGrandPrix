@@ -8,6 +8,27 @@ To get started, you will need to install [Docker](https://docs.docker.com/deskto
 
 From anywhere within the `waGrandPrix` repository, do the following:
 
+## 0. Prerequisites
+
+In order to support communication to simulations in other docker containers, this repo leverages Docker [networks](https://docs.docker.com/network/). This means you will need to create a network with the correct subnets (the meaning of this is outside the scope of this doc).
+
+If you run the command in `1.` below, and returns an error saying the following, you will need to create the network.
+
+```
+network wa declared as external, but could not be found
+```
+
+You will only need to create the network once. To create the network as our repo expects, you should run the following command:
+
+```bash
+docker network create \
+	--driver=bridge \
+	--subnet=172.20.0.0/25 \
+	wa
+```
+
+Another option is to run the `wasim docker start` cli command, which will automatically create the above network for you.
+
 ## 1. Run the container
 
 ```
@@ -19,8 +40,8 @@ If this is your first time running this command, the image will need to be built
 Once it completes, it should say:
 
 ```
-Creating network "wagrandprix_default" with the default driver
-Creating wagrandprix_wagrandprix-dev_1 ... done
+[+] Running 1/1
+ ⠿ Container wagrandprix-dev  Started
 ```
 
 The container is now running in the background.

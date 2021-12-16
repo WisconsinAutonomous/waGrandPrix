@@ -1,6 +1,7 @@
 version: "3.9"
 services:
   wagrandprix-dev:
+    container_name: 'wagrandprix-dev'
     hostname: 'wagrandprix-dev'
     build:
       context: ./
@@ -15,11 +16,11 @@ services:
     tty: true
     working_dir: /root/
     networks:
-      - sim
-  wasim:
-    hostname: 'wasim'
-    image: wiscauto/wa_simulator:latest
-    networks:
-      - sim
+      - wa
 networks:
-  sim:
+  wa:
+    external: true
+    name: wa 
+    ipam:
+      config:
+        - subnet: "172.20.0.0/24"
