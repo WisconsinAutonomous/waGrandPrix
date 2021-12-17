@@ -1239,5 +1239,5 @@ def main(args=None):
 
 if __name__ == "__main__":
     args = [sys.argv[0], "--tmpl", ".copyright.tmpl", "--years", "2018-2022", "--projname", "WA", "--owner",
-            "Wisconsin Autonomous", "--projurl", "https://wa.wisc.edu", "--dir", "workspace/src/", "-E", "py", "-E", "cpp"]
+            "Wisconsin Autonomous", "--projurl", "https://wa.wisc.edu", "--dir", "workspace/src/", "-E", "py", "cpp"]
     sys.exit(main(args))
