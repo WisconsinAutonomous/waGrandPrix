@@ -492,7 +492,8 @@ def parse_command_line(argv):
         nargs=1,
         dest="encoding",
         default=default_encoding,
-        help="Encoding of program files (default: {})".format(default_encoding),
+        help="Encoding of program files (default: {})".format(
+            default_encoding),
     )
     parser.add_argument(
         "--dry",
@@ -964,11 +965,11 @@ def open_as_writable(file, arguments):
         yield fw
 
 
-def main():
+def main(args=None):
     """Main function."""
     # LOGGER.addHandler(logging.StreamHandler(stream=sys.stderr))
     # init: create the ext2type mappings
-    arguments = parse_command_line(sys.argv)
+    arguments = parse_command_line(sys.argv if args is None else args)
     additional_extensions = arguments.additional_extensions
 
     type_settings = TYPE_SETTINGS
@@ -1058,7 +1059,8 @@ def main():
                 tmpl_name = tmpls[0][0]
                 tmpl_file = tmpls[0][1]
                 LOGGER.info(
-                    "Using template file {} for {}".format(tmpl_file, tmpl_name)
+                    "Using template file {} for {}".format(
+                        tmpl_file, tmpl_name)
                 )
                 template_lines = read_template(tmpl_file, settings, arguments)
             else:
@@ -1182,7 +1184,7 @@ def main():
                                         )
                                     )
                                     #  now write the rest of the lines
-                                    fw.writelines(lines[head_end + 1 :])
+                                    fw.writelines(lines[head_end + 1:])
                                 else:
                                     LOGGER.debug(
                                         "Adding header to file {}, skip={}".format(
@@ -1228,7 +1230,7 @@ def main():
                                             years, lines[years_line]
                                         )
                                     )
-                                    fw.writelines(lines[years_line + 1 :])
+                                    fw.writelines(lines[years_line + 1:])
                             # TODO: optionally remove backup if all worked well
             return 0
     finally:
@@ -1236,4 +1238,6 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    args = [sys.argv[0], "--tmpl", ".copyright.tmpl", "--years", "2018-2022", "--projname", "WA", "--owner",
+            "Wisconsin Autonomous", "--projurl", "https://wa.wisc.edu", "--dir", "src/", "-E", "py", "-E", "cpp"]
+    sys.exit(main(args))

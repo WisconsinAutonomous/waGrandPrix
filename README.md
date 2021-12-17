@@ -4,13 +4,11 @@ This repository holds the control stack for the [evGrandPrix Autonomous Competit
 
 ## Documentation
 
-Multiple documents have been created to help you get started with the waGrandPrix repository. Please refer to these tutorials as you go about your development.
+An general outline has been written to assist in development of this repository. 
 
-1. [Initial Setup](docs/initial-setup.md)
-2. [Docker Development](docs/docker-development.md)
-3. [ROS 2 Workspace](docs/ros2/ros2-workspace.md)
-   * [Creating a Package](docs/ros2/creating-a-package.md)
-   * [Adding a Package](docs/ros2/adding-a-package.md)
+Before contributing to this repository, **it is required that you read through this document**.
+
+You can find the wiki page [here](https://wisconsinautonomous.github.io/posts/ros-overview/).
 
 ## Support
 
