@@ -12,7 +12,7 @@ You can find the wiki page [here](https://wisconsinautonomous.github.io/posts/ro
 
 ## Support
 
-Contact [Aaron Young](mailto:aryoung5@wisc.edu) for any questions or concerns regarding the contents of this repository.
+Contact [Wisconsin Autonomous](mailto:wisconsinautonomous@studentorg.wisc.edu) for any questions or concerns regarding the contents of this repository.
 
 ## See Also
 

@@ -17,6 +17,23 @@ services:
     working_dir: /root/
     networks:
       - wa
+  wagrandprix-prod:
+    container_name: 'wagrandprix-prod'
+    hostname: 'wagrandprix-prod'
+    build:
+      context: ./
+      dockerfile: ./docker/prod.dockerfile
+      args:
+        USERSHELL: zsh
+      network: host
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/root/waGrandPrix
+    tty: true
+    working_dir: /root/
+    networks:
+      - wa
 networks:
   wa:
     external: true
