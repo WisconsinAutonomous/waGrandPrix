@@ -1,1 +1,0 @@
-ObstacleMsg[] obstacles

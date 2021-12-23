@@ -40,7 +40,6 @@ setup(
             ["resource/" + package_name],
         ),
         ("share/" + package_name, ["package.xml"]),
-        ("lib/perception_py/", ["perception_py/purdue_path.csv"]),
         (
             os.path.join("share", package_name, "launch"),
             glob(os.path.join("launch", "*.launch.py")),
@@ -55,8 +54,7 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            "wasim_stub = perception_py.wasim_stub:main",
-            "camera_publisher = perception_py.camera_publisher:main",
+            "track_detector = perception_py.track_detector:main",
         ],
     },
 )
