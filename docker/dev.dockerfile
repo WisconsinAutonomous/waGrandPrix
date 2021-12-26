@@ -19,11 +19,13 @@ COPY workspace/src /tmp/workspace/src/
 RUN cd /tmp/workspace && rosdep install --from-paths src --ignore-src -r -y
 RUN cd /tmp/ && rm -rf workspace
 
+# Install some python packages
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
+RUN rm -rf /tmp/requirements.txt
+
 # Install hygen to create boilerplate code
 RUN npm install -g hygen
-
-# Install some python packages
-RUN pip install numpy==1.19 pandas matplotlib python-can autobahn tornado twisted Pillow simplejpeg psutil opencv-python wa_simulator
 
 # Some weird stuff for bison
 RUN pip install bson && pip install hyperopt && pip install hyperas && pip uninstall bson -y && pip install pymongo
