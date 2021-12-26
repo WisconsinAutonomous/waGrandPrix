@@ -38,6 +38,9 @@ endif()
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+	msg/BrakeCommand.msg
+	msg/ThrottleCommand.msg
+	msg/SteeringCommand.msg
 	msg/VehicleCommand.msg
 
 	msg/Point.msg
@@ -45,6 +48,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 	msg/Track.msg
 	msg/DetectedTrack.msg
 	msg/GPSCoordinate.msg
+
+	msg/VehicleState.msg
 
   DEPENDENCIES geometry_msgs std_msgs
 )
