@@ -16,7 +16,8 @@ services:
     tty: true
     working_dir: /root/
     networks:
-      - wa
+      wa:
+        ipv4_address: "172.20.0.2"
   wagrandprix-prod:
     container_name: 'wagrandprix-prod'
     hostname: 'wagrandprix-prod'
