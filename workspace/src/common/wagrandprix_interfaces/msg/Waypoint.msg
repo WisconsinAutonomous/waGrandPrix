@@ -12,3 +12,6 @@ float64 left_width
 
 # distance to right edge of the track
 float64 right_width
+
+# Index of the point in the centerline list
+uint32[] idx

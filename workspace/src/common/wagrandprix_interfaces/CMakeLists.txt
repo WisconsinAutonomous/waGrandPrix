@@ -51,6 +51,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 
 	msg/VehicleState.msg
 
+	srv/SearchForward.srv
+
   DEPENDENCIES geometry_msgs std_msgs
 )
 

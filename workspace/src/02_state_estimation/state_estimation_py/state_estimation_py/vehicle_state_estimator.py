@@ -79,6 +79,8 @@ class VehicleStateEstimator(Node):
         # Initialize Class Members
         # ------------------------
 
+        self.vehicle_state = VehicleState()
+
     def imu_callback(self, msg):
         """
         Callback for the imu data topic.
@@ -109,11 +111,10 @@ class VehicleStateEstimator(Node):
         """
         self.logger.debug(f"Received {msg} on topic {self.sim_vehicle_state_topic}")
 
-        vehicle_state = VehicleState()
-        vehicle_state.accel = msg.accel
-        vehicle_state.twist = msg.twist
-        vehicle_state.pose = msg.pose
-        self.publisher_handles["vehicle/state"].publish(vehicle_state)
+        self.vehicle_state.accel = msg.accel
+        self.vehicle_state.twist = msg.twist
+        self.vehicle_state.pose = msg.pose
+        self.publisher_handles["vehicle/state"].publish(self.vehicle_state)
 
 
 def main(args=None):

@@ -23,6 +23,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
+import os
+from glob import glob
+
 from setuptools import setup
 
 package_name = "driving_functions_py"
@@ -37,6 +40,10 @@ setup(
             ["resource/" + package_name],
         ),
         ("share/" + package_name, ["package.xml"]),
+        (
+            os.path.join("share", package_name, "launch"),
+            glob(os.path.join("launch", "*.launch.py")),
+        ),
     ],
     install_requires=["setuptools"],
     zip_safe=True,
@@ -47,9 +54,8 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            "pure_pursuit = driving_functions.pure_pursuit:main",
-            "occupancy_graph = driving_functions.occupancy_graph:main",
-            "joystick_controller = driving_functions.joystick_controller:main",
+            "forward_searcher = driving_functions_py.forward_searcher:main",
+            "trajectory_tracker = driving_functions_py.trajectory_tracker:main",
         ],
     },
 )

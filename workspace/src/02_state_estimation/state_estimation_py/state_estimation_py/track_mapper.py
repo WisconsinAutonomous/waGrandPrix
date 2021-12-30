@@ -86,12 +86,13 @@ class TrackMapper(Node):
 
         track = Track()
 
-        for coord, point, width in zip(msg.mapped_coords, msg.mapped_points, msg.mapped_widths):
+        for i, coord, point, width in enumerate(zip(msg.mapped_coords, msg.mapped_points, msg.mapped_widths)):
             wp = Waypoint()
             wp.coordinate = GPSCoordinate(latitude=coord.x, longitude=coord.y, altitude=coord.z)
             wp.point = point
             wp.left_width = width.x
             wp.right_width = width.y
+            wp.idx = i
             track.waypoints.append(wp)
 
         self.publisher_handles["track/mapped"].publish(track)
