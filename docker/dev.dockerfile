@@ -1,8 +1,9 @@
-FROM ros:foxy
+ARG ROSDISTRO=foxy
+
+FROM ros:${ROSDISTRO}
 
 LABEL maintainer="Wisconsin Autonomous <wisconsinautonomous@studentorg.wisc.edu"
 
-ARG ROSDISTRO=foxy
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Use mirrors instead of main server
@@ -20,7 +21,7 @@ RUN cd /tmp/workspace && rosdep install --from-paths src --ignore-src -r -y
 RUN cd /tmp/ && rm -rf workspace
 
 # Install some python packages
-COPY requirements.txt /tmp/requirements.txt
+COPY docker-requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 RUN rm -rf /tmp/requirements.txt
 
@@ -31,7 +32,7 @@ RUN npm install -g hygen
 RUN pip install bson && pip install hyperopt && pip install hyperas && pip uninstall bson -y && pip install pymongo
 
 # Various arguments and user settings
-ARG USERSHELL
+ARG USERSHELL=bash
 ARG USERSHELLPATH="/bin/${USERSHELL}"
 ARG USERSHELLPROFILE="/root/.${USERSHELL}rc"
 

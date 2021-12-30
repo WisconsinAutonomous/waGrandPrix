@@ -3,11 +3,10 @@ services:
   wagrandprix-dev:
     container_name: 'wagrandprix-dev'
     hostname: 'wagrandprix-dev'
+    image: 'wiscauto/wagrandprix:develop'
     build:
       context: ./
       dockerfile: ./docker/dev.dockerfile
-      args:
-        USERSHELL: zsh
       network: host
     ports:
       - "8888:8888"
@@ -16,15 +15,15 @@ services:
     tty: true
     working_dir: /root/
     networks:
-      - wa
+      wa:
+        ipv4_address: "172.20.0.2"
   wagrandprix-prod:
     container_name: 'wagrandprix-prod'
     hostname: 'wagrandprix-prod'
+    image: 'wiscauto/wagrandprix:prod'
     build:
       context: ./
       dockerfile: ./docker/prod.dockerfile
-      args:
-        USERSHELL: zsh
       network: host
     ports:
       - "8888:8888"
@@ -33,11 +32,8 @@ services:
     tty: true
     working_dir: /root/
     networks:
-      - wa
+      wa:
+        ipv4_address: "172.20.0.2"
 networks:
   wa:
     external: true
-    name: wa 
-    ipam:
-      config:
-        - subnet: "172.20.0.0/24"
