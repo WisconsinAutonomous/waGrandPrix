@@ -1,0 +1,13 @@
+wa_simulator
+pandas
+matplotlib
+numpy>=1.19
+python-can
+autobahn
+tornado
+twisted
+Pillow
+simplejpeg
+psutil
+opencv-python
+black

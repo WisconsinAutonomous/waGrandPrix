@@ -1,4 +1,6 @@
-FROM ros:foxy
+ARG ROSDISTRO=foxy
+
+FROM ros:${ROSDISTRO}
 
 LABEL maintainer="Wisconsin Autonomous <wisconsinautonomous@studentorg.wisc.edu"
 
@@ -23,7 +25,7 @@ RUN cd /tmp/workspace && rosdep install --from-paths src --ignore-src -r -y
 RUN cd /tmp/ && rm -rf workspace
 
 # Various arguments and user settings
-ARG USERSHELL
+ARG USERSHELL=bash
 ARG USERSHELLPATH="/bin/${USERSHELL}"
 ARG USERSHELLPROFILE="/root/.${USERSHELL}rc"
 
