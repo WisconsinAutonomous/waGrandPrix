@@ -1,9 +1,11 @@
-ARG ROSDISTRO=foxy
+ARG ROSDISTRO
 
 FROM ros:${ROSDISTRO}
 
 LABEL maintainer="Wisconsin Autonomous <wisconsinautonomous@studentorg.wisc.edu"
 
+ARG REPO
+ARG ROSDISTRO
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Use mirrors instead of main server
@@ -39,11 +41,11 @@ ARG USERSHELLPROFILE="/root/.${USERSHELL}rc"
 # ROS Setup
 RUN sed -i 's|source|#source|g' /ros_entrypoint.sh
 RUN echo ". /opt/ros/$ROSDISTRO/setup.sh" >> $USERSHELLPROFILE
-RUN echo "[ -f /root/waGrandPrix/workspace/install/setup.$USERSHELL ] && . /root/waGrandPrix/workspace/install/setup.$USERSHELL" >> $USERSHELLPROFILE
+RUN echo "[ -f /root/$REPO/workspace/install/setup.$USERSHELL ] && . /root/$REPO/workspace/install/setup.$USERSHELL" >> $USERSHELLPROFILE
 RUN /bin/bash -c "source /opt/ros/$ROSDISTRO/setup.bash"
 
 # Environment
-ENV HYGEN_TMPLS=/root/waGrandPrix/_templates
+ENV HYGEN_TMPLS=/root/$REPO/_templates
 
 # Run the customize script so people can customize their shell, if they desire
 COPY docker/files/* /tmp/

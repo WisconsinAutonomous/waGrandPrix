@@ -4,7 +4,7 @@ This repository holds the control stack for the [evGrandPrix Autonomous Competit
 
 ## Documentation
 
-An general outline has been written to assist in development of this repository. 
+A general outline/guide has been written to assist in development of this repository. 
 
 Before contributing to this repository, **it is required that you read through this document**.
 

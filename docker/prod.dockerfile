@@ -1,10 +1,11 @@
-ARG ROSDISTRO=foxy
+ARG ROSDISTRO
 
 FROM ros:${ROSDISTRO}
 
 LABEL maintainer="Wisconsin Autonomous <wisconsinautonomous@studentorg.wisc.edu"
 
-ARG ROSDISTRO=foxy
+ARG REPO
+ARG ROSDISTRO
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Use mirrors instead of main server
@@ -24,6 +25,11 @@ COPY workspace/src /tmp/workspace/src/
 RUN cd /tmp/workspace && rosdep install --from-paths src --ignore-src -r -y
 RUN cd /tmp/ && rm -rf workspace
 
+# Install some python packages
+COPY docker-requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
+RUN rm -rf /tmp/requirements.txt
+
 # Various arguments and user settings
 ARG USERSHELL=bash
 ARG USERSHELLPATH="/bin/${USERSHELL}"
@@ -32,7 +38,8 @@ ARG USERSHELLPROFILE="/root/.${USERSHELL}rc"
 # ROS Setup
 RUN sed -i 's|source|#source|g' /ros_entrypoint.sh
 RUN echo ". /opt/ros/$ROSDISTRO/setup.sh" >> $USERSHELLPROFILE
-RUN /bin/bash -c "source /opt/ros/foxy/setup.bash"
+RUN echo "[ -f /root/$REPO/workspace/install/setup.$USERSHELL ] && . /root/$REPO/workspace/install/setup.$USERSHELL" >> $USERSHELLPROFILE
+RUN /bin/bash -c "source /opt/ros/$ROSDISTRO/setup.bash"
 
 # Run the customize script so people can customize their shell, if they desire
 COPY files/* /tmp/
