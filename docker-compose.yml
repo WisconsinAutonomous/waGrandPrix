@@ -3,7 +3,7 @@ services:
   waGrandPrix-dev:
     container_name: 'waGrandPrix-dev'
     hostname: 'waGrandPrix-dev'
-    image: 'wiscauto/waGrandPrix:develop'
+    image: 'wiscauto/wagrandprix:develop'
     build:
       context: ./
       dockerfile: ./docker/dev.dockerfile
