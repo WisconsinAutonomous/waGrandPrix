@@ -45,7 +45,7 @@ RUN echo "[ -f /root/$REPONAME/workspace/install/setup.$USERSHELL ] && . /root/$
 RUN /bin/bash -c "source /opt/ros/$ROSDISTRO/setup.bash"
 
 # Environment
-ENV HYGEN_TMPLS=/root/$REPONAME/_templates
+ENV HYGEN_TMPLS=/root/$REPONAME/misc/_templates
 
 # Run the customize script so people can customize their shell, if they desire
 COPY docker/files/* /tmp/
