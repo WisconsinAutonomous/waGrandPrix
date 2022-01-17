@@ -3,14 +3,15 @@ services:
   waGrandPrix-dev:
     container_name: 'waGrandPrix-dev'
     hostname: 'waGrandPrix-dev'
-    image: 'wiscauto/wagrandprix:develop'
+    image: 'wiscauto/wagrandprix:dev'
     build:
       context: ./
-      dockerfile: ./docker/dev.dockerfile
+      dockerfile: ./docker/dev/dev.dockerfile
       network: host
       args:
-        ROSDISTRO: galactic
+        CONTEXT: docker/dev
         REPONAME: waGrandPrix
+        ROSDISTRO: galactic 
     ports:
       - "8888:8888"
     volumes:

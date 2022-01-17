@@ -7,8 +7,6 @@
   <maintainer email="root@todo.todo">root</maintainer>
   <license>TODO: License declaration</license>
 
-  <depend>wagrandprix_msgs</depend>
-  <depend>wa_simulator_ros_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>geometry_msgs</depend>
 
