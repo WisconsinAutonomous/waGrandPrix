@@ -16,4 +16,4 @@ uint8 GLOBAL_PATH_REQUEST_OPTIMIZED=3
 uint8 type 0 # GLOBAL_PATH_REQUEST_UNDEFINED
 ---
 # The perscribed path is defined as a list of waypoints
-Waypoint[] path
+wagrandprix_map_msgs/Waypoint[] path

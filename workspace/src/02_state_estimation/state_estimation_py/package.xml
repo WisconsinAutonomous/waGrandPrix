@@ -7,8 +7,10 @@
   <maintainer email="root@todo.todo">root</maintainer>
   <license>TODO: License declaration</license>
 
-  <depend>sensor_msgs</depend>
-  <depend>geometry_msgs</depend>
+  <exec_depend>wagrandprix_map_msgs</exec_depend>
+  <exec_depend>wagrandprix_vehicle_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

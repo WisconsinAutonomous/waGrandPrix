@@ -4,8 +4,8 @@ from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
-from wagrandprix_interfaces.msg import Waypoint
-from wagrandprix_interfaces.srv import SearchForward
+from wagrandprix_map_msgs.msg import Waypoint
+from wagrandprix_map_srvs.srv import SearchForward
 
 class TrajectoryTracker(Node):
 

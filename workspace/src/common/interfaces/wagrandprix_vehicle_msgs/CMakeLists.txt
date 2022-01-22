@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(wagrandprix_interfaces)
+project(wagrandprix_vehicle_msgs)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -21,7 +21,6 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(std_msgs REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -38,22 +37,9 @@ endif()
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-	msg/BrakeCommand.msg
-	msg/ThrottleCommand.msg
-	msg/SteeringCommand.msg
-	msg/VehicleCommand.msg
-
-	msg/Point.msg
-	msg/Waypoint.msg
-	msg/Track.msg
-	msg/DetectedTrack.msg
-	msg/GPSCoordinate.msg
-
 	msg/VehicleState.msg
 
-	srv/SearchForward.srv
-
-  DEPENDENCIES geometry_msgs std_msgs
+  DEPENDENCIES geometry_msgs
 )
 
 ament_package()

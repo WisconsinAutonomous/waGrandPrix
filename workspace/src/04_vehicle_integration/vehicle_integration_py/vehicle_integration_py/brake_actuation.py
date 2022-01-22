@@ -4,7 +4,7 @@ from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
-from wagrandprix_interfaces.msg import BrakeCommand
+from wagrandprix_control_msgs.msg import BrakeCommand
 
 class BrakeActuation(Node):
 
