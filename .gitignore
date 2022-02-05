@@ -3,3 +3,4 @@ install
 build
 .*.swp
 __pycache__/
+docker-compose.yml
