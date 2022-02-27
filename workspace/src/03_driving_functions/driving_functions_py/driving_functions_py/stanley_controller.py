@@ -148,6 +148,9 @@ class PurePursuit(Node):
         """
 
         # get the position, yaw, and target point from the subscriber and update that on self
+        # self.pos ....
+        
+
 
         self.StanleyLateralController
 
