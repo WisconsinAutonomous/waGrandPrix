@@ -35,7 +35,7 @@ from wagrandprix_interfaces.wagrandprix_control_msg.msg import VehicleCommand
 
 class StanleyController(Node):
     def __init__(self):
-        super().__init__("pure_pursuit")
+        super().__init__("stanley_controller")
 
         # Create publisher handles
         self.publisher_handles = {}
