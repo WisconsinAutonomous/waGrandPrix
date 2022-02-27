@@ -36,20 +36,7 @@ from wagrandprix_interfaces.wagrandprix_control_msg.msg import VehicleCommand
 class StanleyController(Node):
     def __init__(self):
         super().__init__("stanley_controller")
-
-        # Create publisher handles
-        self.publisher_handles = {}
-
-        self.publisher_handles["actuation_control"] = self.create_publisher(
-            String, "actuation_control", 10
-        )
-
-        # Create subscriber handles
-        self.subscriber_handles = {}
-
-        self.subscriber_handles["vehicle_state"] = self.create_subscription(
-            String, "vehicle_state", self.vehicle_state_callback, 10
-        )
+        self.publisher_ = self.create_publisher(VehicleCommand, 'topic', 10)
 
         # Periodic publishing
         timer_period = 0.5  # seconds
@@ -152,13 +139,8 @@ class StanleyController(Node):
         # get the position, yaw, and target point from the subscriber and update that on self
         # self.pos ....
 
-
-
         self.StanleyLateralController()
-
         self.StanleyLongitudinalController()
-
-
 
         # publish the values found at self.steering, self.braking, self.throttle
 
@@ -168,17 +150,9 @@ class StanleyController(Node):
         msg.throttle = self.throttle
         msg.braking = self.braking
 
+        # publish the message
+        self.publisher_.publish(msg)
 
-        # publish the message ---- not sure how to
-
-
-        # msg = String()
-        # msg.data = "Hello World: %d" % self.i
-
-        # self.publisher_handles["actuation_control"].publish(msg)
-
-        # self.get_logger().info('Publishing: "%s"' % msg.data)
-        # self.i += 1
 
     def vehicle_state_callback(self, msg):
         """

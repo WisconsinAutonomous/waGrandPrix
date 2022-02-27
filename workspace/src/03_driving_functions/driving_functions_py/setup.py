@@ -56,6 +56,8 @@ setup(
         "console_scripts": [
             "forward_searcher = driving_functions_py.forward_searcher:main",
             "trajectory_tracker = driving_functions_py.trajectory_tracker:main",
+            # "publisher = driving_functions_py.publisher:main",
+            "controller = driving_functions_py.controller:main",
         ],
     },
 )
