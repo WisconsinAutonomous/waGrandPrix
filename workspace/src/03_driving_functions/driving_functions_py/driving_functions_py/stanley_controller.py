@@ -27,11 +27,13 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 import numpy as np
+import math
+import wa_simulator as wa
 
 from wagrandprix_interfaces.wagrandprix_control_msg.msg import VehicleCommand
 
 
-class PurePursuit(Node):
+class StanleyController(Node):
     def __init__(self):
         super().__init__("pure_pursuit")
 
@@ -149,12 +151,12 @@ class PurePursuit(Node):
 
         # get the position, yaw, and target point from the subscriber and update that on self
         # self.pos ....
-        
 
 
-        self.StanleyLateralController
 
-        self.StanleyLongitudinalController
+        self.StanleyLateralController()
+
+        self.StanleyLongitudinalController()
 
 
 
@@ -188,9 +190,9 @@ class PurePursuit(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    pure_pursuit = PurePursuit()
+    stanley_controller = StanleyController()
 
-    rclpy.spin(pure_pursuit)
+    rclpy.spin(stanley_controller)
 
     rclpy.shutdown()
 
