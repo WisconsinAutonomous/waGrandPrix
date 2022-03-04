@@ -6,7 +6,7 @@
 import wa_simulator as wa
 
 # Other imports
-import os
+from pathlib import Path
 
 # Command line arguments
 parser = wa.WAArgumentParser(use_sim_defaults=True)
@@ -17,10 +17,7 @@ group.add_argument("-mb", action="store_true", help="Communicate Matplotlib visu
 
 args = parser.parse_args()
 
-if os.environ.get("DOCKER_ENV"):
-    wa.set_wa_data_directory('/root/data/')
-else:
-    wa.set_wa_data_directory('data/')
+wa.set_wa_data_directory(f"{Path(__file__).parent / 'data'}/")
 
 def main():
     # ---------------
