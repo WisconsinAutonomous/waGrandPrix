@@ -3,3 +3,6 @@ install
 build
 .*.swp
 __pycache__/
+.docker-compose.yml
+.atk.user_count
+.dockerignore

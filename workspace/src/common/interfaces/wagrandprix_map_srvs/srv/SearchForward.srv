@@ -1,0 +1,19 @@
+# Service to request a new global path
+# Request includes a start and end positionj, and a path type
+uint32 start_idx
+uint32 end_idx # Must be > start_idx; -1 indicates the last available idx
+
+# The request type
+# UNDEFINED: The default value, should be changed
+# SAFE: A safe path, difference between "CENTER" is up to implementation
+# CENTER: A center path between the two indices
+# OPTIMIZED: An optimized path (i.e. least curvature, minimum distance, etc.)
+uint8 GLOBAL_PATH_REQUEST_UNDEFINED=0
+uint8 GLOBAL_PATH_REQUEST_SAFE=1
+uint8 GLOBAL_PATH_REQUEST_CENTER=2
+uint8 GLOBAL_PATH_REQUEST_OPTIMIZED=3
+
+uint8 type 0 # GLOBAL_PATH_REQUEST_UNDEFINED
+---
+# The perscribed path is defined as a list of waypoints
+wagrandprix_map_msgs/Waypoint[] path

@@ -4,7 +4,8 @@ from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
-from wagrandprix_interfaces.msg import VehicleState, Track, DetectedTrack, Waypoint, GPSCoordinate
+from wagrandprix_vehicle_msgs import VehicleState
+from wagrandprix_map_msgs import Track, DetectedTrack, Waypoint, GPSCoordinate
 from wa_simulator_ros_msgs.msg import WATrack
 
 

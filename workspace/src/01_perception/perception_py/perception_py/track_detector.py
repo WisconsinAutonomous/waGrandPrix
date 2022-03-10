@@ -6,7 +6,7 @@ from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 # Import specific message types
 from sensor_msgs.msg import Image, PointCloud2
 from geometry_msgs.msg import PoseArray
-from wagrandprix_interfaces.msg import DetectedTrack, Point
+from wagrandprix_map_msgs.msg import DetectedTrack, Point
 
 class TrackDetector(Node):
 
