@@ -10,6 +10,8 @@ from wagrandprix_control_msgs.msg import BrakeCommand
 # Port from ROS1
 # ------------
 import can
+from common.utilities.utilities import clamp, scale_to_range
+
 
 class BrakeActuation(Node):
 
@@ -132,4 +134,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-    
