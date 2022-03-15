@@ -36,7 +36,6 @@ class BrakeActuation(Node):
         # ------------
         # Port from ROS1
         # ------------
-
         # Actuator values
         self.max = 100 # Max brake request percentage
         self.min = 0 # Min brake request percentage
@@ -123,3 +122,14 @@ class BrakeActuation(Node):
 
         braking_can = int(braking_percentage/self.rbc_can_scale_factor)
         return braking_can
+
+
+def main(args=None):
+    rclpy.init(args=args)
+    brake = BrakeActuation()
+    rclpy.spin(brake)
+
+
+if __name__ == '__main__':
+    main()
+    
