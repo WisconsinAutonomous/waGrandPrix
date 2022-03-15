@@ -25,14 +25,23 @@ class SteeringPublisher(Node):
         self.publisher_handles = {}
         self.publisher_handles[self.steering_cmd_topic] = self.create_publisher(SteeringCommand, self.steering_cmd_topic, self.steering_cmd_callback, 1)
 
+        # Timer to make sure we publish at a controlled rate
+        timer_period = 0.5  # seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+        self.i = 0
 
-    def steering_cmd_callback(self):
-        # msg = String()
-        # msg.data = 'Hello World: %d' % self.i
-        # self.publisher_.publish(msg)
-        # self.get_logger().info('Publishing: "%s"' % msg.data)
-        # self.i += 1
-        
+
+    def timer_callback(self, msg):
+        msg = SteeringCommand()
+        msg.value = self.i
+        self.publisher_handles[self.steering_cmd_topic].publish(msg)
+        self.get_logger().info(f"Sent {msg} on topic {self.steering_cmd_topic}")
+        self.i += 0.1
+        if self.i > 3:
+            self.i = -1
+
+
+
 
 
 def main(args=None):
