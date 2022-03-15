@@ -64,7 +64,7 @@ class SteeringActuation(Node):
 
     def steering_cmd_callback(self, msg):
         """
-        Callback for the brake_cmd topic.
+        Callback for the steering_cmd topic.
         """
         self.get_logger().info(f"Received {msg} on topic {self.steering_cmd_topic}")
 
