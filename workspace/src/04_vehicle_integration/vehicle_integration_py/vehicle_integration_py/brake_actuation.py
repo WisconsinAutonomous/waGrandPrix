@@ -10,7 +10,7 @@ from wagrandprix_control_msgs.msg import BrakeCommand
 # Port from ROS1
 # ------------
 import can
-from common.utilities.utilities import clamp, scale_to_range
+from wagrandprix_utilities import clamp, scale_to_range
 
 
 class BrakeActuation(Node):
@@ -52,12 +52,12 @@ class BrakeActuation(Node):
         self.rbc_MSG = can.Message(arbitration_id=self.rbc_ID, data=[self.braking_percentage, 255, 255, 255, 255, 255, 255, 255], is_extended_id=True)
 
         # can intialization
-        rospy.logdebug("Initializing CAN messaging to iBooster...")
+        rclpy.logdebug("Initializing CAN messaging to iBooster...")
         self.bustype = 'socketcan'
         self.channel = 'can0'
         self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
         self.rbc_TASK = self.bus.send_periodic(self.rbc_MSG, .01) # send message at 100hz
-        rospy.logdebug("Ready for iBooster power on!")
+        rclpy.logdebug("Ready for iBooster power on!")
 
         # Set default position of the actuator
         self.set_braking_percentage(self.braking_to_percentage(0)) # Should check position of the actuator and set value that way
