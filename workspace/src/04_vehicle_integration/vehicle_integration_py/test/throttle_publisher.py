@@ -3,13 +3,13 @@ from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
-from wagrandprix_control_msgs.msg import SteeringCommand
+from wagrandprix_control_msgs.msg import ThrottleCommand
 
 
-class SteeringPublisher(Node):
+class ThrottlePublisher(Node):
 
     def __init__(self):
-        super().__init__('steering_publisher')
+        super().__init__('throttle_publisher')
 
         self.logger = rclpy.logging.get_logger(self.get_name())
 
@@ -17,13 +17,13 @@ class SteeringPublisher(Node):
         # ------------
         # Parse params
         # ------------
-        steering_cmd_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the steering command msg will be shipped on.")
-        self.declare_parameter("steering_cmd_topic", "/actuation/commands/steering", steering_cmd_descriptor)
-        self.steering_cmd_topic = self.get_parameter("steering_cmd_topic").value
+        throttle_cmd_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the throttle command msg will be shipped on.")
+        self.declare_parameter("throttle_cmd_topic", "/actuation/commands/throttle", throttle_cmd_descriptor)
+        self.throttle_cmd_topic = self.get_parameter("throttle_cmd_topic").value
 
         # Create publisher handles
         self.publisher_handles = {}
-        self.publisher_handles[self.steering_cmd_topic] = self.create_publisher(SteeringCommand, self.steering_cmd_topic, 1)
+        self.publisher_handles[self.throttle_cmd_topic] = self.create_publisher(ThrottleCommand, self.throttle_cmd_topic, 1)
 
         # Timer to make sure we publish at a controlled rate
         timer_period = 0.5  # seconds
@@ -32,10 +32,10 @@ class SteeringPublisher(Node):
 
 
     def timer_callback(self, msg):
-        msg = SteeringCommand()
+        msg = ThrottleCommand()
         msg.value = self.i
-        self.publisher_handles[self.steering_cmd_topic].publish(msg)
-        self.get_logger().info(f"Sent {msg} on topic {self.steering_cmd_topic}")
+        self.publisher_handles[self.throttle_cmd_topic].publish(msg)
+        self.get_logger().info(f"Sent {msg} on topic {self.throttle_cmd_topic}")
         self.i += 0.1
         if self.i > 3:
             self.i = -1
@@ -47,14 +47,14 @@ class SteeringPublisher(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    steering_publisher = SteeringPublisher()
+    throttle_publisher = ThrottlePublisher()
 
-    rclpy.spin(steering_publisher)
+    rclpy.spin(throttle_publisher)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    steering_publisher.destroy_node()
+    throttle_publisher.destroy_node()
     rclpy.shutdown()
 
 
