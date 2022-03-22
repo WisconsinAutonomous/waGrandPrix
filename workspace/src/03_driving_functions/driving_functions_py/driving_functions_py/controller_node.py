@@ -25,7 +25,8 @@ import rclpy
 from rclpy.parameter import Parameter
 from rclpy.node import Node
 from sys import argv
-from wauto_control_msgs.msg import CarState, CarInput, CarTrajectory
+# from wauto_control_msgs.msg import CarState, CarInput, CarTrajectory
+from wagrandprix_vehicle_msgs import VehicleState
 
 
 class ControllerNode(Node):
@@ -35,15 +36,10 @@ class ControllerNode(Node):
         sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
         self.set_parameters([sim_time])
         # Import the right controller
-        if 'fbl'==mode:
-            from control.Controllers import FBL
-            self.controller = FBL(CarState(), CarTrajectory(), CarInput())
-        elif 'none'==mode:
-            raise RuntimeError("ERROR: You must pass a controller " +
-                    "type (mode) as argument to this node.")
-        else:
-            raise RuntimeError("ERROR: Controller {} is not " +
-                    "implemented.".format(mode))
+
+
+        self.controller = FBL(CarState(), CarTrajectory(), CarInput())
+
         self.mode = mode
 
         # Subs and Pubs
