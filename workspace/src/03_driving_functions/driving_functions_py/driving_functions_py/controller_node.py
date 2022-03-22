@@ -45,6 +45,7 @@ class ControllerNode(Node):
         # Subs and Pubs   -----------   Replace with right ones -- done??
 
         self.sub_state = self.create_subscription(VehicleState, "/localization/state", self._save_state, 1) #need another one
+        self.sub_state = self.create_subscription(VehicleTarget, "/localization/target", self._save_target, 1)
         self.pub_cmd = self.create_publisher(VehicleCommand,'/control/input',1)
 
 
@@ -54,6 +55,7 @@ class ControllerNode(Node):
         
 
         # Send cmd at 100 Hz
+        self.step = 0.01  # just for reference for now
         self.received_VehicleState = False
         self.timer = self.create_timer(0.01, self.send_control)
 
@@ -66,11 +68,15 @@ class ControllerNode(Node):
     def _save_state(self, msg):
         self.received_VehicleState = True
         self.controller.VehicleState = msg
+    
+    def _save_target(self, msg):
+        self.received_VehicleTarget = True
+        self.controller.target_point = msg
 
     # Send appropriate control signal to input topic
     def send_control(self):
         if self.received_VehicleState:
-            self.controller.advance()
+            self.controller.advance(self.step)
             self.pub_cmd.publish((self.controller._target_steering, self.controller._target_throttle, self._target_braking) # Send control
             # self.controller.update_u() # Get next control
 

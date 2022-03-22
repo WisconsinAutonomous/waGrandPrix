@@ -114,7 +114,7 @@ class StanleyController(wa.WAController):
         Args:
             step (float): the time step at which the controller should be advanced
         """
-        self._lat_controller.advance(step)
+        self._lat_controller.advance()
         self._long_controller.advance(step)
 
         self._target_steering = self._lat_controller.steering
@@ -123,7 +123,7 @@ class StanleyController(wa.WAController):
 
         # Integrate dynamics, taking as many steps as required to reach the value 'step'
         t = 0.0
-        while t < step:
+        while t < step:    # this is used by the simulation and is usually like 1 ms
             h = min(self._system.step_size, step - t)
 
             steering_deriv = self._steering_gain * (self._target_steering - self.steering)  # noqa
@@ -135,6 +135,13 @@ class StanleyController(wa.WAController):
             self.braking += min(h * braking_deriv, self._braking_delta, key=abs)  # noqa
 
             t += h
+        # steering_deriv = self._steering_gain * (self._target_steering - self.steering)  # noqa
+        # throttle_deriv = self._throttle_gain * (self._target_throttle - self.throttle)  # noqa
+        # braking_deriv = self._braking_gain * (self._target_braking - self.braking)  # noqa
+
+        # self.steering += min(h * steering_deriv, self._steering_delta, key=abs)  # noqa
+        # self.throttle += min(h * throttle_deriv, self._throttle_delta, key=abs)  # noqa
+        # self.braking += min(h * braking_deriv, self._braking_delta, key=abs)  # noqa
 
     def get_target_pos(self) -> wa.WAVector:
         """Get the position of the target point of the lateral controller
@@ -153,7 +160,7 @@ class StanleyController(wa.WAController):
         return self._lat_controller._sentinel
 
 
-class StanleyLateralController(wa.WAController):
+class StanleyLateralController():
     """Lateral (steering) controller which minimizes error using the Stanley Controller algorithm
 
     Args:
@@ -199,7 +206,7 @@ class StanleyLateralController(wa.WAController):
         """
         self._dist = dist
 
-    def advance(self, step: float):
+    def advance(self):
         """Advance the state of the controller by step
 
         Args:
