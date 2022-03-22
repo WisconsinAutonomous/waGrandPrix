@@ -38,13 +38,13 @@ class ControllerNode(Node):
         # Import the right controller
 
 
-        self.controller = StanleyController(VehicleState()) #need to add target point info
+        self.controller = StanleyController(VehicleState(), ???) #need to add target point info
 
         self.mode = mode
 
         # Subs and Pubs   -----------   Replace with right ones -- done??
 
-        self.sub_state = self.create_subscription(VehicleState, "/localization/state", self._save_state, 1)
+        self.sub_state = self.create_subscription(VehicleState, "/localization/state", self._save_state, 1) #need another one
         self.pub_cmd = self.create_publisher(VehicleCommand,'/control/input',1)
 
 
@@ -54,23 +54,25 @@ class ControllerNode(Node):
         
 
         # Send cmd at 100 Hz
-        self.received_traj = False
+        self.received_VehicleState = False
         self.timer = self.create_timer(0.01, self.send_control)
 
     # Callback to store trajectory setpoint
-    def _save_trajectory(self, msg):
-        self.received_traj = True
-        self.controller.sp = msg
+    # def _save_trajectory(self, msg):
+    #     self.received_traj = True
+    #     self.controller.sp = msg
 
     # Callback to store state data from estimator
     def _save_state(self, msg):
-        self.controller.x = msg
+        self.received_VehicleState = True
+        self.controller.VehicleState = msg
 
     # Send appropriate control signal to input topic
     def send_control(self):
-        if self.received_traj:
-            self.pub_cmd.publish(self.controller.u) # Send control
-            self.controller.update_u() # Get next control
+        if self.received_VehicleState:
+            self.controller.advance()
+            self.pub_cmd.publish((self.controller._target_steering, self.controller._target_throttle, self._target_braking) # Send control
+            # self.controller.update_u() # Get next control
 
 
 

@@ -24,17 +24,19 @@ class StanleyController(wa.WAController):
 
     def __init__(self, VehicleState, target_point, lat_controller: 'StanleyLateralController' = None, long_controller: 'StanleyLongitudinalController' = None):
         # super().__init__(system, vehicle_inputs)
+        self.VehicleState = VehicleState
+        self.target_point = target_point
 
         # Lateral controller (steering)
         if lat_controller is None:
-            lat_controller = StanleyLateralController(system, vehicle, vehicle_inputs, path)
+            lat_controller = StanleyLateralController()
             lat_controller.set_gains(Kp=0.4, Ki=0, Kd=0)
             lat_controller.set_lookahead_distance(dist=5)
         self._lat_controller = lat_controller
 
         if long_controller is None:
             # Longitudinal controller (throttle and braking)
-            long_controller = StanleyLongitudinalController(system, vehicle, vehicle_inputs)
+            long_controller = StanleyLongitudinalController()
             long_controller.set_gains(Kp=0.4, Ki=0, Kd=0)
             long_controller.set_target_speed(speed=7.0)
         self._long_controller = long_controller
@@ -203,8 +205,9 @@ class StanleyLateralController(wa.WAController):
         Args:
             step (float): step size to update the controller by
         """
-        pos = self._vehicle.get_pos()
-        _, _, yaw = self._vehicle.get_rot().to_euler()
+        pos = self.VehicleState.pose.position
+
+        yaw = self.VehicleState.orientation
 
         # how to do this without waVector?
         self._sentinel = wa.WAVector(
@@ -215,7 +218,7 @@ class StanleyLateralController(wa.WAController):
             ]
         )
 
-        self._target = self.target_position    #NOT RIGHT place holder
+        self._target = self.target_point    #NOT RIGHT place holder
 
         # The "error" vector is the projection onto the horizontal plane (z=0) of
         # vector between sentinel and target
@@ -322,7 +325,7 @@ class StanleyLongitudinalController(wa.WAController):
             step (float): step size to update the controller by
         """
 
-        self._speed = self._vehicle.get_pos_dt().length
+        self._speed = np.linalg.norm(self.VehicleState.twist.linear)
 
         # Calculate current error
         err = self._target_speed - self._speed
