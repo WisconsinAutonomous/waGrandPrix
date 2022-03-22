@@ -22,10 +22,8 @@ class StanleyController(wa.WAController):
         long_controller (StanleyLongitudinalController, optional): Longitudinal controller for throttle/braking. Defaults to None. Will create one if not passed.
     """
 
-    def __init__(self, system: wa.WASystem,  vehicle: wa.WAVehicle, vehicle_inputs: wa.WAVehicleInputs, path: wa.WAPath, lat_controller: 'StanleyLateralController' = None, long_controller: 'StanleyLongitudinalController' = None):
-        super().__init__(system, vehicle_inputs)
-
-        self._path = path
+    def __init__(self, VehicleState, target_point, lat_controller: 'StanleyLateralController' = None, long_controller: 'StanleyLongitudinalController' = None):
+        # super().__init__(system, vehicle_inputs)
 
         # Lateral controller (steering)
         if lat_controller is None:
@@ -163,9 +161,7 @@ class StanleyLateralController(wa.WAController):
         path (WAPath): the path the vehicle is attempting to follow
     """
 
-    def __init__(self, system: wa.WASystem, vehicle: wa.WAVehicle, vehicle_inputs: wa.WAVehicleInputs, path: wa.WAPath):
-        super().__init__(system, vehicle_inputs)
-
+    def __init__(self):
         self._Kp = 0
         self._Ki = 0
         self._Kd = 0
@@ -177,9 +173,6 @@ class StanleyLateralController(wa.WAController):
         self._err = 0
         self._errd = 0
         self._erri = 0
-
-        self._path = path
-        self._vehicle = vehicle
 
     def set_gains(self, Kp: float, Ki: float, Kd: float):
         """Set the gains
@@ -204,16 +197,6 @@ class StanleyLateralController(wa.WAController):
         """
         self._dist = dist
 
-    def synchronize(self, time: float):
-        """Synchronize the controller at the passed time
-
-        Doesn't actually do anything.
-
-        Args:
-            time (float): the time to synchronize the controller to
-        """
-        pass
-
     def advance(self, step: float):
         """Advance the state of the controller by step
 
@@ -223,6 +206,7 @@ class StanleyLateralController(wa.WAController):
         pos = self._vehicle.get_pos()
         _, _, yaw = self._vehicle.get_rot().to_euler()
 
+        # how to do this without waVector?
         self._sentinel = wa.WAVector(
             [
                 self._dist * np.cos(yaw) + pos.x,
@@ -231,8 +215,7 @@ class StanleyLateralController(wa.WAController):
             ]
         )
 
-        self._target = self._path.calc_closest_point(self._sentinel)
-        print(self._target)
+        self._target = self.target_position    #NOT RIGHT place holder
 
         # The "error" vector is the projection onto the horizontal plane (z=0) of
         # vector between sentinel and target
@@ -246,11 +229,11 @@ class StanleyLateralController(wa.WAController):
         # Calculate current error (magnitude)
         err = sign * err_vec.length
 
-        # Estimate error derivative (backward FD approximation).
-        self._errd = (err - self._err) / step
+        # # Estimate error derivative (backward FD approximation).
+        # self._errd = (err - self._err) / step
 
-        # Calculate current error integral (trapezoidal rule).
-        self._erri += (err + self._err) * step / 2
+        # # Calculate current error integral (trapezoidal rule).
+        # self._erri += (err + self._err) * step / 2
 
         # Cache new error
         self._err = err
@@ -296,8 +279,7 @@ class StanleyLongitudinalController(wa.WAController):
         vehicle (WAVehicle): the vehicle who has dynamics
     """
 
-    def __init__(self, system: wa.WASystem, vehicle: wa.WAVehicle, vehicle_inputs: wa.WAVehicleInputs):
-        super().__init__(system, vehicle_inputs)
+    def __init__(self):
 
         self._Kp = 0
         self._Ki = 0
@@ -312,7 +294,6 @@ class StanleyLongitudinalController(wa.WAController):
 
         self._throttle_threshold = 0.2
 
-        self._vehicle = vehicle
 
     def set_gains(self, Kp: float, Ki: float, Kd: float):
         """Set the gains
@@ -333,16 +314,6 @@ class StanleyLongitudinalController(wa.WAController):
             speed (float): the new target speed
         """
         self._target_speed = speed
-
-    def synchronize(self, time: float):
-        """Synchronize the controller at the passed time
-
-        Doesn't actually do anything.
-
-        Args:
-            time (float): the time to synchronize the controller to
-        """
-        pass
 
     def advance(self, step):
         """Advance the state of the controller by step

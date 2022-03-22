@@ -26,8 +26,8 @@ from rclpy.parameter import Parameter
 from rclpy.node import Node
 from sys import argv
 # from wauto_control_msgs.msg import CarState, CarInput, CarTrajectory
-from wagrandprix_vehicle_msgs import VehicleState
-
+from wagrandprix_vehicle_msgs import VehicleState, VehicleCommand, ThrottleCommand, SteeringCommand, BrakingCommand
+import StanleyController
 
 class ControllerNode(Node):
     def __init__(self, mode):
@@ -38,17 +38,20 @@ class ControllerNode(Node):
         # Import the right controller
 
 
-        self.controller = FBL(CarState(), CarTrajectory(), CarInput())
+        self.controller = StanleyController(VehicleState()) #need to add target point info
 
         self.mode = mode
 
-        # Subs and Pubs
-        self.sub_state = self.create_subscription(CarState,
-                "/localization/state", self._save_state, 1)
-        self.sub_safe = None # TODO Add subscriber for Safety
-        self.pub_cmd = self.create_publisher(CarInput,'/control/input',1)
-        self.sub_traj = self.create_subscription(CarTrajectory,
-                "/control/trajectory", self._save_trajectory, 1)
+        # Subs and Pubs   -----------   Replace with right ones -- done??
+
+        self.sub_state = self.create_subscription(VehicleState, "/localization/state", self._save_state, 1)
+        self.pub_cmd = self.create_publisher(VehicleCommand,'/control/input',1)
+
+
+        # self.sub_traj = self.create_subscription(CarTrajectory,      --- remove?
+        #         "/control/trajectory", self._save_trajectory, 1)
+
+        
 
         # Send cmd at 100 Hz
         self.received_traj = False
