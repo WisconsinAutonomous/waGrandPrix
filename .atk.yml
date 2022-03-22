@@ -15,24 +15,24 @@ services:
       args:
         VNC_PASSWORD: ""
   wasim:
-    image: "wiscauto/{project}:wasim"
-    hostname: "{project}-wasim"
-    container_name: "{project}-wasim"
+    image: "wiscauto/@{project}:wasim"
+    hostname: "@{project}-wasim"
+    container_name: "@{project}-wasim"
     build:
       context: ./docker/wasim
       dockerfile: ./wasim.dockerfile
       network: "host"
       args:
-        USERNAME: "{project}"
-        USER_UID: "{uid}"
-        USER_GID: "{gid}"
+        USERNAME: "@{project}"
+        USER_UID: "@{uid}"
+        USER_GID: "@{gid}"
         APT_DEPENDENCIES: "wget bash python3-tk"
         CONDA_CHANNELS: ""
         CONDA_DEPENDENCIES: ""
         PIP_DEPENDENCIES: "wa_simulator"
-    working_dir: "/home/{container_username}/{project}/sim/wasim"
+    working_dir: "/home/@{container_username}/@{project}/sim/wasim"
     environment:
       DISPLAY: "vnc:0.0"
     volumes: 
-      - "{project_root}:/home/{container_username}/{project}"
+      - "@{project_root}:/home/@{container_username}/@{project}"
     tty: true
