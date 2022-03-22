@@ -77,7 +77,7 @@ class ControllerNode(Node):
     def send_control(self):
         if self.received_VehicleState:
             self.controller.advance(self.step)
-            self.pub_cmd.publish((self.controller._target_steering, self.controller._target_throttle, self._target_braking) # Send control
+            self.pub_cmd.publish((self.controller.steering, self.controller.throttle, self.braking) # Send control
             # self.controller.update_u() # Get next control
 
 

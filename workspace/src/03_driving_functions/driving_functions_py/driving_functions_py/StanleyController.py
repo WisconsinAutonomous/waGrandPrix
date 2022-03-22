@@ -135,15 +135,10 @@ class StanleyController(wa.WAController):
             self.braking += min(h * braking_deriv, self._braking_delta, key=abs)  # noqa
 
             t += h
-        # steering_deriv = self._steering_gain * (self._target_steering - self.steering)  # noqa
-        # throttle_deriv = self._throttle_gain * (self._target_throttle - self.throttle)  # noqa
-        # braking_deriv = self._braking_gain * (self._target_braking - self.braking)  # noqa
 
-        # self.steering += min(h * steering_deriv, self._steering_delta, key=abs)  # noqa
-        # self.throttle += min(h * throttle_deriv, self._throttle_delta, key=abs)  # noqa
-        # self.braking += min(h * braking_deriv, self._braking_delta, key=abs)  # noqa
+    # def get_target_pos(self) -> wa.WAVector:
+    def get_target_pos(self) -> np.array:
 
-    def get_target_pos(self) -> wa.WAVector:
         """Get the position of the target point of the lateral controller
 
         Returns:
@@ -151,7 +146,8 @@ class StanleyController(wa.WAController):
         """
         return self._lat_controller._target
 
-    def get_sentinel_pos(self) -> wa.WAVector:
+    # def get_sentinel_pos(self) -> wa.WAVector:
+    def get_sentinel_pos(self) -> np.array:
         """Get the position of the sentinel point of the lateral controller
 
         Returns:
@@ -176,8 +172,10 @@ class StanleyLateralController():
         self._Kd = 0
 
         self._dist = 0
-        self._target = wa.WAVector([0, 0, 0])
-        self._sentinel = wa.WAVector([0, 0, 0])
+        self._target = np.array([0, 0, 0])
+        self._sentinel = np.array([0, 0, 0])
+        # self._target = wa.WAVector([0, 0, 0])
+        # self._sentinel = wa.WAVector([0, 0, 0])
 
         self._err = 0
         self._errd = 0
@@ -217,13 +215,21 @@ class StanleyLateralController():
         yaw = self.VehicleState.orientation
 
         # how to do this without waVector?
-        self._sentinel = wa.WAVector(
+        self._sentinel = np.array(
             [
                 self._dist * np.cos(yaw) + pos.x,
                 self._dist * np.sin(yaw) + pos.y,
                 0,
             ]
         )
+        
+        # self._sentinel = wa.WAVector(
+        #     [
+        #         self._dist * np.cos(yaw) + pos.x,
+        #         self._dist * np.sin(yaw) + pos.y,
+        #         0,
+        #     ]
+        # )
 
         self._target = self.target_point    #NOT RIGHT place holder
 
@@ -261,7 +267,8 @@ class StanleyLateralController():
         self.steering = steering / 0.436
 
 
-    def _calc_sign(self, pos: wa.WAVector) -> int:
+    # def _calc_sign(self, pos: wa.WAVector) -> int:
+    def _calc_sign(self, pos: np.array) -> int:
         """Calculate the sign of the angle between the projections of the sentinel vector
         and the target vector (with origin at vehicle location).
 
@@ -274,8 +281,10 @@ class StanleyLateralController():
         sentinel_vec = self._sentinel - pos
         target_vec = self._target - pos
 
+        # temp = np.dot(np.cross(sentinel_vec, target_vec),
+        #               wa.WAVector([0, 0, 1]))
         temp = np.dot(np.cross(sentinel_vec, target_vec),
-                      wa.WAVector([0, 0, 1]))
+                        np.array([0, 0, 1]))
 
         return int(temp > 0) - int(temp < 0)
 
