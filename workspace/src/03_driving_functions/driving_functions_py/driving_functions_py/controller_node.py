@@ -13,11 +13,11 @@ This node takes 1 argument:
 1 - mode: controller type (required)
 
 Subscribers:
-    /localization/state - CarState
-    /controller/trajectory - CarTrajectory
+    /localization/state - VehicleState
+    /control/planning - Point
 
 Publishers:
-    /control/input - CarInput
+    /control/input - VehicleCommand
 
 """
 
@@ -25,7 +25,7 @@ import rclpy
 from rclpy.parameter import Parameter
 from rclpy.node import Node
 from sys import argv
-# from wauto_control_msgs.msg import CarState, CarInput, CarTrajectory
+from wagrandprix_map_msgs.msg import Point
 from wagrandprix_vehicle_msgs import VehicleState, VehicleCommand, ThrottleCommand, SteeringCommand, BrakingCommand
 import StanleyController
 
@@ -35,24 +35,19 @@ class ControllerNode(Node):
         # Use sim time by default
         sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
         self.set_parameters([sim_time])
-        # Import the right controller
 
-
-        self.controller = StanleyController(VehicleState(), ???) #need to add target point info
-
-        self.mode = mode
+        self.controller = StanleyController(VehicleState(), [0,0,0]) #need to add target point info
+        # We could just use cars current pos as a placeholder for target to initialize it if we need
+        # So [vehicle_state.pose.position.x, ...y, ...z]
+        # - Raj
 
         # Subs and Pubs   -----------   Replace with right ones -- done??
-
         self.sub_state = self.create_subscription(VehicleState, "/localization/state", self._save_state, 1) #need another one
-        self.sub_state = self.create_subscription(VehicleTarget, "/localization/target", self._save_target, 1)
+        self.sub_state = self.create_subscription(Point, "/control/planning", self._save_target, 1)
         self.pub_cmd = self.create_publisher(VehicleCommand,'/control/input',1)
-
 
         # self.sub_traj = self.create_subscription(CarTrajectory,      --- remove?
         #         "/control/trajectory", self._save_trajectory, 1)
-
-        
 
         # Send cmd at 100 Hz
         self.step = 0.01  # just for reference for now
@@ -77,9 +72,8 @@ class ControllerNode(Node):
     def send_control(self):
         if self.received_VehicleState:
             self.controller.advance(self.step)
-            self.pub_cmd.publish((self.controller.steering, self.controller.throttle, self.braking) # Send control
+            self.pub_cmd.publish((self.controller.steering, self.controller.throttle, self.braking)) # Send control
             # self.controller.update_u() # Get next control
-
 
 
 # Entry point
