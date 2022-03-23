@@ -28,7 +28,7 @@ class SteeringPublisher(Node):
         # Timer to make sure we publish at a controlled rate
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.i = 0
+        self.i = 0.0
 
 
     def timer_callback(self, msg):
@@ -36,9 +36,10 @@ class SteeringPublisher(Node):
         msg.value = self.i
         self.publisher_handles[self.steering_cmd_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.steering_cmd_topic}")
+        # It is important that i is a float
         self.i += 0.1
         if self.i > 3:
-            self.i = -1
+            self.i = -1.0
 
 
 

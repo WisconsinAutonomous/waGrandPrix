@@ -28,7 +28,8 @@ class BrakePublisher(Node):
         # Timer to make sure we publish at a controlled rate
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.i = 0
+        # It is important that i is a float
+        self.i = 0.0
 
 
     def timer_callback(self, msg):
@@ -38,7 +39,7 @@ class BrakePublisher(Node):
         self.get_logger().info(f"Sent {msg} on topic {self.brake_cmd_topic}")
         self.i += 0.1
         if self.i > 3:
-            self.i = -1
+            self.i = -1.0
 
 
 

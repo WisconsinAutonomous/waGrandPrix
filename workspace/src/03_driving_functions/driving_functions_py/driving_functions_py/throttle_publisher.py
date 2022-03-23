@@ -28,17 +28,18 @@ class ThrottlePublisher(Node):
         # Timer to make sure we publish at a controlled rate
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.i = 0
+        # It is important that i is a float
+        self.i = 0.0
 
 
-    def timer_callback(self, msg):
+    def timer_callback(self):
         msg = ThrottleCommand()
         msg.value = self.i
         self.publisher_handles[self.throttle_cmd_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.throttle_cmd_topic}")
         self.i += 0.1
         if self.i > 3:
-            self.i = -1
+            self.i = -1.0
 
 
 

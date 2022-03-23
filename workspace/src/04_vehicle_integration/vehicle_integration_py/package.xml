@@ -7,6 +7,7 @@
   <maintainer email="aarony3131@gmail.com">root</maintainer>
   <license>TODO: License declaration</license>
 
+  <depend>can-utils</depend>
 	<exec_depend>wagrandprix_control_msgs</exec_depend>
   <exec_depend>wagrandprix_utilities</exec_depend>
 

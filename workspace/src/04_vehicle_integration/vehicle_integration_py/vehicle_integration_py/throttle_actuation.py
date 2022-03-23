@@ -10,7 +10,7 @@ from wagrandprix_control_msgs.msg import ThrottleCommand
 # port from ROS1
 # ------------
 
-from common_utilities.utilities import scale_to_range, clamp
+from wagrandprix_utilities import scale_to_range, clamp
 import serial
 import time
 
@@ -112,7 +112,7 @@ def on_shutdown_callback():
 
 
 def main(args=None):
-    rclpy.init(args)
+    rclpy.init()
     actuator = ThrottleActuation()
     rclpy.get_default_context().on_shutdown(on_shutdown_callback)
     rclpy.spin(actuator)
