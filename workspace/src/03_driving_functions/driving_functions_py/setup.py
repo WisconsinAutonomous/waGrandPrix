@@ -57,6 +57,8 @@ setup(
             "forward_searcher = driving_functions_py.forward_searcher:main",
             "trajectory_tracker = driving_functions_py.trajectory_tracker:main",
             "throttle_publisher = driving_functions_py.throttle_publisher:main",
+            "brake_publisher = driving_functions_py.brake_publisher:main",
+            "steering_publisher = driving_functions_py.steering_publisher:main",
         ],
     },
 )

@@ -31,7 +31,7 @@ class SteeringPublisher(Node):
         self.i = 0.0
 
 
-    def timer_callback(self, msg):
+    def timer_callback(self):
         msg = SteeringCommand()
         msg.value = self.i
         self.publisher_handles[self.steering_cmd_topic].publish(msg)

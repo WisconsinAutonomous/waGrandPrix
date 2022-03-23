@@ -4,7 +4,7 @@ from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
-from wagrandprix_control_msgs.msg import BrakeCommand
+from wagrandprix_control_msgs.msg import BrakingCommand
 
 # ------------
 # Port from ROS1
@@ -33,7 +33,7 @@ class BrakeActuation(Node):
 
         # Create subscriber handles
         self.subscriber_handles = {}
-        self.subscriber_handles[self.brake_cmd_topic] = self.create_subscription(BrakeCommand, self.brake_cmd_topic, self.brake_cmd_callback, 1)
+        self.subscriber_handles[self.brake_cmd_topic] = self.create_subscription(BrakingCommand, self.brake_cmd_topic, self.brake_cmd_callback, 1)
 
         # ------------
         # Port from ROS1

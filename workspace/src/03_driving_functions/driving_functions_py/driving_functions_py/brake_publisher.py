@@ -3,7 +3,7 @@ from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
-from wagrandprix_control_msgs.msg import BrakeCommand
+from wagrandprix_control_msgs.msg import BrakingCommand
 
 
 class BrakePublisher(Node):
@@ -23,7 +23,7 @@ class BrakePublisher(Node):
 
         # Create publisher handles
         self.publisher_handles = {}
-        self.publisher_handles[self.brake_cmd_topic] = self.create_publisher(BrakeCommand, self.brake_cmd_topic, 1)
+        self.publisher_handles[self.brake_cmd_topic] = self.create_publisher(BrakingCommand, self.brake_cmd_topic, 1)
 
         # Timer to make sure we publish at a controlled rate
         timer_period = 0.5  # seconds
@@ -32,8 +32,8 @@ class BrakePublisher(Node):
         self.i = 0.0
 
 
-    def timer_callback(self, msg):
-        msg = BrakeCommand()
+    def timer_callback(self):
+        msg = BrakingCommand()
         msg.value = self.i
         self.publisher_handles[self.brake_cmd_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.brake_cmd_topic}")
