@@ -79,16 +79,7 @@ class ControllerNode(Node):
 # Entry point
 def main(args=None):
     rclpy.init(args=args)
-
-    # Process mode argument
-    if(len(argv) != 1):
-        mode = str(argv[1]).lower()
-    else:
-        mode = "none"
-    print("Controller Type: {}".format(mode))
-
     cn = ControllerNode(mode)
-
     rclpy.spin(cn)
 
     # Destroy the node explicitly
