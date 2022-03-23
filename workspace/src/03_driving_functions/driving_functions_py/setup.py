@@ -57,7 +57,8 @@ setup(
             "forward_searcher = driving_functions_py.forward_searcher:main",
             "trajectory_tracker = driving_functions_py.trajectory_tracker:main",
             "publisher = driving_functions_py.publisher:main",
-            'trajectory_node = driving_functions_py.trajectory_node:main',
+            "planning_node = driving_functions_py.planning_node:main",
+            "controller_node = driving_functions_py.controller_node:main",
         ],
     },
 )

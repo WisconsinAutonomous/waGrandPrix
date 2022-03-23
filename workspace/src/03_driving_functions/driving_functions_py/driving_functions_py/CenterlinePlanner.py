@@ -1,9 +1,11 @@
+from xml.etree.ElementPath import get_parent_map
 import wa_simulator as wa
 import matplotlib.pyplot as plt
 
 class CenterlinePlanner():
 
     def get_path(track):
+        print(track)
 
         midpoints = [] # list of midpoints along track
 
@@ -17,13 +19,8 @@ class CenterlinePlanner():
             midpoint_y = (right_point[1] + left_point[1]) / 2
 
             midpoints.append([midpoint_x, midpoint_y, 0])
-
-        path = wa.WASplinePath(midpoints, num_points=1000)
         
-        return path
-
-    def get_point():
-        pass
+        return midpoints
 
 
 # Will call the main function when 'python custom_controller_demo.py' is run
@@ -37,8 +34,9 @@ if __name__ == "__main__":
     path = wa.WASplinePath(waypoints, num_points=1000, is_closed=True)
     # Create the track with a constant width
     track = wa.create_constant_width_track(path, width=10)
-    
-    path = getCenterlinePath(track)
+
+    cp = CenterlinePlanner()
+    path = cp.get_path(track)
 
     # Plot track boundaries with our new path
     plt.axis('equal')
