@@ -2,25 +2,33 @@ from xml.etree.ElementPath import get_parent_map
 import wa_simulator as wa
 import matplotlib.pyplot as plt
 
+NUM_POINTS = 20
+
 class CenterlinePlanner():
+    def __init__(self):
+        self.track_msg = None
+        self.watrack = None
+        self.path = None
+        self.waypoint = None
 
     def get_path(track):
-        print(track)
 
+        left = wa.WASplinePath([track.left], num_points=NUM_POINTS, is_closed=False)
+        right = wa.WASplinePath([track.right], num_points=NUM_POINTS, is_closed=False)
         midpoints = [] # list of midpoints along track
 
-        for point in track.center.get_points():
-
-            # using calc_closest_point(), we can ensure the path is parallel to the track boundaries
-            left_point = track.left.calc_closest_point(point)
-            right_point = track.right.calc_closest_point(point)
-
-            midpoint_x = (right_point[0] + left_point[0]) / 2
-            midpoint_y = (right_point[1] + left_point[1]) / 2
-
+        for i in NUM_POINTS:
+            midpoint_x = (right.get_points()[i][0] + left.get_points()[i][0]) / 2
+            midpoint_y = (right.get_points()[i][1] + left.get_points()[i][1]) / 2
             midpoints.append([midpoint_x, midpoint_y, 0])
-        
         return midpoints
+
+    # def calc_closest_point(self, path, pos):
+    #     dist = cdist(path._points, [pos])
+    #     idx, = np.argmin(dist, axis=0)
+
+    #     pos = wa.WAVector([path._x[idx], path._y[idx], path._z[idx]])
+    #     return pos
 
 
 # Will call the main function when 'python custom_controller_demo.py' is run
