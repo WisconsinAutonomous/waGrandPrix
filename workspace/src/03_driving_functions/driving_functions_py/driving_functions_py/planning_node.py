@@ -25,8 +25,7 @@ from rclpy.node import Node
 from driving_functions_py.CenterlinePlanner import CenterlinePlanner
 import numpy as np
 from wagrandprix_map_msgs.msg import TrackBoundaries, Point
-from wagrandprix_state_msgs.msg import VehicleState
-from wagrandprix_control_msgs.msg import Path
+from wagrandprix_vehicle_msgs.msg import VehicleState
 
 ## Class to generate and publish path msgs
 # T_mat         - Trajectory matrix [nx7]
@@ -37,9 +36,9 @@ class PlanningNode(Node):
         sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
         self.set_parameters([sim_time])
         # Create persistent path msg
-        self.msg_path = Path()
+        self.msg_waypoint = Point()
         # Create publisher
-        self.pub_path = self.create_publisher(Path, '/control/planning', 1)
+        self.pub_waypoint = self.create_publisher(Point, '/control/planning', 1)
         # Create subscribers
         self.sub_track = self.create_subscription(TrackBoundaries, '/localization/track', self._receive_track, 1)
         self.sub_state = self.create_subscription(VehicleState, '/localization/state', self._receive_state, 1)
@@ -60,20 +59,21 @@ class PlanningNode(Node):
         self.received_State = True
         self.state = msg
 
-    # Publish next setpoint
+    # Publish waypoint to follow
     def send_waypoint(self):
         if self.received_Track and self.received_State:
             # get path
             waypoints = self.cp.get_path(self.track)
 
             # build path msg
-            for wp in waypoints:
-                point = Point()
-                point.x, point.y, point.z = wp
-                self.msg_path.waypoints.append(point)
+            # for wp in waypoints:
+            #     point = Point()
+            #     point.x, point.y, point.z = wp
+            #     self.msg_path.waypoints.append(point)
 
             # publish path
-            self.pub_path.publish(self.msg_path)
+            self.get_logger().info('Publishing')
+            self.pub_waypoint.publish(self.msg_waypoint)
 
 
 # Entry point
