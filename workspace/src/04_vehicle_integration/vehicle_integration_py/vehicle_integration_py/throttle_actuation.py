@@ -105,7 +105,7 @@ class ThrottleActuation(Node):
         serial_interface.write(command.encode()) # send the command as bytes
 
     # This function must be a bound method !!! 
-    def on_shutdown_callback():
+    def on_shutdown_callback(self):
         shutdown_val = 0
         command = "cmd_t:"+str(shutdown_val)+'\n'
         serial_interface.write(command.encode()) # send the command as bytes
