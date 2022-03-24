@@ -30,7 +30,7 @@ from wagrandprix_vehicle_msgs import VehicleState, VehicleCommand, ThrottleComma
 import StanleyController
 
 class ControllerNode(Node):
-    def __init__(self, mode):
+    def __init__(self):
         super().__init__('controller_node')
         # Use sim time by default
         sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
@@ -79,7 +79,7 @@ class ControllerNode(Node):
 # Entry point
 def main(args=None):
     rclpy.init(args=args)
-    cn = ControllerNode(mode)
+    cn = ControllerNode()
     rclpy.spin(cn)
 
     # Destroy the node explicitly
