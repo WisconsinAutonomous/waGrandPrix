@@ -104,17 +104,17 @@ class ThrottleActuation(Node):
         command = "cmd_t:"+str(val)+'\n'
         serial_interface.write(command.encode()) # send the command as bytes
 
-
-def on_shutdown_callback():
-    shutdown_val = 0
-    command = "cmd_t:"+str(shutdown_val)+'\n'
-    serial_interface.write(command.encode()) # send the command as bytes
+    # This function must be a bound method !!! 
+    def on_shutdown_callback():
+        shutdown_val = 0
+        command = "cmd_t:"+str(shutdown_val)+'\n'
+        serial_interface.write(command.encode()) # send the command as bytes
 
 
 def main(args=None):
     rclpy.init()
     actuator = ThrottleActuation()
-    rclpy.get_default_context().on_shutdown(on_shutdown_callback)
+    rclpy.get_default_context().on_shutdown(actuator.on_shutdown_callback)
     rclpy.spin(actuator)
 
 
