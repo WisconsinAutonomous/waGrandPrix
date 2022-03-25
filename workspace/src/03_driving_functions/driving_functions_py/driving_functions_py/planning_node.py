@@ -29,25 +29,26 @@ from wa_simulator_ros_msgs.msg import WATrack
 from wagrandprix_vehicle_msgs.msg import VehicleState
 from geometry_msgs.msg import Point
 
-## Class to generate and publish path msgs
-# T_mat         - Trajectory matrix [nx7]
+## Class to generate and publish waypoint msgs
 class PlanningNode(Node):
     def __init__(self):
         super().__init__('planning_node')
-        # Use sim time by default
-        sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
-        self.set_parameters([sim_time])
+        # makes it so that nodes with timers use simulation time published in /clock instead of the cpu wall clock
+        # sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
+        # self.set_parameters([sim_time])
+
         # Create persistent path msg
         self.msg_waypoint = Point()
-        # Create publisher
+
+        # Create publisher and subscribers
         self.pub_waypoint = self.create_publisher(Point, '/control/planning', 1)
-        # Create subscribers
         self.sub_track = self.create_subscription(WATrack, '/localization/track', self._receive_track, 1)
         self.sub_state = self.create_subscription(VehicleState, '/localization/state', self._receive_state, 1)
+
         # Create Centerline Planner class
         self.cp = CenterlinePlanner()
 
-        self.timer = self.create_timer(0.5, self.send_waypoint)
+        self.timer = self.create_timer(0.5, self.send_waypoint)    
         self.received_Track = False
         self.received_State = False
 
@@ -65,10 +66,7 @@ class PlanningNode(Node):
     def send_waypoint(self):
         self.get_logger().info('attempt publish')
         if self.received_Track and self.received_State:
-            # get waypoint
             waypoint = self.cp.get_waypoint(self.track)
-
-            # publish path
             self.get_logger().info('Publishing waypoint')
             self.pub_waypoint.publish(waypoint)
 
