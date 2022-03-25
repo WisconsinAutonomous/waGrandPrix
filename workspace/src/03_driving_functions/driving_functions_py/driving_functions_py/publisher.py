@@ -16,8 +16,8 @@ class MinimalPublisher(Node):
 
     def timer_callback(self):
         msg = String()
-        test = wa.WAVector([0,0,0])
-        msg.data = 'Hello Earth: ' + str(test)
+        test = wa.WAVector([self.i,self.i,self.i])
+        msg.data = str(test)
         self.publisher_.publish(msg)
         self.get_logger().info('Publishing: "%s"' % msg.data)
         self.i += 1
