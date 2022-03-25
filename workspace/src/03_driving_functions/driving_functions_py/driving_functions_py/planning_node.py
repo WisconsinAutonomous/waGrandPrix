@@ -4,12 +4,12 @@ __author__ = "Victor Freire"
 __email__ = "freiremelgiz@wisc.edu"
 
 """
-Publishes Path msgs to /control/planning.
-The node listens for Track msgs and generates
-appropriate trajectories.
+Publishes Point msgs to /control/planning.
+The node listens for Track and VehicleState
+msgs and generates appropriate trajectories.
 
 Subscribers
-/localization/state              - Track
+/localization/track              - Track
 /localization/state              - VehicleState
 
 Publishers
@@ -24,8 +24,10 @@ from rclpy.parameter import Parameter
 from rclpy.node import Node
 from driving_functions_py.CenterlinePlanner import CenterlinePlanner
 import numpy as np
-from wagrandprix_map_msgs.msg import TrackBoundaries, Point
+
+from wa_simulator_ros_msgs.msg import WATrack
 from wagrandprix_vehicle_msgs.msg import VehicleState
+from geometry_msgs.msg import Point
 
 ## Class to generate and publish path msgs
 # T_mat         - Trajectory matrix [nx7]
@@ -40,7 +42,7 @@ class PlanningNode(Node):
         # Create publisher
         self.pub_waypoint = self.create_publisher(Point, '/control/planning', 1)
         # Create subscribers
-        self.sub_track = self.create_subscription(TrackBoundaries, '/localization/track', self._receive_track, 1)
+        self.sub_track = self.create_subscription(WATrack, '/localization/track', self._receive_track, 1)
         self.sub_state = self.create_subscription(VehicleState, '/localization/state', self._receive_state, 1)
         # Create Centerline Planner class
         self.cp = CenterlinePlanner()
@@ -52,28 +54,23 @@ class PlanningNode(Node):
     # Recieve set of track waypoints
     def _receive_track(self,msg):
         self.received_Track = True
-        self.track = msg
+        self.cp.track = msg
 
     # Recieve vehicle state
     def _receive_state(self,msg):
         self.received_State = True
-        self.state = msg
+        self.cp.pos = msg.position
 
     # Publish waypoint to follow
     def send_waypoint(self):
+        self.get_logger().info('attempt publish')
         if self.received_Track and self.received_State:
-            # get path
-            waypoints = self.cp.get_path(self.track)
-
-            # build path msg
-            # for wp in waypoints:
-            #     point = Point()
-            #     point.x, point.y, point.z = wp
-            #     self.msg_path.waypoints.append(point)
+            # get waypoint
+            waypoint = self.cp.get_waypoint(self.track)
 
             # publish path
-            self.get_logger().info('Publishing')
-            self.pub_waypoint.publish(self.msg_waypoint)
+            self.get_logger().info('Publishing waypoint')
+            self.pub_waypoint.publish(waypoint)
 
 
 # Entry point

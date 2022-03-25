@@ -6,15 +6,12 @@ NUM_POINTS = 20
 
 class CenterlinePlanner():
     def __init__(self):
-        self.track_msg = None
-        self.watrack = None
-        self.path = None
-        self.waypoint = None
+        self.track = None
+        self.pos = None
 
-    def get_path(track):
-
-        left = wa.WASplinePath([track.left], num_points=NUM_POINTS, is_closed=False)
-        right = wa.WASplinePath([track.right], num_points=NUM_POINTS, is_closed=False)
+    def plan_path(self):
+        left = wa.WASplinePath([track.left_visible_points], num_points=NUM_POINTS, is_closed=False)
+        right = wa.WASplinePath([track.right_visible_points], num_points=NUM_POINTS, is_closed=False)
         midpoints = [] # list of midpoints along track
 
         for i in NUM_POINTS:
@@ -23,12 +20,14 @@ class CenterlinePlanner():
             midpoints.append([midpoint_x, midpoint_y, 0])
         return midpoints
 
-    # def calc_closest_point(self, path, pos):
-    #     dist = cdist(path._points, [pos])
-    #     idx, = np.argmin(dist, axis=0)
+    def get_waypoint(self, horizon):
+        path = self.plan_path()
 
-    #     pos = wa.WAVector([path._x[idx], path._y[idx], path._z[idx]])
-    #     return pos
+        dist = cdist(self.path, [self.pos])
+        idx, = np.argmin(dist, axis=0)
+
+        pos = wa.WAVector([path[idx][0], path[idx][1], path[idx][1]])
+        return pos
 
 
 # Will call the main function when 'python custom_controller_demo.py' is run
