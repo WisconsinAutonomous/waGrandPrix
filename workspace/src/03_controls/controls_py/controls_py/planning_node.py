@@ -22,7 +22,7 @@ The trajectory will be published in state-space
 import rclpy
 from rclpy.parameter import Parameter
 from rclpy.node import Node
-from driving_functions_py.CenterlinePlanner import CenterlinePlanner
+from controls_py.CenterlinePlanner import CenterlinePlanner
 import numpy as np
 
 from wa_simulator_ros_msgs.msg import WATrack
@@ -49,26 +49,39 @@ class PlanningNode(Node):
         self.cp = CenterlinePlanner()
 
         self.timer = self.create_timer(0.5, self.send_waypoint)    
-        self.received_Track = False
-        self.received_State = False
+        self.received_track = False
+        self.received_state = False
 
     # Recieve set of track waypoints
     def _receive_track(self,msg):
-        self.received_Track = True
-        self.cp.track = msg
+        self.received_track = True
+        self.cp.track_left = []
+        for point in msg.left_detected_points:
+            self.cp.track_left.append([point.x, point.y, point.z])
+
+        self.cp.track_right = []
+        for point in msg.right_detected_points:
+            self.cp.track_right.append([point.x, point.y, point.z])
 
     # Recieve vehicle state
     def _receive_state(self,msg):
-        self.received_State = True
+        self.received_state = True
         self.cp.pos = msg.position
 
     # Publish waypoint to follow
     def send_waypoint(self):
         self.get_logger().info('attempt publish')
-        if self.received_Track and self.received_State:
-            waypoint = self.cp.get_waypoint(self.track)
+        # testing
+        # for i in range(10):
+        #     self.cp.track_left.append([i,i,0])
+        #     self.cp.track_right.append([i+10,i+10,0])   
+        # self.received_track, self.received_state = True, True
+
+        if self.received_track and self.received_state:
+            waypoint = self.cp.get_waypoint()
+            self.msg_waypoint.x, self.msg_waypoint.y, self.msg_waypoint.z = waypoint
             self.get_logger().info('Publishing waypoint')
-            self.pub_waypoint.publish(waypoint)
+            self.pub_waypoint.publish(self.msg_waypoint)
 
 
 # Entry point
