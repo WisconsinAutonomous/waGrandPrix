@@ -2,6 +2,7 @@ from xml.etree.ElementPath import get_parent_map
 import wa_simulator as wa
 import matplotlib.pyplot as plt
 
+# Constant - 
 NUM_POINTS = 20
 
 class CenterlinePlanner():
@@ -26,7 +27,7 @@ class CenterlinePlanner():
         dist = cdist(self.path, [self.pos])
         idx, = np.argmin(dist, axis=0)
 
-        pos = wa.WAVector([path[idx][0], path[idx][1], path[idx][1]])
+        pos = wa.WAVector([path[idx][0], path[idx][1], path[idx][2]])
         return pos
 
 
