@@ -56,6 +56,8 @@ setup(
         "console_scripts": [
             "forward_searcher = controls_py.forward_searcher:main",
             "trajectory_tracker = controls_py.trajectory_tracker:main",
+            "planning_node = controls_py.planning_node:main",
+            "controller_node = controls_py.controller_node:main",
         ],
     },
 )
