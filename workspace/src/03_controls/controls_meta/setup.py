@@ -2,7 +2,7 @@ from setuptools import setup
 import os
 from glob import glob
 
-package_name = 'driving_functions_meta'
+package_name = 'controls_meta'
 
 setup(
     name=package_name,
@@ -17,7 +17,7 @@ setup(
     zip_safe=True,
     maintainer='Wisconsin Autonomous',
     maintainer_email='wisconsinautonomous@studentorg.wisc.edu',
-    description='Has metadata and launch files for driving functions packages',
+    description='Has metadata and launch files for controls packages',
     license='BSD3',
     tests_require=['pytest'],
     entry_points={

@@ -1,7 +1,7 @@
 """
-This is the launch file for driving_functions nodes
+This is the launch file for controls nodes
 
-It will include and start up any driving_functions related launch files
+It will include and start up any controls related launch files
 """
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
@@ -18,13 +18,13 @@ def generate_launch_description():
     # ---------------
     # Launch Includes
     # ---------------
-    driving_functions_py_launch = IncludeLaunchDescription(
+    controls_py_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('driving_functions_py'), 'launch'),
-        '/driving_functions_py.launch.py'])
+            get_package_share_directory('controls_py'), 'launch'),
+        '/controls_py.launch.py'])
     )
 
-    launch_description.add_action(driving_functions_py_launch)
+    launch_description.add_action(controls_py_launch)
 
     return launch_description
 

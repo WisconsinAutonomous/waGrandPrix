@@ -28,7 +28,7 @@ from glob import glob
 
 from setuptools import setup
 
-package_name = "driving_functions_py"
+package_name = "controls_py"
 
 setup(
     name=package_name,
@@ -54,8 +54,8 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            "forward_searcher = driving_functions_py.forward_searcher:main",
-            "trajectory_tracker = driving_functions_py.trajectory_tracker:main",
+            "forward_searcher = controls_py.forward_searcher:main",
+            "trajectory_tracker = controls_py.trajectory_tracker:main",
         ],
     },
 )

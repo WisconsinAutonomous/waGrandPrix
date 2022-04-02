@@ -1,7 +1,7 @@
 """
-This is the launch file for the state_estimation_py package
+This is the launch file for the controls_py package
 
-It will create and start all the nodes specific to state estimation
+It will create and start all the nodes specific to controls
 """
 
 import rclpy
@@ -27,8 +27,8 @@ def generate_launch_description():
     # Nodes
     # -----
     forward_searcher_node = Node(
-        package='driving_functions_py',
-        namespace='driving_functions',
+        package='controls_py',
+        namespace='controls',
         executable='forward_searcher',
         name='forward_searcher',
         parameters=[{
@@ -38,8 +38,8 @@ def generate_launch_description():
     )
 
     trajectory_tracker_node = Node(
-        package='driving_functions_py',
-        namespace='driving_functions',
+        package='controls_py',
+        namespace='controls',
         executable='trajectory_tracker',
         name='trajectory_tracker',
         parameters=[{
