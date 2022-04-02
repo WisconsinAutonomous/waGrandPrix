@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>state_estimation_meta</name>
+  <name>localization_meta</name>
   <version>0.0.0</version>
-  <description>Has metadata and launch files for state estimation packages</description>
+  <description>Has metadata and launch files for localization packages</description>
   <maintainer email="wisconsinautonomous@studentorg.wisc.edu">Wisconsin Autonomous</maintainer>
   <license>BSD3</license>
 

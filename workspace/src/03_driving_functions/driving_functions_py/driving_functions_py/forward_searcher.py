@@ -24,7 +24,7 @@ class ForwardSearcher(Node):
         # Parse params
         # ------------
         mapped_track_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic the perceived track detections will be shipped on.")
-        self.declare_parameter("mapped_track_topic", "/state_estimation/track/mapped", mapped_track_descriptor)
+        self.declare_parameter("mapped_track_topic", "/localization/track/mapped", mapped_track_descriptor)
         self.mapped_track_topic = self.get_parameter("mapped_track_topic").value
 
         # ------------

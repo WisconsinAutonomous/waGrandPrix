@@ -2,7 +2,7 @@ from setuptools import setup
 import os
 from glob import glob
 
-package_name = 'state_estimation_meta'
+package_name = 'localization_meta'
 
 setup(
     name=package_name,
@@ -17,7 +17,7 @@ setup(
     zip_safe=True,
     maintainer='Wisconsin Autonomous',
     maintainer_email='wisconsinautonomous@studentorg.wisc.edu',
-    description='Has metadata and launch files for state estimation packages',
+    description='Has metadata and launch files for localization packages',
     license='BSD3',
     tests_require=['pytest'],
     entry_points={

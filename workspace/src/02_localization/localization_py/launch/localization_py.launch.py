@@ -1,7 +1,7 @@
 """
-This is the launch file for the state_estimation_py package
+This is the launch file for the localization_py package
 
-It will create and start all the nodes specific to state estimation
+It will create and start all the nodes specific to localization
 """
 
 import rclpy
@@ -69,8 +69,8 @@ def generate_launch_description():
     # Nodes
     # -----
     vehicle_state_estimator_node = Node(
-        package='state_estimation_py',
-        namespace='state_estimation',
+        package='localization_py',
+        namespace='localization',
         executable='vehicle_state_estimator',
         name='vehicle_state_estimator',
         parameters=[{
@@ -85,8 +85,8 @@ def generate_launch_description():
     )
 
     track_mapper_node = Node(
-        package='state_estimation_py',
-        namespace='state_estimation',
+        package='localization_py',
+        namespace='localization',
         executable='track_mapper',
         name='track_mapper',
         parameters=[{

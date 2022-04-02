@@ -28,7 +28,7 @@ from glob import glob
 
 from setuptools import setup
 
-package_name = "state_estimation_py"
+package_name = "localization_py"
 
 setup(
     name=package_name,
@@ -54,8 +54,8 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            "vehicle_state_estimator = state_estimation_py.vehicle_state_estimator:main",
-            "track_mapper = state_estimation_py.track_mapper:main",
+            "vehicle_state_estimator = localization_py.vehicle_state_estimator:main",
+            "track_mapper = localization_py.track_mapper:main",
         ],
     },
 )

@@ -1,7 +1,7 @@
 """
-This is the launch file for state_estimation nodes
+This is the launch file for localization nodes
 
-It will include and start up any state_estimation related launch files
+It will include and start up any localization related launch files
 """
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
@@ -18,13 +18,13 @@ def generate_launch_description():
     # ---------------
     # Launch Includes
     # ---------------
-    state_estimation_py_launch = IncludeLaunchDescription(
+    localization_py_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('state_estimation_py'), 'launch'),
-        '/state_estimation_py.launch.py'])
+            get_package_share_directory('localization_py'), 'launch'),
+        '/localization_py.launch.py'])
     )
 
-    launch_description.add_action(state_estimation_py_launch)
+    launch_description.add_action(localization_py_launch)
 
     return launch_description
 
