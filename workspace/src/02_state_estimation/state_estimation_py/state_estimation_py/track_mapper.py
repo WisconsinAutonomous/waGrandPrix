@@ -4,9 +4,9 @@ from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
-from wagrandprix_vehicle_msgs import VehicleState
-from wagrandprix_map_msgs import Track, DetectedTrack, Waypoint, GPSCoordinate
-from wa_simulator_ros_msgs.msg import WATrack
+from wagrandprix_map_msgs.msg import Track, DetectedTrack, Waypoint, GPSCoordinate
+from wagrandprix_vehicle_msgs.msg import VehicleState
+# from wa_simulator_ros_msgs.msg import WATrack
 
 
 class TrackMapper(Node):
@@ -50,18 +50,18 @@ class TrackMapper(Node):
 
         # If desired, we may "fake" the track mapper node
         # This can be done using sim, where we grab all of the vehicle state information directly from the simulation
-        if self.fake_with_sim:
-            from wa_simulator_ros_msgs.msg import WAVehicle
+        # if self.fake_with_sim:
+        #     from wa_simulator_ros_msgs.msg import WAVehicle
 
-            self.logger.info(f"sim_track_topic: {self.sim_track_topic}")
+        #     self.logger.info(f"sim_track_topic: {self.sim_track_topic}")
 
-            self.subscriber_handles[self.sim_track_topic] = self.create_subscription(WATrack, self.sim_track_topic, self.sim_track_callback, 1)
-        else:
-            self.logger.info(f"detected_track_topic: {self.detected_track_topic}")
-            self.logger.info(f"vehicle_state_topic: {self.vehicle_state_topic}")
+        #     self.subscriber_handles[self.sim_track_topic] = self.create_subscription(WATrack, self.sim_track_topic, self.sim_track_callback, 1)
+        # else:
+        self.logger.info(f"detected_track_topic: {self.detected_track_topic}")
+        self.logger.info(f"vehicle_state_topic: {self.vehicle_state_topic}")
 
-            self.subscriber_handles[self.detected_track_topic] = self.create_subscription(DetectedTrack, self.detected_track_topic, self.detected_track_callback, 1)
-            self.subscriber_handles[self.vehicle_state_topic] = self.create_subscription(VehicleState, self.vehicle_state_topic, self.vehicle_state_callback, 1)
+        self.subscriber_handles[self.detected_track_topic] = self.create_subscription(DetectedTrack, self.detected_track_topic, self.detected_track_callback, 1)
+        self.subscriber_handles[self.vehicle_state_topic] = self.create_subscription(VehicleState, self.vehicle_state_topic, self.vehicle_state_callback, 1)
 
         # ------------------------
         # Initialize Class Members

@@ -44,10 +44,11 @@ void writeDACValue(int val) {
 }
 
 void setup(void) {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("Initializing DAC connection...");
 
   dac.begin(addr);
+  setEEPROM();
 
   Serial.println("DAC initialized!");
 }
@@ -59,9 +60,10 @@ void loop() {
     cmd = strtok(serial_char, delim);
 
     while (cmd != NULL) {
+//      Serial.println(cmd);
       // say what you got:
       val = atoi(strtok(NULL, delim));
-
+//      Serial.println(val);
       if (strcmp(cmd, cmd_t) == 0) {
         writeDACValue(val);
       }

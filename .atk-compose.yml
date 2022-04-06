@@ -18,6 +18,7 @@ services:
         USERSHELLPATH: /bin/bash
         USERSHELLPROFILE: /home/wagrandprix/.bashrc
         USER_GID: '1000'
+        USER_GROUPS: dialout
         USER_UID: '1000'
       context: /home/wa-ecu/waGrandPrix
       dockerfile: /home/wa-ecu/.conda/envs/wa/lib/python3.9/site-packages/autonomy_toolkit/containers/config/dev/dev.dockerfile
@@ -36,6 +37,7 @@ services:
       protocol: tcp
       published: 8888
       target: 8888
+    privileged: true
     tty: true
     volumes:
     - bind:
