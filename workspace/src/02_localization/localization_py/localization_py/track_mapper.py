@@ -87,7 +87,7 @@ class TrackMapper(Node):
 
         track = Track()
 
-        for i, coord, point, width in enumerate(zip(msg.mapped_coords, msg.mapped_points, msg.mapped_widths)):
+        for i, (coord, point, width) in enumerate(zip(msg.mapped_coords, msg.mapped_points, msg.mapped_widths)):
             wp = Waypoint()
             wp.coordinate = GPSCoordinate(latitude=coord.x, longitude=coord.y, altitude=coord.z)
             wp.point = point
