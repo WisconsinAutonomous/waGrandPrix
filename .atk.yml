@@ -1,41 +1,73 @@
 project: wagrandprix
-default_services: 
+default_containers: 
   - dev
   - vnc
 custom_cli_arguments:
-  --nv:
+  nv:
     argparse:
       action: 'store_true'
-    dev:
+    all:
       deploy:
         resources:
           reservations:
             devices:
             - driver: nvidia
               capabilities: [gpu]
-  --devices:
+  devices:
     argparse:
       action: 'store_true'
-    dev:
+    all:
       privileged: true
 services:
-  dev:
-    build:
-      args:
+  dev: &dev_service
+    image: "atk/@{project}:dev"
+    hostname: "@{project}-dev"
+    container_name: "@{project}-dev"
+    build: &dev_build
+      context: "./"
+      dockerfile: "./containers/dev/dev.dockerfile"
+      network: "host"
+      args: &dev_build_args
+        PROJECT: "@{project}"
+        USER_UID: "@{uid}"
+        USER_GID: "@{gid}"
         APT_DEPENDENCIES: "bash zsh vim git git-lfs python3-pip python3-tk"
         PIP_REQUIREMENTS: "wa_simulator pandas matplotlib python-can psutil twisted numpy>=1.19 opencv-python tornado black Pillow"
+        USER_GROUPS: "dialout video"
+    environment:
+      DISPLAY: vnc:0.0
+      NVIDIA_VISIBLE_DEVICES: "all"
+      NVIDIA_DRIVER_CAPABILITIES: "all"
     ports:
       - "8888:8888"
+    volumes: 
+     - "@{project_root}:/home/@{container_username}/@{project}"
+    tty: true
+    working_dir: "/home/@{container_username}/@{project}/workspace"
   vnc:
+    image: "atk/@{project}:vnc"
+    hostname: "@{project}-vnc"
+    container_name: "@{project}-vnc"
     build:
+      context: "./containers/vnc"
+      dockerfile: "./vnc.dockerfile"
+      network: "host"
       args:
-        VNC_PASSWORD: ""
+        VNC_PASSWORD: "@{project}"
+        RUN_XTERM: "yes"
+        RUN_FLUXBOX: "yes"
+    environment:
+      RUN_XTERM: no
+      RUN_FLUXBOX: yes
+    ports:
+      - "8080:8080"
+      - "5900:5900"
   wasim:
     image: "wiscauto/@{project}:wasim"
     hostname: "@{project}-wasim"
     container_name: "@{project}-wasim"
     build:
-      context: ./docker/wasim
+      context: ./containers/wasim
       dockerfile: ./wasim.dockerfile
       network: "host"
       args:
@@ -52,3 +84,6 @@ services:
     volumes: 
       - "@{project_root}:/home/@{container_username}/@{project}"
     tty: true
+networks:
+  default:
+    name: "@{project}"
