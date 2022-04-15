@@ -37,8 +37,8 @@ class SteeringPublisher(Node):
         self.publisher_handles[self.steering_cmd_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.steering_cmd_topic}")
         # It is important that i is a float
-        self.i += 0.1
-        if self.i > 3:
+        self.i += 0.05
+        if self.i > 1:
             self.i = -1.0
 
 

@@ -52,7 +52,7 @@ class SteeringActuation(Node):
         # can intialization
         self.get_logger().info(f"Received Initializing CAN messaging to EPS... on topic {self.steering_cmd_topic}")
         self.bustype = 'socketcan'
-        self.channel = 'vcan0'
+        self.channel = 'can0'
         self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
         self.ccvs_TASK = self.bus.send_periodic(self.ccvs_MSG, 0.2) # send message at 5hz
         self.rec_TASK = self.bus.send_periodic(self.rec_MSG, 0.001) # send message at 1000hz

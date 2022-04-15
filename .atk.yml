@@ -18,11 +18,17 @@ custom_cli_arguments:
       action: 'store_true'
     dev:
       privileged: true
+      #  --network:
+      #argparse:
+      # action: 'store_true'
+      #dev:
+      #privileged: true
 services:
   dev:
+    network_mode: "host"
     build:
       args:
-        APT_DEPENDENCIES: "bash zsh vim git git-lfs python3-pip python3-tk"
+        APT_DEPENDENCIES: "bash zsh vim git git-lfs python3-pip python3-tk iproute2"
         PIP_REQUIREMENTS: "wa_simulator pandas matplotlib python-can psutil twisted numpy>=1.19 opencv-python tornado black Pillow pyserial"
         USER_GROUPS: "dialout"
     ports:

@@ -37,8 +37,8 @@ class BrakePublisher(Node):
         msg.value = self.i
         self.publisher_handles[self.brake_cmd_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.brake_cmd_topic}")
-        self.i += 0.1
-        if self.i > 3:
+        self.i += 0.05
+        if self.i > 1:
             self.i = -1.0
 
 
