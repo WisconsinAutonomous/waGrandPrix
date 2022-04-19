@@ -1,6 +1,6 @@
 # General ROS imports
 import rclpy
-import can
+from canlib import canlib, Frame
 from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
@@ -37,26 +37,29 @@ class SteeringActuation(Node):
         self.min = -64 # Min angle in degrees from local 0
 
 	    # cruise control vehicle speed (CCVS)
+        # TODO: need to modify to work with canlib
         self.ccvs_ID = int("18FEF127", 16)
-        self.ccvs_MSG = can.Message(arbitration_id=self.ccvs_ID, data=[255, 0, 0, 255, 255, 255, 255, 255], is_extended_id=True) # use fake data, only commanding steering position for now
+        # self.ccvs_MSG = can.Message(arbitration_id=self.ccvs_ID, data=[255, 0, 0, 255, 255, 255, 255, 255], is_extended_id=True) # use fake data, only commanding steering position for now
 
         # remote eps control (REC)
         self.rec_ID = int("18FF7325", 16)
         self.mode = 4 # 0=off, 2=torque assist, 4=position (speed ignored), 5=position with speed
 
         # Create default value to begin with
+        # TODO: need to modify to work with canlib
         init_angular_position = self.steering_to_angular_position(0)
         self.ang_WX_DATA, self.ang_YZ_DATA = self.angular_position_to_can(init_angular_position)
-        self.rec_MSG = can.Message(arbitration_id=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], is_extended_id=True)
+        # self.rec_MSG = can.Message(arbitration_id=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], is_extended_id=True)
 
         # can intialization
+        # TODO: need to modify to work with canlib
         self.get_logger().info(f"Received Initializing CAN messaging to EPS... on topic {self.steering_cmd_topic}")
-        self.bustype = 'socketcan'
-        self.channel = 'can0'
-        self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
-        self.ccvs_TASK = self.bus.send_periodic(self.ccvs_MSG, 0.2) # send message at 5hz
-        self.rec_TASK = self.bus.send_periodic(self.rec_MSG, 0.001) # send message at 1000hz
-        self.get_logger().info(f"Received Ready for EPS power on! on topic {self.steering_cmd_topic}")
+        # self.bustype = 'socketcan'
+        # self.channel = 'can0'
+        # self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
+        # self.ccvs_TASK = self.bus.send_periodic(self.ccvs_MSG, 0.2) # send message at 5hz
+        # self.rec_TASK = self.bus.send_periodic(self.rec_MSG, 0.001) # send message at 1000hz
+        # self.get_logger().info(f"Received Ready for EPS power on! on topic {self.steering_cmd_topic}")
 
         # Set default position of the actuator
         self.set_actuator_position(self.steering_to_angular_position(0)) # Should check position of the actuator and set value that way
@@ -85,6 +88,7 @@ class SteeringActuation(Node):
         self.ang_WX_DATA, self.ang_YZ_DATA = self.angular_position_to_can(angular_position)
 
         # create new message
+        # TODO: change this for message sending
         new_MSG = can.Message(arbitration_id=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], is_extended_id=True)
 
         # update active message data
