@@ -5,23 +5,15 @@ services:
   dev:
     build:
       args:
-        APT_DEPENDENCIES: bash zsh vim git git-lfs python3-pip python3-tk iproute2
+        APT_DEPENDENCIES: bash zsh vim git git-lfs python3-pip python3-tk
         PIP_REQUIREMENTS: wa_simulator pandas matplotlib python-can psutil twisted
-          numpy>=1.19 opencv-python tornado black Pillow pyserial
+          numpy>=1.19 opencv-python tornado black Pillow
         PROJECT: wagrandprix
-        ROS_DISTRO: galactic
-        ROS_WORKSPACE: workspace
-        SCRIPTS_DIR: containers/dev/scripts
-        USERHOME: /home/wagrandprix
-        USERNAME: wagrandprix
-        USERSHELL: bash
-        USERSHELLPATH: /bin/bash
-        USERSHELLPROFILE: /home/wagrandprix/.bashrc
         USER_GID: '1000'
-        USER_GROUPS: dialout
+        USER_GROUPS: dialout video
         USER_UID: '1000'
-      context: /home/wa-ecu/waGrandPrix
-      dockerfile: /home/wa-ecu/.conda/envs/wa/lib/python3.9/site-packages/autonomy_toolkit/containers/config/dev/dev.dockerfile
+      context: ./
+      dockerfile: ./containers/dev/dev.dockerfile
       network: host
     container_name: wagrandprix-dev
     environment:
@@ -30,7 +22,8 @@ services:
       NVIDIA_VISIBLE_DEVICES: all
     hostname: wagrandprix-dev
     image: atk/wagrandprix:dev
-    network_mode: host
+    networks:
+      default: null
     ports:
     - mode: ingress
       protocol: tcp
@@ -44,29 +37,3 @@ services:
       target: /home/wagrandprix/wagrandprix
       type: bind
     working_dir: /home/wagrandprix/wagrandprix/workspace
-  vnc:
-    build:
-      args:
-        RUN_FLUXBOX: 'yes'
-        RUN_XTERM: 'yes'
-        VNC_PASSWORD: ''
-      context: /home/wa-ecu/.conda/envs/wa/lib/python3.9/site-packages/autonomy_toolkit/containers/config/vnc
-      dockerfile: /home/wa-ecu/.conda/envs/wa/lib/python3.9/site-packages/autonomy_toolkit/containers/config/vnc/vnc.dockerfile
-      network: host
-    container_name: wagrandprix-vnc
-    environment:
-      RUN_FLUXBOX: 'true'
-      RUN_XTERM: 'false'
-    hostname: wagrandprix-vnc
-    image: atk/wagrandprix:vnc
-    networks:
-      default: null
-    ports:
-    - mode: ingress
-      protocol: tcp
-      published: 8080
-      target: 8080
-    - mode: ingress
-      protocol: tcp
-      published: 5900
-      target: 5900

@@ -1,6 +1,8 @@
 # General ROS imports
 import rclpy
-import can
+from canlib import canlib, Frame
+import time
+import threading
 from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
@@ -37,26 +39,75 @@ class SteeringActuation(Node):
         self.min = -64 # Min angle in degrees from local 0
 
 	    # cruise control vehicle speed (CCVS)
+        # TO DO: need to modify to work with canlib
         self.ccvs_ID = int("18FEF127", 16)
-        self.ccvs_MSG = can.Message(arbitration_id=self.ccvs_ID, data=[255, 0, 0, 255, 255, 255, 255, 255], is_extended_id=True) # use fake data, only commanding steering position for now
+        # self.ccvs_MSG = can.Message(arbitration_id=self.ccvs_ID, data=[255, 0, 0, 255, 255, 255, 255, 255], is_extended_id=True) # use fake data, only commanding steering position for now
+        self.ccvs_MSG = Frame(id_=self.ccvs_ID, data=[255, 0, 0, 255, 255, 255, 255, 255], dlc=8)
 
         # remote eps control (REC)
         self.rec_ID = int("18FF7325", 16)
         self.mode = 4 # 0=off, 2=torque assist, 4=position (speed ignored), 5=position with speed
 
         # Create default value to begin with
+        # TO DO: need to modify to work with canlib
         init_angular_position = self.steering_to_angular_position(0)
         self.ang_WX_DATA, self.ang_YZ_DATA = self.angular_position_to_can(init_angular_position)
-        self.rec_MSG = can.Message(arbitration_id=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], is_extended_id=True)
+        # self.rec_MSG = can.Message(arbitration_id=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], is_extended_id=True)
+        self.rec_MSG = Frame(id_=self.rec_ID, data=[self.mode, 0, 255, 255, 0, 0, 0, 0], dlc=8)
 
         # can intialization
+        # TO DO: need to modify to work with canlib
         self.get_logger().info(f"Received Initializing CAN messaging to EPS... on topic {self.steering_cmd_topic}")
-        self.bustype = 'socketcan'
-        self.channel = 'can0'
-        self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
-        self.ccvs_TASK = self.bus.send_periodic(self.ccvs_MSG, 0.2) # send message at 5hz
-        self.rec_TASK = self.bus.send_periodic(self.rec_MSG, 0.001) # send message at 1000hz
-        self.get_logger().info(f"Received Ready for EPS power on! on topic {self.steering_cmd_topic}")
+        self.ch = canlib.openChannel(
+            channel=0,
+            flags=canlib.Open.EXCLUSIVE | canlib.Open.REQUIRE_EXTENDED,
+            bitrate= canlib.Bitrate.BITRATE_250K,
+        )
+        # Set the CAN bus driver type to NORMAL.
+        self.ch.setBusOutputControl(canlib.Driver.NORMAL)
+        # Activate the CAN chip.
+        self.ch.busOn()
+
+        # self.bustype = 'socketcan'
+        # self.channel = 'can0'
+        # self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
+
+        def thrd_ccvs_fcn():
+            last_time = time.time()
+            while True:
+                curr_time = time.time()
+                # send message at 5hz
+                sleep_time = 0.2 - (curr_time - last_time)
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+                self.ch.write(self.ccvs_MSG)
+
+                # Wait until the message is sent or at most 100 ms.
+                self.ch.writeSync(timeout=100)
+                last_time = curr_time
+        
+        def thrd_rec_fcn():
+            last_time = time.time()
+            while True:
+                curr_time = time.time()
+                # send message at 1000hz
+                sleep_time = 0.001 - (curr_time - last_time)
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+                self.ch.write(self.rec_MSG)
+
+                # Wait until the message is sent or at most 100 ms.
+                self.ch.writeSync(timeout=100)
+                last_time = curr_time
+
+        self.thrd_ccvs = threading.Thread(target=thrd_ccvs_fcn)
+        self.thrd_rec = threading.Thread(target=thrd_rec_fcn)
+
+
+
+        # self.ccvs_TASK = self.bus.send_periodic(self.ccvs_MSG, 0.2) # send message at 5hz
+        # self.rec_TASK = self.bus.send_periodic(self.rec_MSG, 0.001) # send message at 1000hz
+        # self.get_logger().info(f"Received Ready for EPS power on! on topic {self.steering_cmd_topic}")
 
         # Set default position of the actuator
         self.set_actuator_position(self.steering_to_angular_position(0)) # Should check position of the actuator and set value that way
@@ -85,10 +136,11 @@ class SteeringActuation(Node):
         self.ang_WX_DATA, self.ang_YZ_DATA = self.angular_position_to_can(angular_position)
 
         # create new message
-        new_MSG = can.Message(arbitration_id=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], is_extended_id=True)
-
+        # TO DO: change this for message sending
+        # new_MSG = can.Message(arbitration_id=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], is_extended_id=True)
+        self.rec_MSG = Frame(id_=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], dlc=8)
         # update active message data
-        self.rec_TASK.modify_data(new_MSG)
+        # self.rec_TASK.modify_data(new_MSG)
 
     def steering_to_angular_position(self, steering):
         """
