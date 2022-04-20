@@ -4,7 +4,7 @@ from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
-from wagrandprix_vehicle_msgs import VehicleState
+from wagrandprix_vehicle_msgs.msg import VehicleState
 from std_msgs.msg import Float64
 from sensor_msgs.msg import NavSatFix, Imu
 from wa_simulator_ros_msgs.msg import WAVehicle
