@@ -72,9 +72,11 @@ class SteeringActuation(Node):
         # self.channel = 'can0'
         # self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
 
+        self.thrd_stop = False
+
         def thrd_ccvs_fcn():
             last_time = time.time()
-            while True:
+            while not self.thrd_stop:
                 curr_time = time.time()
                 # send message at 5hz
                 sleep_time = 0.2 - (curr_time - last_time)
@@ -88,7 +90,7 @@ class SteeringActuation(Node):
         
         def thrd_rec_fcn():
             last_time = time.time()
-            while True:
+            while not self.thrd_stop:
                 curr_time = time.time()
                 # send message at 1000hz
                 sleep_time = 0.001 - (curr_time - last_time)
@@ -102,6 +104,8 @@ class SteeringActuation(Node):
 
         self.thrd_ccvs = threading.Thread(target=thrd_ccvs_fcn)
         self.thrd_rec = threading.Thread(target=thrd_rec_fcn)
+        self.thrd_ccvs.start()
+        self.thrd_rec.start()
 
 
 
