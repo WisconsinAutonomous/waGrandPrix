@@ -18,6 +18,14 @@ custom_cli_arguments:
       action: 'store_true'
     all:
       privileged: true
+  x11:
+    argparse:
+      action: 'store_true'
+    agx:
+      volumes:
+        - "/tmp/.X11-unix:/tmp/.X11-unix"
+      environment:
+        DISPLAY: ${DISPLAY}
 services:
   dev: &dev_service
     image: "atk/@{project}:dev"
@@ -44,6 +52,18 @@ services:
      - "@{project_root}:/home/@{container_username}/@{project}"
     tty: true
     working_dir: "/home/@{container_username}/@{project}/workspace"
+  agx:
+    <<: *dev_service
+    image: "atk/@{project}:agx"
+    hostname: "@{project}-agx"
+    runtime: "nvidia"
+    privileged: true
+    build:
+      <<: *dev_build
+      args:
+        <<: *dev_build_args
+        CONTAINERNAME: "agx"
+        PIP_REQUIREMENTS: "wa_simulator pandas matplotlib python-can psutil twisted numpy>=1.19 opencv-python tornado black Pillow canlib"
   vnc:
     image: "atk/@{project}:vnc"
     hostname: "@{project}-vnc"
