@@ -25,8 +25,8 @@ class VehicleStateEstimator(Node):
         self.imu_topic = self.get_parameter("imu_topic").value
 
         imu_velocity_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that imu velocity data will be shipped on.")
-        self.declare_parameter("imu_topic", "/sensor/imu/velocity", imu_velocity_descriptor)
-        self.imu_topic = self.get_parameter("imu_velocity_topic").value
+        self.declare_parameter("imu_velocity_topic", "/sensor/imu/velocity", imu_velocity_descriptor)
+        self.imu_velocity_topic = self.get_parameter("imu_velocity_topic").value
 
         gps_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that gps data will be shipped on.")
         self.declare_parameter("gps_topic", "/sensor/gps/data", gps_descriptor)
