@@ -43,7 +43,7 @@ class PlanningNode(Node):
         # Create publisher and subscribers
         self.pub_waypoint = self.create_publisher(Point, '/control/planning', 1)
         self.sub_track = self.create_subscription(WATrack, '/localization/track', self._receive_track, 1)
-        self.sub_state = self.create_subscription(VehicleState, '/localization/state', self._receive_state, 1)
+        # self.sub_state = self.create_subscription(VehicleState, '/localization/state', self._receive_state, 1)
 
         # Create Centerline Planner class
         self.cp = CenterlinePlanner()
@@ -70,18 +70,18 @@ class PlanningNode(Node):
 
     # Publish waypoint to follow
     def send_waypoint(self):
-        self.get_logger().info('attempt publish')
+        # self.get_logger().info('attempt publish')
         # testing
-        # for i in range(10):
-        #     self.cp.track_left.append([i,i,0])
-        #     self.cp.track_right.append([i+10,i+10,0])   
-        # self.received_track, self.received_state = True, True
+        for i in range(10):
+            self.cp.track_left.append([i,i,0])
+            self.cp.track_right.append([i+10,i+10,0])   
+        self.received_track, self.received_state = True, True
 
-        if self.received_track and self.received_state:
+        if self.received_track:
             waypoint = self.cp.get_waypoint()
             self.msg_waypoint.x, self.msg_waypoint.y, self.msg_waypoint.z = waypoint
-            self.get_logger().info('Publishing waypoint')
             self.pub_waypoint.publish(self.msg_waypoint)
+            self.get_logger().info('Publishing waypoint')
 
 
 # Entry point

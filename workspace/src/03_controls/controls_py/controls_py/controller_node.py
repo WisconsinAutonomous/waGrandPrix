@@ -25,16 +25,17 @@ import rclpy
 from rclpy.parameter import Parameter
 from rclpy.node import Node
 from sys import argv
-from wagrandprix_map_msgs.msg import Point
-from wagrandprix_vehicle_msgs import VehicleState, VehicleCommand, ThrottleCommand, SteeringCommand, BrakingCommand
-import StanleyController
+from geometry_msgs.msg import Point
+from wagrandprix_vehicle_msgs.msg import VehicleState
+from wagrandprix_control_msgs.msg import VehicleCommand
+from controls_py.StanleyController import StanleyController
 
 class ControllerNode(Node):
     def __init__(self):
         super().__init__('controller_node')
         # Use sim time by default
-        sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
-        self.set_parameters([sim_time])
+        # sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
+        # self.set_parameters([sim_time])
 
         self.controller = StanleyController(VehicleState(), [0,0,0]) #need to add target point info
         # We could just use cars current pos as a placeholder for target to initialize it if we need
@@ -52,7 +53,8 @@ class ControllerNode(Node):
         # Send cmd at 100 Hz
         self.step = 0.01  # just for reference for now
         self.received_VehicleState = False
-        self.timer = self.create_timer(0.01, self.send_control)
+        self.received_VehicleTarget = False
+        self.timer = self.create_timer(0.5, self.send_control)
 
     # Callback to store trajectory setpoint
     # def _save_trajectory(self, msg):
@@ -65,13 +67,18 @@ class ControllerNode(Node):
         self.controller.VehicleState = msg
     
     def _save_target(self, msg):
+        self.get_logger().info('Received target point')
         self.received_VehicleTarget = True
         self.controller.target_point = msg
 
     # Send appropriate control signal to input topic
     def send_control(self):
-        if self.received_VehicleState:
+        self.get_logger().info('attempt publish')
+        self.controller.VehicleState = ( ((0,0,0),(0,0,0,0)) , ((0,0,0),(0,0,0)) , ((0,0,0),(0,0,0)) ) 
+        if self.received_VehicleTarget:
+
             self.controller.advance(self.step)
+            self.get_logger().info('Publishing vehicle command')
             self.pub_cmd.publish((self.controller.steering, self.controller.throttle, self.braking)) # Send control
             # self.controller.update_u() # Get next control
 
