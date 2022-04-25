@@ -40,7 +40,7 @@ class ControllerNode(Node):
         # self.set_parameters([sim_time])
 
         # self.controller = StanleyController(VehicleState(), [0,0,0]) #need to add target point info
-        self.controller = StanleyController(wa.WASystem(), VehicleState(), [0,0,0], wa.WAVehicleInputs())
+        self.controller = StanleyController(wa.WASystem(), VehicleState(), [1,1,1], wa.WAVehicleInputs())
         # We could just use cars current pos as a placeholder for target to initialize it if we need
         # So [vehicle_state.pose.position.x, ...y, ...z]
         # - Raj
@@ -74,7 +74,8 @@ class ControllerNode(Node):
     def _save_target(self, msg):
         self.get_logger().info('Received target point')
         self.received_VehicleTarget = True
-        self.controller.target_point = msg
+        self.controller.target_point = msg.x, msg.y, msg.z
+
 
     # Send appropriate control signal to input topic
     def send_control(self):

@@ -114,6 +114,9 @@ class StanleyController(wa.WAController):
         Args:
             step (float): the time step at which the controller should be advanced
         """
+        self._lat_controller.target_point = self.target_point
+        self._long_controller.target_point = self.target_point
+
         self._lat_controller.advance()
         self._long_controller.advance(step)
 
@@ -244,6 +247,8 @@ class StanleyLateralController():
         # vector and the target vector (with origin at vehicle location).
         sign = self._calc_sign(pos)
 
+        print("pos", pos)
+        # print("sign", sign)
         # Calculate current error (magnitude)
         err = sign * err_vec.length
 
@@ -256,8 +261,12 @@ class StanleyLateralController():
         # Cache new error
         self._err = err
 
+        # print("err", err)
+
         # Calculate the yaw error
         yawerror = math.atan(err/self._dist)
+
+        # print(yawerror)
 
         # Calculate the steering value based of the Stanley Controller algorithm
         velocity = wa.WAVector([self.VehicleState.twist.linear.x, self.VehicleState.twist.linear.y, self.VehicleState.twist.linear.z])
@@ -267,6 +276,7 @@ class StanleyLateralController():
         steering = np.clip(steering, -.436, .436)
 
         # Scale the steering value to -1.0 and 1.0 for steering value bounds
+        print(steering)
         self.steering = steering / 0.436
 
 
