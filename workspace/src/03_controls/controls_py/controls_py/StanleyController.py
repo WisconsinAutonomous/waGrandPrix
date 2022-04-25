@@ -220,7 +220,7 @@ class StanleyLateralController():
             step (float): step size to update the controller by
         """
         pos = wa.WAVector([self.VehicleState.pose.position.x, self.VehicleState.pose.position.y, self.VehicleState.pose.position.z])
-        print(type(pos))
+        # print(type(pos))
         temp = [self.VehicleState.pose.orientation.x, self.VehicleState.pose.orientation.y, self.VehicleState.pose.orientation.z, self.VehicleState.pose.orientation.w]
         # print(temp)
         _, _, yaw = wa.WAQuaternion(temp).to_euler()

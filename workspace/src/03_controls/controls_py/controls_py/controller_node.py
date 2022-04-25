@@ -84,6 +84,7 @@ class ControllerNode(Node):
 
             self.controller.advance(self.step)
             self.get_logger().info('Publishing vehicle command')
+            print(self.controller.steering)
             self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, self.controller.throttle, self.controller.braking
             self.pub_cmd.publish(self.vehicle_command) # Send control
             # self.controller.update_u() # Get next control
