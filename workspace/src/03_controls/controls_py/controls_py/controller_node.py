@@ -40,10 +40,12 @@ class ControllerNode(Node):
         # self.set_parameters([sim_time])
 
         # self.controller = StanleyController(VehicleState(), [0,0,0]) #need to add target point info
-        self.controller = StanleyController(VehicleState(), [0,0,0], wa.WAVehicleInputs())
+        self.controller = StanleyController(wa.WASystem(), VehicleState(), [0,0,0], wa.WAVehicleInputs())
         # We could just use cars current pos as a placeholder for target to initialize it if we need
         # So [vehicle_state.pose.position.x, ...y, ...z]
         # - Raj
+
+        self.vehicle_command = VehicleCommand()
 
         # Subs and Pubs   -----------   Replace with right ones -- done??
         self.sub_state = self.create_subscription(VehicleState, "/localization/state", self._save_state, 1) #need another one
@@ -82,7 +84,8 @@ class ControllerNode(Node):
 
             self.controller.advance(self.step)
             self.get_logger().info('Publishing vehicle command')
-            self.pub_cmd.publish((self.controller.steering, self.controller.throttle, self.braking)) # Send control
+            self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, self.controller.throttle, self.controller.braking
+            self.pub_cmd.publish(self.vehicle_command) # Send control
             # self.controller.update_u() # Get next control
 
 

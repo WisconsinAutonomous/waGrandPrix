@@ -22,8 +22,8 @@ class StanleyController(wa.WAController):
         long_controller (StanleyLongitudinalController, optional): Longitudinal controller for throttle/braking. Defaults to None. Will create one if not passed.
     """
 
-    def __init__(self, VehicleState, target_point, vehicle_inputs: wa.WAVehicleInputs, lat_controller: 'StanleyLateralController' = None, long_controller: 'StanleyLongitudinalController' = None):
-        super().__init__(vehicle_inputs)
+    def __init__(self, system, VehicleState, target_point, vehicle_inputs: wa.WAVehicleInputs, lat_controller: 'StanleyLateralController' = None, long_controller: 'StanleyLongitudinalController' = None):
+        super().__init__(system, vehicle_inputs)
         self.VehicleState = VehicleState
         self.target_point = target_point
 
