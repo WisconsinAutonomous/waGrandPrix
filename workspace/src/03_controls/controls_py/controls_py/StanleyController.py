@@ -22,21 +22,21 @@ class StanleyController(wa.WAController):
         long_controller (StanleyLongitudinalController, optional): Longitudinal controller for throttle/braking. Defaults to None. Will create one if not passed.
     """
 
-    def __init__(self, VehicleState, target_point, lat_controller: 'StanleyLateralController' = None, long_controller: 'StanleyLongitudinalController' = None):
-        # super().__init__(system, vehicle_inputs)
+    def __init__(self, VehicleState, target_point, vehicle_inputs: wa.WAVehicleInputs, lat_controller: 'StanleyLateralController' = None, long_controller: 'StanleyLongitudinalController' = None):
+        super().__init__(vehicle_inputs)
         self.VehicleState = VehicleState
         self.target_point = target_point
 
         # Lateral controller (steering)
         if lat_controller is None:
-            lat_controller = StanleyLateralController(VehicleState, target_point)
+            lat_controller = StanleyLateralController(VehicleState, target_point, vehicle_inputs)
             lat_controller.set_gains(Kp=0.4, Ki=0, Kd=0)
             lat_controller.set_lookahead_distance(dist=5)
         self._lat_controller = lat_controller
 
         if long_controller is None:
             # Longitudinal controller (throttle and braking)
-            long_controller = StanleyLongitudinalController(VehicleState, target_point)
+            long_controller = StanleyLongitudinalController(VehicleState, target_point, vehicle_inputs)
             long_controller.set_gains(Kp=0.4, Ki=0, Kd=0)
             long_controller.set_target_speed(speed=7.0)
         self._long_controller = long_controller
@@ -165,7 +165,7 @@ class StanleyLateralController():
         path (WAPath): the path the vehicle is attempting to follow
     """
 
-    def __init__(self, vehicle_state, target_point):
+    def __init__(self, vehicle_state, target_point, vehicle_inputs):
         self._Kp = 0
         self._Ki = 0
         self._Kd = 0
@@ -299,7 +299,7 @@ class StanleyLongitudinalController():
         vehicle (WAVehicle): the vehicle who has dynamics
     """
 
-    def __init__(self, vehicle_state, target_point):
+    def __init__(self, vehicle_state, target_point, vehicle_inputs):
 
         self._Kp = 0
         self._Ki = 0

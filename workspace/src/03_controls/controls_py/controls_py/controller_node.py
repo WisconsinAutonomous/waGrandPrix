@@ -29,6 +29,8 @@ from geometry_msgs.msg import Point
 from wagrandprix_vehicle_msgs.msg import VehicleState
 from wagrandprix_control_msgs.msg import VehicleCommand
 from controls_py.StanleyController import StanleyController
+import wa_simulator as wa
+
 
 class ControllerNode(Node):
     def __init__(self):
@@ -37,7 +39,8 @@ class ControllerNode(Node):
         # sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
         # self.set_parameters([sim_time])
 
-        self.controller = StanleyController(VehicleState(), [0,0,0]) #need to add target point info
+        # self.controller = StanleyController(VehicleState(), [0,0,0]) #need to add target point info
+        self.controller = StanleyController(VehicleState(), [0,0,0], wa.WAVehicleInputs())
         # We could just use cars current pos as a placeholder for target to initialize it if we need
         # So [vehicle_state.pose.position.x, ...y, ...z]
         # - Raj
