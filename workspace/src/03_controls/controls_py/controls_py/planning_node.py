@@ -54,7 +54,6 @@ class PlanningNode(Node):
 
     # Recieve set of track waypoints
     def _receive_track(self, msg):
-        # self.get_logger().info(len(msg.left_visible_points))
         self.received_track = True
         self.cp.track_left = []
         for point in msg.left_visible_points:
@@ -71,14 +70,7 @@ class PlanningNode(Node):
 
     # Publish waypoint to follow
     def send_waypoint(self):
-        # testing
-        # for i in range(10):
-        #     self.cp.track_left.append([i,i,0])
-        #     self.cp.track_right.append([i+10,i+10,0])   
-        # self.received_track, self.received_state = True, True
-
         if self.received_track:
-            # self.get_logger().info(str(self.cp.track_left))
             waypoint = self.cp.get_waypoint()
             self.msg_waypoint.x, self.msg_waypoint.y, self.msg_waypoint.z = waypoint
             self.pub_waypoint.publish(self.msg_waypoint)
