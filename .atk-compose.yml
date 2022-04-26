@@ -1,3 +1,4 @@
+name: wagrandprix
 networks:
   default:
     name: wagrandprix
@@ -12,7 +13,7 @@ services:
         USER_GID: '1000'
         USER_GROUPS: dialout video
         USER_UID: '1000'
-      context: ./
+      context: /home/unijay/waGrandPrix
       dockerfile: ./containers/dev/dev.dockerfile
       network: host
     container_name: wagrandprix-dev
@@ -27,13 +28,13 @@ services:
     ports:
     - mode: ingress
       protocol: tcp
-      published: 8888
+      published: '8888'
       target: 8888
     tty: true
     volumes:
     - bind:
         create_host_path: true
-      source: /home/wa-ecu/waGrandPrix
+      source: /home/unijay/waGrandPrix
       target: /home/wagrandprix/wagrandprix
       type: bind
     working_dir: /home/wagrandprix/wagrandprix/workspace
