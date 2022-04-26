@@ -72,14 +72,12 @@ class ControllerNode(Node):
         self.controller.VehicleState = msg
     
     def _save_target(self, msg):
-        self.get_logger().info('Received target point')
         self.received_VehicleTarget = True
         self.controller.target_point = msg.x, msg.y, msg.z
 
 
     # Send appropriate control signal to input topic
     def send_control(self):
-        self.get_logger().info('attempt publish')
         self.controller.VehicleState = ( ((0,0,0),(0,0,0,0)) , ((0,0,0),(0,0,0)) , ((0,0,0),(0,0,0)) ) 
         if self.received_VehicleTarget:
 

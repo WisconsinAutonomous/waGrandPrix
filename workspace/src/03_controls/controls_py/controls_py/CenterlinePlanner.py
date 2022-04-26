@@ -14,7 +14,7 @@ class CenterlinePlanner():
     # Return the midpoint between the last given left and right points
     def get_waypoint(self):
 
-        midpoints = [] # list of midpoints along track
+        # midpoints = [] # list of midpoints along track
 
         # left = wa.WASplinePath(track_left, num_points=NUM_POINTS, is_closed=False)
         # right = wa.WASplinePath(track_right, num_points=NUM_POINTS, is_closed=False)
