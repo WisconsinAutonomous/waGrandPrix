@@ -59,6 +59,8 @@ setup(
             "speed_encoder_subscriber = controls_py.speed_encoder_subscriber:main"
             "planning_node = controls_py.planning_node:main",
             "controller_node = controls_py.controller_node:main",
+            "steering_publisher = controls_py.steering_publisher:main",
+            "brake_publisher = controls_py.brake_publisher:main",
         ],
     },
 )

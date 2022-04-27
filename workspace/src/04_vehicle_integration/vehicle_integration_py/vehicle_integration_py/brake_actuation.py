@@ -27,7 +27,7 @@ class BrakeActuation(Node):
         # Parse params
         # ------------
         brake_cmd_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the brake command msg will be shipped on.")
-        self.declare_parameter("brake_cmd_topic", "/control/brake", brake_cmd_descriptor)
+        self.declare_parameter("brake_cmd_topic", "/control/braking", brake_cmd_descriptor)
         self.brake_cmd_topic = self.get_parameter("brake_cmd_topic").value
 
         # ------------
@@ -63,7 +63,7 @@ class BrakeActuation(Node):
         # self.rbc_TASK = self.bus.send_periodic(self.rbc_MSG, .01) # send message at 100hz
         self.ch = canlib.openChannel(
             channel=0,
-            flags=canlib.Open.EXCLUSIVE | canlib.Open.REQUIRE_EXTENDED,
+            flags=canlib.Open.REQUIRE_EXTENDED,
             bitrate= canlib.Bitrate.BITRATE_250K,
         )
         # Set the CAN bus driver type to NORMAL.
@@ -78,7 +78,7 @@ class BrakeActuation(Node):
             while not self.thrd_stop:
                 curr_time = time.time()
                 # send message at 100hz
-                sleep_time = 0.01 - (curr_time - last_time)
+                sleep_time = 0.001 - (curr_time - last_time)
                 if sleep_time > 0:
                     time.sleep(sleep_time)
                 self.ch.write(self.rbc_MSG)

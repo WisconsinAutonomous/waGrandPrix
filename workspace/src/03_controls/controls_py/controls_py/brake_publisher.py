@@ -18,7 +18,7 @@ class BrakePublisher(Node):
         # Parse params
         # ------------
         brake_cmd_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the brake command msg will be shipped on.")
-        self.declare_parameter("brake_cmd_topic", "/actuation/commands/brake", brake_cmd_descriptor)
+        self.declare_parameter("brake_cmd_topic", "/control/braking", brake_cmd_descriptor)
         self.brake_cmd_topic = self.get_parameter("brake_cmd_topic").value
 
         # Create publisher handles
@@ -26,7 +26,7 @@ class BrakePublisher(Node):
         self.publisher_handles[self.brake_cmd_topic] = self.create_publisher(BrakingCommand, self.brake_cmd_topic, 1)
 
         # Timer to make sure we publish at a controlled rate
-        timer_period = 0.5  # seconds
+        timer_period = 2  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         # It is important that i is a float
         self.i = 0.0
@@ -39,7 +39,7 @@ class BrakePublisher(Node):
         self.get_logger().info(f"Sent {msg} on topic {self.brake_cmd_topic}")
         self.i += 0.05
         if self.i > 1:
-            self.i = -1.0
+            self.i = -0.2
 
 
 

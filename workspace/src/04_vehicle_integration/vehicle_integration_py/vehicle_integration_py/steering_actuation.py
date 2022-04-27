@@ -60,7 +60,7 @@ class SteeringActuation(Node):
         self.get_logger().info(f"Received Initializing CAN messaging to EPS... on topic {self.steering_cmd_topic}")
         self.ch = canlib.openChannel(
             channel=0,
-            flags=canlib.Open.EXCLUSIVE | canlib.Open.REQUIRE_EXTENDED,
+            flags=canlib.Open.REQUIRE_EXTENDED,
             bitrate= canlib.Bitrate.BITRATE_250K,
         )
         # Set the CAN bus driver type to NORMAL.

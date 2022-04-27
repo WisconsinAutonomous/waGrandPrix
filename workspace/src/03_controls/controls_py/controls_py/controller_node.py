@@ -66,7 +66,7 @@ class ControllerNode(Node):
         self.timer = self.create_timer(5, self.send_control)
 
         #delete
-        self.fakeValues = [[0.0, .15, 0.0],[-.2, .30, 0.0], [-.4, .60, 0.0], [-.6, .80, 0.0], [-.8, 1.0, 0.0], [-1.0, .8, 0.0], [-.5, 0, 0.1], [0, 0, 0.4], [.3, 0, 0.8], [.6, 0, 1], [.8, 0, 1], [1, 0, 1]]
+        self.fakeValues = [[0,0,0],[0,0,0],[0,0,.3],[0,0,.6],[0,0,1]]
         self.idx = 0
 
     # Callback to store trajectory setpoint
