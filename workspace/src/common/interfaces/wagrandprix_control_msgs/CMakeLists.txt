@@ -41,6 +41,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 	msg/BrakingCommand.msg
 	msg/VehicleCommand.msg
 
+  msg/Point.msg
+
   DEPENDENCIES 
 )
 

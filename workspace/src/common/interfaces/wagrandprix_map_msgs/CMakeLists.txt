@@ -45,6 +45,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 	msg/Waypoint.msg
 	msg/GPSCoordinate.msg
 
+  msg/TrackBoundaries.msg
+
   DEPENDENCIES std_msgs geometry_msgs
 )
 
