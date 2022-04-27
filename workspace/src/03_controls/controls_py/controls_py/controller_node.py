@@ -27,7 +27,7 @@ from rclpy.node import Node
 from sys import argv
 from geometry_msgs.msg import Point
 from wagrandprix_vehicle_msgs.msg import VehicleState
-from wagrandprix_control_msgs.msg import VehicleCommand
+from wagrandprix_control_msgs.msg import VehicleCommand, SteeringCommand, BrakingCommand, ThrottleCommand
 from controls_py.StanleyController import StanleyController
 import wa_simulator as wa
 
@@ -50,7 +50,11 @@ class ControllerNode(Node):
         # Subs and Pubs   -----------   Replace with right ones -- done??
         self.sub_state = self.create_subscription(VehicleState, "/localization/state", self._save_state, 1) #need another one
         self.sub_state = self.create_subscription(Point, "/control/planning", self._save_target, 1)
-        self.pub_cmd = self.create_publisher(VehicleCommand,'/control/input',1)
+        # self.pub_cmd = self.create_publisher(VehicleCommand,'/control/input',1)
+        self.pub_steering = self.create_publisher(SteeringCommand,'/control/steering',1)
+        self.pub_braking = self.create_publisher(BrakingCommand,'/control/braking',1)
+        self.pub_throttle = self.create_publisher(ThrottleCommand,'/control/throttle',1)
+
 
         # self.sub_traj = self.create_subscription(CarTrajectory,      --- remove?
         #         "/control/trajectory", self._save_trajectory, 1)
@@ -60,6 +64,10 @@ class ControllerNode(Node):
         self.received_VehicleState = False
         self.received_VehicleTarget = False
         self.timer = self.create_timer(0.5, self.send_control)
+
+        #delete
+        # self.fakeValues = [[0, .15, 0],[-.2, .30, 0], [-.4, .60, 0], [-.6, .80, 0], [-.8, 1, 0], [-1, .8, 0], [-.5, 0, 0.1], [0, 0, 0.4], [.3, 0, 0.8], [.6, 0, 1], [.8, 0, 1], [1, 0, 1]]
+        # self.idx = 0
 
     # Callback to store trajectory setpoint
     # def _save_trajectory(self, msg):
@@ -79,13 +87,19 @@ class ControllerNode(Node):
     # Send appropriate control signal to input topic
     def send_control(self):
         self.controller.VehicleState = ( ((0,0,0),(0,0,0,0)) , ((0,0,0),(0,0,0)) , ((0,0,0),(0,0,0)) ) 
+        self.received_VehicleTarget = True
         if self.received_VehicleTarget:
 
             self.controller.advance(self.step)
             self.get_logger().info('Publishing vehicle command')
             print(self.controller.steering)
             self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, self.controller.throttle, self.controller.braking
-            self.pub_cmd.publish(self.vehicle_command) # Send control
+            # self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.fakeValues[self.idx][0], self.fakeValues[self.idx][1], self.fakeValues[self.idx][2]
+            # self.idx += 1
+            self.pub_steering.publish(self.vehicle_command.steering)
+            self.pub_throttle.publish(self.vehicle_command.throttle)
+            self.pub_braking.publish(self.vehicle_command.braking)
+            # self.pub_cmd.publish(self.vehicle_command) # Send control
             # self.controller.update_u() # Get next control
 
 
