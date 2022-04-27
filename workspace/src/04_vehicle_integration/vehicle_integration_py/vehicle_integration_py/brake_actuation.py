@@ -4,13 +4,16 @@ from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
-from wagrandprix_control_msgs.msg import BrakeCommand
+from wagrandprix_control_msgs.msg import BrakingCommand
 
 # ------------
 # Port from ROS1
 # ------------
-import can
-from common.utilities.utilities import clamp, scale_to_range
+# import can
+from canlib import canlib, Frame
+import time
+import threading
+from wagrandprix_utilities import clamp, scale_to_range
 
 
 class BrakeActuation(Node):
@@ -33,7 +36,7 @@ class BrakeActuation(Node):
 
         # Create subscriber handles
         self.subscriber_handles = {}
-        self.subscriber_handles[self.brake_cmd_topic] = self.create_subscription(BrakeCommand, self.brake_cmd_topic, self.brake_cmd_callback, 1)
+        self.subscriber_handles[self.brake_cmd_topic] = self.create_subscription(BrakingCommand, self.brake_cmd_topic, self.brake_cmd_callback, 1)
 
         # ------------
         # Port from ROS1
@@ -49,15 +52,45 @@ class BrakeActuation(Node):
         # create default value to begin with
         init_braking_percentage = self.braking_to_percentage(0)
         self.braking_percentage = self.braking_percentage_to_can(init_braking_percentage)
-        self.rbc_MSG = can.Message(arbitration_id=self.rbc_ID, data=[self.braking_percentage, 255, 255, 255, 255, 255, 255, 255], is_extended_id=True)
+        # self.rbc_MSG = can.Message(arbitration_id=self.rbc_ID, data=[self.braking_percentage, 255, 255, 255, 255, 255, 255, 255], is_extended_id=True)
+        self.rbc_MSG = Frame(id_=self.rbc_ID, data=[self.braking_percentage, 255, 255, 255, 255, 255, 255, 255], dlc=8)
 
         # can intialization
-        rospy.logdebug("Initializing CAN messaging to iBooster...")
-        self.bustype = 'socketcan'
-        self.channel = 'can0'
-        self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
-        self.rbc_TASK = self.bus.send_periodic(self.rbc_MSG, .01) # send message at 100hz
-        rospy.logdebug("Ready for iBooster power on!")
+        self.get_logger().info("Initializing CAN messaging to iBooster...")
+        # self.bustype = 'socketcan'
+        # self.channel = 'can0'
+        # self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
+        # self.rbc_TASK = self.bus.send_periodic(self.rbc_MSG, .01) # send message at 100hz
+        self.ch = canlib.openChannel(
+            channel=0,
+            flags=canlib.Open.EXCLUSIVE | canlib.Open.REQUIRE_EXTENDED,
+            bitrate= canlib.Bitrate.BITRATE_250K,
+        )
+        # Set the CAN bus driver type to NORMAL.
+        self.ch.setBusOutputControl(canlib.Driver.NORMAL)
+        # Activate the CAN chip.
+        self.ch.busOn()
+
+        self.thrd_stop = False
+
+        def thrd_rbc_fcn():
+            last_time = time.time()
+            while not self.thrd_stop:
+                curr_time = time.time()
+                # send message at 100hz
+                sleep_time = 0.01 - (curr_time - last_time)
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+                self.ch.write(self.rbc_MSG)
+
+                # Wait until the message is sent or at most 100 ms.
+                self.ch.writeSync(timeout=100)
+                last_time = curr_time
+
+        # self.rbc_TASK = self.bus.send_periodic(self.rbc_MSG, .01) # send message at 100hz
+        self.thrd_rbc = threading.Thread(target=thrd_rbc_fcn)
+        self.thrd_rbc.start()
+        self.get_logger().info("Ready for iBooster power on!")
 
         # Set default position of the actuator
         self.set_braking_percentage(self.braking_to_percentage(0)) # Should check position of the actuator and set value that way
@@ -93,11 +126,12 @@ class BrakeActuation(Node):
         # convert percentage for CAN
         self.braking_percentage = self.braking_percentage_to_can(braking_percentage)
 
-        # create new message
-        new_MSG = can.Message(arbitration_id=self.rbc_ID, data=[self.braking_percentage, 255, 255, 255, 255, 255, 255, 255], is_extended_id=True)
+        # # create new message
+        # new_MSG = can.Message(arbitration_id=self.rbc_ID, data=[self.braking_percentage, 255, 255, 255, 255, 255, 255, 255], is_extended_id=True)
 
-        # update active message data
-        self.rbc_TASK.modify_data(new_MSG)
+        # # update active message data
+        # self.rbc_TASK.modify_data(new_MSG)
+        self.rbc_MSG = Frame(id_=self.rbc_ID, data=[self.braking_percentage, 255, 255, 255, 255, 255, 255, 255], dlc=8)
 
     # ------------
     # Port from ROS1
