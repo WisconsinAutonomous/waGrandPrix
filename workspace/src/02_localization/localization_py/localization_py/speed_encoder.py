@@ -3,6 +3,7 @@ import rclpy
 from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
+from wagrandprix_control_msgs import ThrottleCommand
 from wagrandprix_vehicle_msgs import VehicleState
 
 # TODO may need to change
@@ -43,12 +44,11 @@ class SpeedEncoder(Node):
 
 def timer_callback(self):
     msg = VehicleState()
-    msg.value = self.speed
-    self.publisher_handles[self.throttle_cmd_topic].publish(msg)
-    self.get_logger().info(f"Sent {msg} on topic {self.throttle_cmd_topic}")
-
     # serial speed reading from Arduino
     self.speed = get_speed(self)
+    msg.twist.value = self.speed
+    self.publisher_handles[self.throttle_cmd_topic].publish(msg)
+    self.get_logger().info(f"Sent {msg} on topic {self.throttle_cmd_topic}")
 
 
 def get_speed(self) -> float:

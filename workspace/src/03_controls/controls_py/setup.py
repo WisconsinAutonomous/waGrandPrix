@@ -56,6 +56,7 @@ setup(
         "console_scripts": [
             "forward_searcher = controls_py.forward_searcher:main",
             "trajectory_tracker = controls_py.trajectory_tracker:main",
+            "speed_encoder_subscriber = controls_py.speed_encoder_subscriber:main"
         ],
     },
 )
