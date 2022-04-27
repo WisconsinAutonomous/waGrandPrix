@@ -27,7 +27,7 @@ class BrakeActuation(Node):
         # Parse params
         # ------------
         brake_cmd_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the brake command msg will be shipped on.")
-        self.declare_parameter("brake_cmd_topic", "/actuation/commands/brake", brake_cmd_descriptor)
+        self.declare_parameter("brake_cmd_topic", "/control/brake", brake_cmd_descriptor)
         self.brake_cmd_topic = self.get_parameter("brake_cmd_topic").value
 
         # ------------

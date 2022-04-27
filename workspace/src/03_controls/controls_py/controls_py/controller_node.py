@@ -63,11 +63,11 @@ class ControllerNode(Node):
         self.step = 0.01  # just for reference for now
         self.received_VehicleState = False
         self.received_VehicleTarget = False
-        self.timer = self.create_timer(0.5, self.send_control)
+        self.timer = self.create_timer(5, self.send_control)
 
         #delete
-        # self.fakeValues = [[0, .15, 0],[-.2, .30, 0], [-.4, .60, 0], [-.6, .80, 0], [-.8, 1, 0], [-1, .8, 0], [-.5, 0, 0.1], [0, 0, 0.4], [.3, 0, 0.8], [.6, 0, 1], [.8, 0, 1], [1, 0, 1]]
-        # self.idx = 0
+        self.fakeValues = [[0.0, .15, 0.0],[-.2, .30, 0.0], [-.4, .60, 0.0], [-.6, .80, 0.0], [-.8, 1.0, 0.0], [-1.0, .8, 0.0], [-.5, 0, 0.1], [0, 0, 0.4], [.3, 0, 0.8], [.6, 0, 1], [.8, 0, 1], [1, 0, 1]]
+        self.idx = 0
 
     # Callback to store trajectory setpoint
     # def _save_trajectory(self, msg):
@@ -93,9 +93,9 @@ class ControllerNode(Node):
             self.controller.advance(self.step)
             self.get_logger().info('Publishing vehicle command')
             print(self.controller.steering)
-            self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, self.controller.throttle, self.controller.braking
-            # self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.fakeValues[self.idx][0], self.fakeValues[self.idx][1], self.fakeValues[self.idx][2]
-            # self.idx += 1
+            # self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, self.controller.throttle, self.controller.braking
+            self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = float(self.fakeValues[self.idx][0]), float(self.fakeValues[self.idx][1]), float(self.fakeValues[self.idx][2])
+            self.idx = (self.idx + 1) % len(self.fakeValues)
             self.pub_steering.publish(self.vehicle_command.steering)
             self.pub_throttle.publish(self.vehicle_command.throttle)
             self.pub_braking.publish(self.vehicle_command.braking)

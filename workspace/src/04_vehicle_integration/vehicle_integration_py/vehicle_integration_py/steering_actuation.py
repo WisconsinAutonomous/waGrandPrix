@@ -22,7 +22,7 @@ class SteeringActuation(Node):
         # Parse params
         # ------------
         steering_cmd_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the steering command msg will be shipped on.")
-        self.declare_parameter("steering_cmd_topic", "/actuation/commands/steering", steering_cmd_descriptor)
+        self.declare_parameter("steering_cmd_topic", "/control/steering", steering_cmd_descriptor)
         self.steering_cmd_topic = self.get_parameter("steering_cmd_topic").value
 
         # ------------
