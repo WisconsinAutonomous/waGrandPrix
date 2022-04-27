@@ -22,21 +22,21 @@ class StanleyController(wa.WAController):
         long_controller (StanleyLongitudinalController, optional): Longitudinal controller for throttle/braking. Defaults to None. Will create one if not passed.
     """
 
-    def __init__(self, VehicleState, target_point, lat_controller: 'StanleyLateralController' = None, long_controller: 'StanleyLongitudinalController' = None):
-        # super().__init__(system, vehicle_inputs)
+    def __init__(self, system, VehicleState, target_point, vehicle_inputs: wa.WAVehicleInputs, lat_controller: 'StanleyLateralController' = None, long_controller: 'StanleyLongitudinalController' = None):
+        super().__init__(system, vehicle_inputs)
         self.VehicleState = VehicleState
         self.target_point = target_point
 
         # Lateral controller (steering)
         if lat_controller is None:
-            lat_controller = StanleyLateralController()
+            lat_controller = StanleyLateralController(VehicleState, target_point, vehicle_inputs)
             lat_controller.set_gains(Kp=0.4, Ki=0, Kd=0)
             lat_controller.set_lookahead_distance(dist=5)
         self._lat_controller = lat_controller
 
         if long_controller is None:
             # Longitudinal controller (throttle and braking)
-            long_controller = StanleyLongitudinalController()
+            long_controller = StanleyLongitudinalController(VehicleState, target_point, vehicle_inputs)
             long_controller.set_gains(Kp=0.4, Ki=0, Kd=0)
             long_controller.set_target_speed(speed=7.0)
         self._long_controller = long_controller
@@ -114,6 +114,9 @@ class StanleyController(wa.WAController):
         Args:
             step (float): the time step at which the controller should be advanced
         """
+        self._lat_controller.target_point = self.target_point
+        self._long_controller.target_point = self.target_point
+
         self._lat_controller.advance()
         self._long_controller.advance(step)
 
@@ -124,7 +127,8 @@ class StanleyController(wa.WAController):
         # Integrate dynamics, taking as many steps as required to reach the value 'step'
         t = 0.0
         while t < step:    # this is used by the simulation and is usually like 1 ms
-            h = min(self._system.step_size, step - t)
+            # h = min(self._system.step_size, step - t)
+            h = 0.01
 
             steering_deriv = self._steering_gain * (self._target_steering - self.steering)  # noqa
             throttle_deriv = self._throttle_gain * (self._target_throttle - self.throttle)  # noqa
@@ -164,7 +168,7 @@ class StanleyLateralController():
         path (WAPath): the path the vehicle is attempting to follow
     """
 
-    def __init__(self):
+    def __init__(self, vehicle_state, target_point, vehicle_inputs):
         self._Kp = 0
         self._Ki = 0
         self._Kd = 0
@@ -176,6 +180,9 @@ class StanleyLateralController():
         self._err = 0
         self._errd = 0
         self._erri = 0
+
+        self.VehicleState = vehicle_state
+        self.target_point = target_point
 
     def set_gains(self, Kp: float, Ki: float, Kd: float):
         """Set the gains
@@ -200,15 +207,26 @@ class StanleyLateralController():
         """
         self._dist = dist
 
+    def synchronize(self, time: float):
+        """Synchronize the lateral and longitudinal controllers at the specified time
+
+        Args:
+            time (float): the time at which the controller should synchronize all modules
+        """
+
+        pass
+
     def advance(self):
         """Advance the state of the controller by step
 
         Args:
             step (float): step size to update the controller by
         """
-        pos = self.VehicleState.pose.position
-
-        yaw = self.VehicleState.orientation
+        pos = wa.WAVector([self.VehicleState.pose.position.x, self.VehicleState.pose.position.y, self.VehicleState.pose.position.z])
+        # print(type(pos))
+        temp = [self.VehicleState.pose.orientation.x, self.VehicleState.pose.orientation.y, self.VehicleState.pose.orientation.z, self.VehicleState.pose.orientation.w]
+        # print(temp)
+        _, _, yaw = wa.WAQuaternion(temp).to_euler()
 
         self._sentinel = wa.WAVector(
             [
@@ -229,6 +247,8 @@ class StanleyLateralController():
         # vector and the target vector (with origin at vehicle location).
         sign = self._calc_sign(pos)
 
+        print("pos", pos)
+        # print("sign", sign)
         # Calculate current error (magnitude)
         err = sign * err_vec.length
 
@@ -241,16 +261,22 @@ class StanleyLateralController():
         # Cache new error
         self._err = err
 
+        # print("err", err)
+
         # Calculate the yaw error
         yawerror = math.atan(err/self._dist)
 
+        # print(yawerror)
+
         # Calculate the steering value based of the Stanley Controller algorithm
-        steering = yawerror + math.atan(((self._Kp) * (self._err)) / self._vehicle.get_pos_dt().length)
+        velocity = wa.WAVector([self.VehicleState.twist.linear.x, self.VehicleState.twist.linear.y, self.VehicleState.twist.linear.z])
+        steering = yawerror + math.atan(((self._Kp) * (self._err)) / velocity.length)
 
         # Clip the steering value to follow steering value bounds (max .436 radians/25 degrees)
         steering = np.clip(steering, -.436, .436)
 
         # Scale the steering value to -1.0 and 1.0 for steering value bounds
+        print(steering)
         self.steering = steering / 0.436
 
 
@@ -274,7 +300,7 @@ class StanleyLateralController():
         return int(temp > 0) - int(temp < 0)
 
 
-class StanleyLongitudinalController(wa.WAController):
+class StanleyLongitudinalController():
     """Longitudinal (throttle, braking) controller which minimizes error using a PID
 
     Args:
@@ -283,7 +309,7 @@ class StanleyLongitudinalController(wa.WAController):
         vehicle (WAVehicle): the vehicle who has dynamics
     """
 
-    def __init__(self):
+    def __init__(self, vehicle_state, target_point, vehicle_inputs):
 
         self._Kp = 0
         self._Ki = 0
@@ -296,7 +322,13 @@ class StanleyLongitudinalController(wa.WAController):
         self._speed = 0
         self._target_speed = 0
 
+        # self.braking = 0
+        # self.throttle = 0
+
         self._throttle_threshold = 0.2
+
+        self.VehicleState = vehicle_state
+        self.target_point = target_point
 
 
     def set_gains(self, Kp: float, Ki: float, Kd: float):
@@ -319,14 +351,25 @@ class StanleyLongitudinalController(wa.WAController):
         """
         self._target_speed = speed
 
+    def synchronize(self, time: float):
+        """Synchronize the lateral and longitudinal controllers at the specified time
+
+        Args:
+            time (float): the time at which the controller should synchronize all modules
+        """
+
+        pass
+
     def advance(self, step):
         """Advance the state of the controller by step
 
         Args:
             step (float): step size to update the controller by
         """
+        velocity = wa.WAVector([self.VehicleState.twist.linear.x, self.VehicleState.twist.linear.y, self.VehicleState.twist.linear.z])
 
-        self._speed = np.linalg.norm(self.VehicleState.twist.linear)
+        self._speed = np.linalg.norm(velocity)
+        
 
         # Calculate current error
         err = self._target_speed - self._speed
