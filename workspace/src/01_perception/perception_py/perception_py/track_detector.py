@@ -18,13 +18,13 @@ class TrackDetector(Node):
         # ------------
         # Parse params
         # ------------
-        camera_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that image/camera data will be shipped on.")
-        self.declare_parameter("camera_topic", "/sensor/camera/front/image", camera_descriptor)
-        self.camera_topic = self.get_parameter("camera_topic").value
+        # camera_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that image/camera data will be shipped on.")
+        # self.declare_parameter("camera_topic", "/sensor/camera/front/image", camera_descriptor)
+        # self.camera_topic = self.get_parameter("camera_topic").value
 
-        lidar_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that pointcloud/lidar data will be shipped on.")
-        self.declare_parameter("lidar_topic", "/sensor/lidar/pointcloud", lidar_descriptor)
-        self.lidar_topic = self.get_parameter("lidar_topic").value
+        pointcloud_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that pointcloud data will be shipped on.")
+        self.declare_parameter("pointcloud_topic", "zed/zed_node/point_cloud/cloud_registered", pointcloud_descriptor)
+        self.pointcloud_topic = self.get_parameter("pointcloud_topic").value
 
         fake_with_sim_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_BOOL, description="Whether to run the perception algorithms or fake it with sim data.")
         self.declare_parameter("fake_with_sim", False, fake_with_sim_descriptor)
@@ -56,27 +56,27 @@ class TrackDetector(Node):
 
             self.subscriber_handles[self.sim_track_topic] = self.create_subscription(WATrack, self.sim_track_topic, self.sim_track_callback, 1)
         else:
-            self.logger.info(f"camera_topic: {self.camera_topic}")
-            self.logger.info(f"lidar_topic: {self.lidar_topic}")
+            # self.logger.info(f"camera_topic: {self.camera_topic}")
+            self.logger.info(f"pointcloud_topic: {self.pointcloud_topic}")
 
-            self.subscriber_handles[self.camera_topic] = self.create_subscription(Image, self.camera_topic, self.camera_callback, 1)
-            self.subscriber_handles[self.lidar_topic] = self.create_subscription(PointCloud2, self.lidar_topic, self.lidar_callback, 1)
+            # self.subscriber_handles[self.camera_topic] = self.create_subscription(Image, self.camera_topic, self.camera_callback, 1)
+            self.subscriber_handles[self.pointcloud_topic] = self.create_subscription(PointCloud2, self.pointcloud_topic, self.pointcloud_callback, 1)
 
         # ------------------------
         # Initialize Class Members
         # ------------------------
 
-    def camera_callback(self, msg):
-        """
-        Callback for the camera image topic.
-        """
-        self.logger.debug(f"Received {msg} on topic {self.camera_topic}")
+    # def camera_callback(self, msg):
+    #     """
+    #     Callback for the camera image topic.
+    #     """
+    #     self.logger.debug(f"Received {msg} on topic {self.camera_topic}")
 
-    def lidar_callback(self, msg):
+    def pointcloud_callback(self, msg):
         """
-        Callback for the lidar pointcloud topic.
+        Callback for the zed pointcloud topic.
         """
-        self.logger.debug(f"Received {msg} on topic {self.lidar_topic}")
+        self.logger.debug(f"Received {msg} on topic {self.pointcloud_topic}")
 
     def sim_track_callback(self, msg):
         """
