@@ -48,26 +48,18 @@ class ControllerNode(Node):
         self.vehicle_command = VehicleCommand()
 
         # Subs and Pubs   -----------   Replace with right ones -- done??
-        self.sub_state = self.create_subscription(VehicleState, "/localization/state", self._save_state, 1) #need another one
-        self.sub_state = self.create_subscription(Point, "/control/planning", self._save_target, 1)
+        self.sub_state = self.create_subscription(VehicleState, "/localization/vehicle/state", self._save_state, 1) #need another one
+        self.sub_target = self.create_subscription(Point, "/control/planning", self._save_target, 1)
         # self.pub_cmd = self.create_publisher(VehicleCommand,'/control/input',1)
         self.pub_steering = self.create_publisher(SteeringCommand,'/control/steering',1)
         self.pub_braking = self.create_publisher(BrakingCommand,'/control/braking',1)
         self.pub_throttle = self.create_publisher(ThrottleCommand,'/control/throttle',1)
 
-
-        # self.sub_traj = self.create_subscription(CarTrajectory,      --- remove?
-        #         "/control/trajectory", self._save_trajectory, 1)
-
         # Send cmd at 100 Hz
-        self.step = 0.01  # just for reference for now
+        self.step = 0.01
         self.received_VehicleState = False
         self.received_VehicleTarget = False
-        self.timer = self.create_timer(5, self.send_control)
-
-        #delete
-        self.fakeValues = [[0,0,0],[0,0,0],[0,0,.3],[0,0,.6],[0,0,1]]
-        self.idx = 0
+        self.timer = self.create_timer(self.step, self.send_control)
 
     # Callback to store trajectory setpoint
     # def _save_trajectory(self, msg):
@@ -76,26 +68,24 @@ class ControllerNode(Node):
 
     # Callback to store state data from estimator
     def _save_state(self, msg):
+        self.get_logger().info('received state')
         self.received_VehicleState = True
         self.controller.VehicleState = msg
     
     def _save_target(self, msg):
+        self.get_logger().info('received target')
         self.received_VehicleTarget = True
         self.controller.target_point = msg.x, msg.y, msg.z
 
 
     # Send appropriate control signal to input topic
     def send_control(self):
-        self.controller.VehicleState = ( ((0,0,0),(0,0,0,0)) , ((0,0,0),(0,0,0)) , ((0,0,0),(0,0,0)) ) 
-        self.received_VehicleTarget = True
-        if self.received_VehicleTarget:
+        if self.received_VehicleTarget and self.received_VehicleState:
 
             self.controller.advance(self.step)
-            self.get_logger().info('Publishing vehicle command')
-            print(self.controller.steering)
-            # self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, self.controller.throttle, self.controller.braking
-            self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = float(self.fakeValues[self.idx][0]), float(self.fakeValues[self.idx][1]), float(self.fakeValues[self.idx][2])
-            self.idx = (self.idx + 1) % len(self.fakeValues)
+            # self.get_logger().info('Publishing vehicle command')
+            self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, min(0.5, self.controller.throttle), self.controller.braking
+            
             self.pub_steering.publish(self.vehicle_command.steering)
             self.pub_throttle.publish(self.vehicle_command.throttle)
             self.pub_braking.publish(self.vehicle_command.braking)
