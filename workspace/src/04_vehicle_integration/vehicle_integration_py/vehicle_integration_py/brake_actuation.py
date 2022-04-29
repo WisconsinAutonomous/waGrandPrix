@@ -77,8 +77,8 @@ class BrakeActuation(Node):
             last_time = time.time()
             while not self.thrd_stop:
                 curr_time = time.time()
-                # send message at 100hz
-                sleep_time = 0.001 - (curr_time - last_time)
+                # send message at 2000hz
+                sleep_time = 0.005 - (curr_time - last_time)
                 if sleep_time > 0:
                     time.sleep(sleep_time)
                 self.ch.write(self.rbc_MSG)
