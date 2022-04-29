@@ -84,11 +84,17 @@ class ControllerNode(Node):
         # ------------------------
         # Initialize Class Members
         # ------------------------
-        
+
         # if self.control_algorithm == "PID":
-            # TODO: add PID controller file and intialize it here
+        #     TODO: add PID controller file and intialize it here
+
         # else:    # self.control_algorithm == "StanleyController"":
-        self.controller = StanleyController(wa.WASystem(), VehicleState(), [1,1,1], wa.WAVehicleInputs())
+        #     self.controller = StanleyController(wa.WASystem(), VehicleState(), [1,1,1], wa.WAVehicleInputs())
+
+        
+
+
+        self.controller = pid(wa.WASystem(), wa.WAVehicleInputs(), VehicleState(), [1,1,1], wa.WAVehicleInputs())
 
         self.vehicle_command = VehicleCommand()
 

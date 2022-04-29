@@ -33,6 +33,31 @@ from geometry_msgs.msg import Point
 class PlanningNode(Node):
     def __init__(self):
         super().__init__('planning_node')
+
+        # ------------
+        # Parse params
+        # ------------
+        waypoint_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that waypoint will be shipped on.")
+        self.declare_parameter("waypoint", "/control/planning", SteeringCommand_descriptor)
+        self.target_point_topic = self.get_parameter("waypoint").value
+
+        # ------------
+        # ROS Entities
+        # ------------
+        
+        # Create publisher handles
+        self.publisher_handles = {}
+
+        self.publisher_handles["/control/planning"] = self.create_publisher(Point, '/control/planning', 1)
+
+        # Create subcriber handles
+        self.subscriber_handles = {}
+        
+
+
+
+
+
         # makes it so that nodes with timers use simulation time published in /clock instead of the cpu wall clock
         # sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
         # self.set_parameters([sim_time])
@@ -41,7 +66,7 @@ class PlanningNode(Node):
         self.msg_waypoint = Point()
 
         # Create publisher and subscribers
-        self.pub_waypoint = self.create_publisher(Point, '/control/planning', 1)
+        # self.pub_waypoint = self.create_publisher(Point, '/control/planning', 1)
         self.sub_track = self.create_subscription(WATrack, '/track/visible', self._receive_track, 1)
         # self.sub_state = self.create_subscription(VehicleState, '/localization/state', self._receive_state, 1)
 
