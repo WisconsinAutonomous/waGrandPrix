@@ -22,7 +22,7 @@ The trajectory will be published in state-space
 import rclpy
 from rclpy.parameter import Parameter
 from rclpy.node import Node
-from controls_py.CenterlinePlanner import CenterlinePlanner
+from controls_py.TestingPlanner import TestingPlanner
 import numpy as np
 
 from wa_simulator_ros_msgs.msg import WATrack
@@ -42,39 +42,40 @@ class PlanningNode(Node):
 
         # Create publisher and subscribers
         self.pub_waypoint = self.create_publisher(Point, '/control/planning', 1)
-        self.sub_track = self.create_subscription(WATrack, '/track/visible', self._receive_track, 1)
-        # self.sub_state = self.create_subscription(VehicleState, '/localization/state', self._receive_state, 1)
+        self.sub_track = self.create_subscription(WATrack, '/localization/track/mapped', self._receive_track, 1)
+        self.sub_state = self.create_subscription(VehicleState, '/localization/vehicle/state', self._receive_state, 1)
 
         # Create Centerline Planner class
-        self.cp = CenterlinePlanner()
+        self.tp = TestingPlanner()
 
-        self.timer = self.create_timer(0.5, self.send_waypoint)    
         self.received_track = False
         self.received_state = False
 
     # Recieve set of track waypoints
     def _receive_track(self, msg):
         self.received_track = True
-        self.cp.track_left = []
+        self.tp.track_left = []
         for point in msg.left_visible_points:
-            self.cp.track_left.append([point.x, point.y, point.z])
+            self.tp.track_left.append([point.x, point.y, point.z])
 
-        self.cp.track_right = []
+        self.tp.track_right = []
         for point in msg.right_visible_points:
-            self.cp.track_right.append([point.x, point.y, point.z])
+            self.tp.track_right.append([point.x, point.y, point.z])
+        self.send_waypoint()
 
     # Recieve vehicle state
     def _receive_state(self ,msg):
         self.received_state = True
-        self.cp.pos = msg.position
+        self.tp.pos = msg.pose.position
+        self.send_waypoint()
 
     # Publish waypoint to follow
     def send_waypoint(self):
-        if self.received_track:
-            waypoint = self.cp.get_waypoint()
+        if self.received_track and self.received_state:
+            waypoint = self.tp.get_waypoint()
             self.msg_waypoint.x, self.msg_waypoint.y, self.msg_waypoint.z = waypoint
             self.pub_waypoint.publish(self.msg_waypoint)
-            self.get_logger().info('Publishing waypoint')
+            # self.get_logger().info('Publishing waypoint')
 
 
 # Entry point

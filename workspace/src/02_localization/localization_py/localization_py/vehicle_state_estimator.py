@@ -40,7 +40,7 @@ class VehicleStateEstimator(Node):
         self.fake_with_sim = self.get_parameter("fake_with_sim").value
 
         sim_vehicle_state_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic sim data is published that provides vehicle state information")
-        self.declare_parameter("sim_vehicle_state_topic", "/sim/vehicle/state", sim_vehicle_state_topic_descriptor)
+        self.declare_parameter("sim_vehicle_state_topic", "/vehicle/state", sim_vehicle_state_topic_descriptor)
         self.sim_vehicle_state_topic = self.get_parameter("sim_vehicle_state_topic").value
 
         self.logger.info(f"fake_with_sim: {self.fake_with_sim}")
