@@ -20,6 +20,18 @@ def generate_launch_description():
     # ----------------
     # Launch Arguments
     # ----------------
+
+    fake_with_sim_arg = DeclareLaunchArgument(
+        "fake_with_sim", default_value=TextSubstitution(text="False")
+    )
+
+    control_algorithm_arg = DeclareLaunchArgument(
+        "control_algorithm", default_value=TextSubstitution(text="StanleyController")
+    )
+
+
+
+
     # mapped_track_topic_arg = DeclareLaunchArgument(
     #     "mapped_track_topic", default_value=TextSubstitution(text="/perception/mapped_track/mapped")
     # )

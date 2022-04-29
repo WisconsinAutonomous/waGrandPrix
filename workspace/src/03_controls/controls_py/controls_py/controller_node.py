@@ -49,8 +49,14 @@ class ControllerNode(Node):
         fake_with_sim_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_BOOL, description="Whether to run this nodes algorithms or fake it with sim data.")
         self.declare_parameter("fake_with_sim", False, fake_with_sim_descriptor)
         self.fake_with_sim = self.get_parameter("fake_with_sim").value
+        
+        control_algorithm_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="Which control agorithm to run")
+        self.declare_parameter("control_algorithm", False, control_algorithm_descriptor)
+        self.control_algorithm = self.get_parameter("control_algorithm").value
+
 
         self.logger.info(f"fake_with_sim: {self.fake_with_sim}")
+        self.logger.info(f"control_algorithm: {self.control_algorithm}")
 
 
         # ------------
@@ -78,11 +84,10 @@ class ControllerNode(Node):
         # ------------------------
         # Initialize Class Members
         # ------------------------
-        # if == "PID":
         
-        # if == "StanleyController"":
-
-
+        # if self.control_algorithm == "PID":
+            # TODO: add PID controller file and intialize it here
+        # else:    # self.control_algorithm == "StanleyController"":
         self.controller = StanleyController(wa.WASystem(), VehicleState(), [1,1,1], wa.WAVehicleInputs())
 
         self.vehicle_command = VehicleCommand()
