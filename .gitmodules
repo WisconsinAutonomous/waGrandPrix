@@ -13,3 +13,6 @@
 [submodule "workspace/src/external/rosboard"]
 	path = workspace/src/external/rosboard
 	url = git@github.com:WisconsinAutonomous/rosboard.git
+[submodule "darknet"]
+	path = workspace/src/external/darknet
+	url = git@github.com:AlexeyAB/darknet.git
