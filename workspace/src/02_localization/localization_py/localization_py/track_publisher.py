@@ -46,11 +46,11 @@ class TrackPublisher(Node):
         for point in right_points:
             track.right_visible_points.append(Point(x=point[0], y=point[1], z=point[2]))
 
+        self.timer = self.create_timer(0.01, self.timer_callback)
+
+    def timer_callback(self):
         self.logger.info("Publishing track")
-
-        while True:
-            self.publisher_handles["track/mapped"].publish(track)
-
+        self.publisher_handles["track/mapped"].publish(track)
 
 def main(args=None):
     rclpy.init(args=args)

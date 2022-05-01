@@ -74,8 +74,8 @@ def generate_launch_description():
         executable='vehicle_state_estimator',
         name='vehicle_state_estimator',
         parameters=[{
-            "imu_topic": LaunchConfiguration("imu_topic"),
-            "gps_topic": LaunchConfiguration("gps_topic"),
+            # "imu_topic": LaunchConfiguration("imu_topic"),
+            # "gps_topic": LaunchConfiguration("gps_topic"),
             "wheel_encoder_topic": LaunchConfiguration("wheel_encoder_topic"),
             "steering_feedback_topic": LaunchConfiguration("steering_feedback_topic"),
             "fake_with_sim": LaunchConfiguration("fake_with_sim"),
