@@ -7,6 +7,9 @@ from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 from wagrandprix_vehicle_msgs.msg import VehicleState
 from std_msgs.msg import Float64
 from sensor_msgs.msg import NavSatFix, Imu
+from wa_simulator_ros_msgs.msg import WAVehicle
+from geometry_msgs.msg import TwistStamped
+from sbg_driver.msg import SbgGpsPos
 
 
 class VehicleStateEstimator(Node):
@@ -20,11 +23,15 @@ class VehicleStateEstimator(Node):
         # Parse params
         # ------------
         imu_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that imu data will be shipped on.")
-        self.declare_parameter("imu_topic", "/sensor/imu/data", imu_descriptor)
+        self.declare_parameter("imu_topic", "/imu/data", imu_descriptor)
         self.imu_topic = self.get_parameter("imu_topic").value
 
+        imu_velocity_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that imu velocity data will be shipped on.")
+        self.declare_parameter("imu_velocity_topic", "/imu/velocity", imu_velocity_descriptor)
+        self.imu_velocity_topic = self.get_parameter("imu_velocity_topic").value
+
         gps_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that gps data will be shipped on.")
-        self.declare_parameter("gps_topic", "/sensor/gps/data", gps_descriptor)
+        self.declare_parameter("gps_topic", "/sbg/gps_pos", gps_descriptor)
         self.gps_topic = self.get_parameter("gps_topic").value
 
         wheel_encoder_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that wheel_encoder data will be shipped on.")
@@ -42,7 +49,7 @@ class VehicleStateEstimator(Node):
         sim_vehicle_state_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic sim data is published that provides vehicle state information")
         self.declare_parameter("sim_vehicle_state_topic", "/vehicle/state", sim_vehicle_state_topic_descriptor)
         self.sim_vehicle_state_topic = self.get_parameter("sim_vehicle_state_topic").value
-
+       
         self.logger.info(f"fake_with_sim: {self.fake_with_sim}")
 
         # ------------
@@ -59,19 +66,21 @@ class VehicleStateEstimator(Node):
         # If desired, we may "fake" the vehicle state estimator node
         # This can be done using sim, where we grab all of the vehicle state information directly from the simulation
         if self.fake_with_sim:
-            from wa_simulator_ros_msgs.msg import WAVehicle
+           
 
             self.logger.info(f"sim_vehicle_state_topic: {self.sim_vehicle_state_topic}")
 
             self.subscriber_handles[self.sim_vehicle_state_topic] = self.create_subscription(WAVehicle, self.sim_vehicle_state_topic, self.sim_vehicle_state_callback, 1)
         else:
             self.logger.info(f"imu_topic: {self.imu_topic}")
+            self.logger.info(f"imu_velocity_topic: {self.imu_velocity_topic}")
             self.logger.info(f"gps_topic: {self.gps_topic}")
             self.logger.info(f"wheel_encoder_topic: {self.wheel_encoder_topic}")
             self.logger.info(f"steering_feedback_topic: {self.steering_feedback_topic}")
 
             self.subscriber_handles[self.imu_topic] = self.create_subscription(Imu, self.imu_topic, self.imu_callback, 1)
-            self.subscriber_handles[self.gps_topic] = self.create_subscription(NavSatFix, self.gps_topic, self.gps_callback, 1)
+            self.subscriber_handles[self.imu_velocity_topic] = self.create_subscription(TwistStamped, self.imu_velocity_topic, self.imu_velocity_callback, 1)
+            self.subscriber_handles[self.gps_topic] = self.create_subscription(SbgGpsPos, self.gps_topic, self.gps_callback, 1)
             self.subscriber_handles[self.wheel_encoder_topic] = self.create_subscription(Float64, self.wheel_encoder_topic, self.wheel_encoder_callback, 1)
             self.subscriber_handles[self.steering_feedback_topic] = self.create_subscription(Float64, self.steering_feedback_topic, self.steering_feedback_callback, 1)
 
@@ -81,29 +90,65 @@ class VehicleStateEstimator(Node):
 
         self.vehicle_state = VehicleState()
 
+        self.timer = self.create_timer(0.5, self.publishData)
+
+        self.received_velocity = False
+        self.received_imu = False
+        self.received_gps = False
+
+    def publishData(self):
+        # self.logger.info(str(self.received_velocity) + " " + str(self.received_imu) + " " + str(self.received_gps))
+        if(self.received_velocity and self.received_imu and self.received_gps):
+            self.publisher_handles["vehicle/state"].publish(self.vehicle_state)
+            self.received_velocity = False
+            self.received_imu = False
+            self.received_gps = False
+
+
     def imu_callback(self, msg):
         """
         Callback for the imu data topic.
         """
+        self.vehicle_state.accel.linear = msg.linear_acceleration
+
+        self.vehicle_state.pose.orientation = msg.orientation 
+        self.received_imu = True
         self.logger.debug(f"Received {msg} on topic {self.imu_topic}")
+        self.publishData()
+
+    def imu_velocity_callback(self, msg):
+        """
+        Callback for the imu data topic.
+        """
+        self.vehicle_state.twist = msg.twist
+        self.received_velocity = True
+        self.logger.debug(f"Received {msg} on topic {self.imu_velocity_topic}")
+        self.publishData()
 
     def gps_callback(self, msg):
         """
         Callback for the gps data topic.
         """
+        self.vehicle_state.pose.position.x = msg.latitude 
+        self.vehicle_state.pose.position.y = msg.longitude
+        self.vehicle_state.pose.position.z = msg.altitude 
+        self.received_gps = True
         self.logger.debug(f"Received {msg} on topic {self.gps_topic}")
+        self.publishData()
 
     def wheel_encoder_callback(self, msg):
         """
         Callback for the wheel encoder data topic.
         """
         self.logger.debug(f"Received {msg} on topic {self.wheel_encoder_topic}")
+        self.publishData()
 
     def steering_feedback_callback(self, msg):
         """
         Callback for the steering feedback data topic.
         """
         self.logger.debug(f"Received {msg} on topic {self.steering_feedback_topic}")
+        self.publishData()
 
     def sim_vehicle_state_callback(self, msg):
         """
@@ -114,7 +159,7 @@ class VehicleStateEstimator(Node):
         self.vehicle_state.accel = msg.accel
         self.vehicle_state.twist = msg.twist
         self.vehicle_state.pose = msg.pose
-        self.publisher_handles["vehicle/state"].publish(self.vehicle_state)
+        self.publishData()
 
 
 def main(args=None):
