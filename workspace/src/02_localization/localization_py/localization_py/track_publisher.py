@@ -23,7 +23,7 @@ class TrackPublisher(Node):
         self.publisher_handles = {}
         self.publisher_handles["track/mapped"] = self.create_publisher(WATrack, "track/mapped", 1)
 
-        track = WATrack()
+        self.track = WATrack()
         left_points = [
             [42.96876879357948, -89.50527087819115,0.0],
             [42.96876879357948, -89.50520019341766,0.0],
@@ -41,16 +41,16 @@ class TrackPublisher(Node):
         ]
 
         for point in left_points:
-            track.left_visible_points.append(Point(x=point[0], y=point[1], z=point[2]))
+            self.track.left_visible_points.append(Point(x=point[0], y=point[1], z=point[2]))
         
         for point in right_points:
-            track.right_visible_points.append(Point(x=point[0], y=point[1], z=point[2]))
+            self.track.right_visible_points.append(Point(x=point[0], y=point[1], z=point[2]))
 
         self.timer = self.create_timer(0.01, self.timer_callback)
 
     def timer_callback(self):
         self.logger.info("Publishing track")
-        self.publisher_handles["track/mapped"].publish(track)
+        self.publisher_handles["track/mapped"].publish(self.track)
 
 def main(args=None):
     rclpy.init(args=args)
