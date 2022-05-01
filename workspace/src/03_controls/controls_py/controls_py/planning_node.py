@@ -73,8 +73,9 @@ class PlanningNode(Node):
     def send_waypoint(self):
         if self.received_track and self.received_state:
             waypoint = self.tp.get_waypoint()
-            self.msg_waypoint.x, self.msg_waypoint.y, self.msg_waypoint.z = waypoint
-            self.pub_waypoint.publish(self.msg_waypoint)
+            if waypoint != None:
+                self.msg_waypoint.x, self.msg_waypoint.y, self.msg_waypoint.z = waypoint
+                self.pub_waypoint.publish(self.msg_waypoint)
             # self.get_logger().info('Publishing waypoint')
 
 
