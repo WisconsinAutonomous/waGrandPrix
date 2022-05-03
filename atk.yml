@@ -12,7 +12,7 @@ custom_cli_arguments:
           reservations:
             devices:
             - driver: nvidia
-              capabilities: [gpu]
+              capabilities: ["gpu"]
   devices:
     argparse:
       action: 'store_true'
