@@ -56,7 +56,7 @@ setup(
         "console_scripts": [
             "vehicle_state_estimator = localization_py.vehicle_state_estimator:main",
             "track_mapper = localization_py.track_mapper:main",
-            "speed_encoder = localization_py.speed_encoder:main"
+            "speed_encoder = localization_py.speed_encoder:main",
         ],
     },
 )

@@ -3,8 +3,7 @@ import rclpy
 from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
-from wagrandprix_control_msgs import ThrottleCommand
-from wagrandprix_vehicle_msgs import VehicleState
+from wagrandprix_vehicle_msgs.msg import VehicleState
 
 # TODO may need to change
 TEETH_NUM = 60
