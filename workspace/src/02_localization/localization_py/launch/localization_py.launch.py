@@ -48,7 +48,7 @@ def generate_launch_description():
     )
 
     sim_vehicle_state_topic_arg = DeclareLaunchArgument(
-        "sim_vehicle_state_topic", default_value=TextSubstitution(text="/sim/vehicle/state")
+        "sim_vehicle_state_topic", default_value=TextSubstitution(text="/vehicle/state")
     )
 
     sim_track_topic_arg = DeclareLaunchArgument(
@@ -74,8 +74,8 @@ def generate_launch_description():
         executable='vehicle_state_estimator',
         name='vehicle_state_estimator',
         parameters=[{
-            "imu_topic": LaunchConfiguration("imu_topic"),
-            "gps_topic": LaunchConfiguration("gps_topic"),
+            # "imu_topic": LaunchConfiguration("imu_topic"),
+            # "gps_topic": LaunchConfiguration("gps_topic"),
             "wheel_encoder_topic": LaunchConfiguration("wheel_encoder_topic"),
             "steering_feedback_topic": LaunchConfiguration("steering_feedback_topic"),
             "fake_with_sim": LaunchConfiguration("fake_with_sim"),
@@ -87,13 +87,9 @@ def generate_launch_description():
     track_mapper_node = Node(
         package='localization_py',
         namespace='localization',
-        executable='track_mapper',
-        name='track_mapper',
+        executable='track_publisher',
+        name='track_publisher',
         parameters=[{
-            "detected_track_topic": LaunchConfiguration("detected_track_topic"),
-            "vehicle_state_topic": LaunchConfiguration("vehicle_state_topic"),
-            "fake_with_sim": LaunchConfiguration("fake_with_sim"),
-            "sim_track_topic": LaunchConfiguration("sim_track_topic"),
         }],
         output="screen",
     )

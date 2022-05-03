@@ -25,7 +25,7 @@ class ThrottleActuation(Node):
         # Parse params
         # ------------
         throttle_cmd_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the throttle command msg will be shipped on.")
-        self.declare_parameter("throttle_cmd_topic", "/actuation/commands/throttle", throttle_cmd_descriptor)
+        self.declare_parameter("throttle_cmd_topic", "/control/throttle", throttle_cmd_descriptor)
         self.throttle_cmd_topic = self.get_parameter("throttle_cmd_topic").value
 
         # ------------
