@@ -16,3 +16,9 @@
 [submodule "darknet"]
 	path = workspace/src/external/darknet
 	url = git@github.com:AlexeyAB/darknet.git
+[submodule "workspace/src/darknet"]
+	path = workspace/src/darknet
+	url = https://github.com/AlexeyAB/darknet.git
+[submodule "workspace/src/external/darknet"]
+	path = workspace/src/external/darknet
+	url = https://github.com/AlexeyAB/darknet.git
