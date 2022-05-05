@@ -21,7 +21,8 @@ class BSSteeringActuation:
 
         self.parent = parent
 
-        self.logger = rclpy.logging.get_logger(self.parent.get_name())
+        # self.logger = rclpy.logging.get_logger(self.parent.get_name())
+        self.parent.get_logger().info("steering actuation init start")
         
         # ------------
         # Parse params
@@ -63,13 +64,10 @@ class BSSteeringActuation:
             while not self.parent.thrd_stop:
                 curr_time = time.time()
                 # send message at 5hz
-                sleep_time = 0.2 - (curr_time - last_time)
+                sleep_time = 1.0 - (curr_time - last_time)
                 if sleep_time > 0:
                     time.sleep(sleep_time)
-                self.parent.ch.write(self.ccvs_MSG)
-
-                # Wait until the message is sent or at most 100 ms.
-                self.parent.ch.writeSync(timeout=100)
+                self.parent.can_write(self.ccvs_MSG)
                 last_time = curr_time
         
         def thrd_rec_fcn():
@@ -77,13 +75,10 @@ class BSSteeringActuation:
             while not self.parent.thrd_stop:
                 curr_time = time.time()
                 # send message at 1000hz
-                sleep_time = 0.001 - (curr_time - last_time)
+                sleep_time = 0.5 - (curr_time - last_time)
                 if sleep_time > 0:
                     time.sleep(sleep_time)
-                self.parent.ch.write(self.rec_MSG)
-
-                # Wait until the message is sent or at most 100 ms.
-                self.parent.ch.writeSync(timeout=100)
+                self.parent.can_write(self.rec_MSG)
                 last_time = curr_time
 
         self.thrd_ccvs = threading.Thread(target=thrd_ccvs_fcn)
@@ -93,6 +88,9 @@ class BSSteeringActuation:
 
         # Set default position of the actuator
         self.set_actuator_position(self.steering_to_angular_position(0)) # Should check position of the actuator and set value that way
+
+        self.parent.get_logger().info("steering actuation init end")
+
 
 
     def steering_cmd_callback(self, msg):

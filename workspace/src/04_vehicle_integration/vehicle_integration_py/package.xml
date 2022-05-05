@@ -9,6 +9,7 @@
 
   <depend>can-utils</depend>
 	<exec_depend>wagrandprix_control_msgs</exec_depend>
+	<exec_depend>wagrandprix_vehicle_msgs</exec_depend>
   <exec_depend>wagrandprix_utilities</exec_depend>
 
   <test_depend>ament_copyright</test_depend>

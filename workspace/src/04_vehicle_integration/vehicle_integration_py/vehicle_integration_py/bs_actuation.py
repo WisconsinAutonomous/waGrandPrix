@@ -3,8 +3,9 @@ import rclpy
 from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 from canlib import canlib, Frame
-from bs_brake_actuation import BSBrakeActuation
-from bs_steering_actuation import BSSteeringActuation
+import threading
+from .bs_brake_actuation import BSBrakeActuation
+from .bs_steering_actuation import BSSteeringActuation
 
 class BSActuation(Node):
 
@@ -12,7 +13,7 @@ class BSActuation(Node):
         super().__init__('bs_actuation')
 
         # can intialization
-        self.get_logger().info("Initializing CAN messaging to iBooster...")
+        self.get_logger().info("Initializing CAN messaging ...")
         self.ch = canlib.openChannel(
             channel=0,
             flags=canlib.Open.EXCLUSIVE | canlib.Open.REQUIRE_EXTENDED,
@@ -24,11 +25,18 @@ class BSActuation(Node):
         self.ch.busOn()
 
         self.thrd_stop = False
+        self.lock = threading.Lock()
 
         # initialization of brake_actuation and steering_actuation 
         # should after the initialization of self.ch and self.thrd_stop        
         self.brake_actuation = BSBrakeActuation(self)
         self.steering_actuation = BSSteeringActuation(self)
+
+    def can_write(self, msg):
+        self.lock.acquire()
+        self.ch.write(msg)
+        self.lock.release()
+        self.ch.writeSync(timeout=100)
 
 def main(args=None):
     rclpy.init(args=args)

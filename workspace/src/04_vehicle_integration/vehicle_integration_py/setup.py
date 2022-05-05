@@ -54,6 +54,9 @@ setup(
             "brake_actuation = vehicle_integration_py.brake_actuation:main",
             "throttle_actuation = vehicle_integration_py.throttle_actuation:main",
             "steering_actuation = vehicle_integration_py.steering_actuation:main",
+            "bs_actuation = vehicle_integration_py.bs_actuation:main",
+            "motor_relay = vehicle_integration_py.motor_relay:main",
+            "motor_relay_publisher = vehicle_integration_py.motor_relay_publisher:main",
         ],
     },
 )

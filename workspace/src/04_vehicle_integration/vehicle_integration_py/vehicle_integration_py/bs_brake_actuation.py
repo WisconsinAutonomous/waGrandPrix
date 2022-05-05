@@ -26,7 +26,9 @@ class BSBrakeActuation:
 
         self.parent = parent
 
-        self.logger = rclpy.logging.get_logger(self.get_name())
+        self.parent.get_logger().info("brake actuation init start")
+
+        # self.logger = rclpy.logging.get_logger(self.parent.get_name())
         
         # ------------
         # Parse params
@@ -51,7 +53,7 @@ class BSBrakeActuation:
         self.min = 0 # Min brake request percentage
 
         # remote brake control (RBC)
-        self.rbc_ID = int("CFF7DFE", 16) # "CFF7D8C" "CFF7DFE" "CFF7D0D"
+        self.rbc_ID = int("0CFF7DFE", 16) # "CFF7D8C" "CFF7DFE" "CFF7D0D"
         self.rbc_can_scale_factor = 1
 
         # create default value to begin with
@@ -63,15 +65,13 @@ class BSBrakeActuation:
         def thrd_rbc_fcn():
             last_time = time.time()
             while not self.parent.thrd_stop:
+                
                 curr_time = time.time()
                 # send message at 2000hz
-                sleep_time = 0.005 - (curr_time - last_time)
+                sleep_time = 0.5 - (curr_time - last_time)
                 if sleep_time > 0:
                     time.sleep(sleep_time)
-                self.parent.ch.write(self.rbc_MSG)
-
-                # Wait until the message is sent or at most 100 ms.
-                self.parent.ch.writeSync(timeout=100)
+                self.parent.can_write(self.rbc_MSG)
                 last_time = curr_time
 
         # self.rbc_TASK = self.bus.send_periodic(self.rbc_MSG, .01) # send message at 100hz
@@ -81,6 +81,9 @@ class BSBrakeActuation:
 
         # Set default position of the actuator
         self.set_braking_percentage(self.braking_to_percentage(0)) # Should check position of the actuator and set value that way
+
+        self.parent.get_logger().info("brake actuation init end")
+
 
 
     def brake_cmd_callback(self, msg):
