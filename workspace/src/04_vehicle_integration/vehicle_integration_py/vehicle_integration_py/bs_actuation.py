@@ -16,7 +16,7 @@ class BSActuation(Node):
         self.get_logger().info("Initializing CAN messaging ...")
         self.ch = canlib.openChannel(
             channel=0,
-            flags=canlib.Open.EXCLUSIVE | canlib.Open.REQUIRE_EXTENDED,
+            flags=canlib.Open.REQUIRE_EXTENDED,
             bitrate= canlib.Bitrate.BITRATE_250K,
         )
         # Set the CAN bus driver type to NORMAL.
@@ -31,6 +31,21 @@ class BSActuation(Node):
         # should after the initialization of self.ch and self.thrd_stop        
         self.brake_actuation = BSBrakeActuation(self)
         self.steering_actuation = BSSteeringActuation(self)
+
+        braking_timer = ROSTimer(100hz, braking_timer_callback)
+        steering_timer = ROSTimer(200hz, steering_timer_callback)
+
+        braking_subscriber = subscriber(braking_callback)
+
+    def braking_callback(msg):
+        self.braking = msg
+
+    def braking_timer_callback():
+        # 100hz
+        self.ch.write(self.braking)
+
+    def steering_timer_callback():
+        self.ch.write(self.steering)
 
     def can_write(self, msg):
         self.lock.acquire()

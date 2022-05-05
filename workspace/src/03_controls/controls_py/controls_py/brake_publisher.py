@@ -26,7 +26,7 @@ class BrakePublisher(Node):
         self.publisher_handles[self.brake_cmd_topic] = self.create_publisher(BrakingCommand, self.brake_cmd_topic, 1)
 
         # Timer to make sure we publish at a controlled rate
-        timer_period = 2  # seconds
+        timer_period = 0.01  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         # It is important that i is a float
         self.i = 0.0
@@ -37,9 +37,10 @@ class BrakePublisher(Node):
         msg.value = self.i
         self.publisher_handles[self.brake_cmd_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.brake_cmd_topic}")
-        self.i += 0.05
-        if self.i > 1:
-            self.i = -0.2
+        self.i = 0.8
+        #self.i += 0.001
+        #if self.i > 1:
+            #self.i = -0.2
 
 
 

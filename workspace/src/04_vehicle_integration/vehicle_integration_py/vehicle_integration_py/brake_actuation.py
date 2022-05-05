@@ -53,7 +53,7 @@ class BrakeActuation(Node):
         init_braking_percentage = self.braking_to_percentage(0)
         self.braking_percentage = self.braking_percentage_to_can(init_braking_percentage)
         # self.rbc_MSG = can.Message(arbitration_id=self.rbc_ID, data=[self.braking_percentage, 255, 255, 255, 255, 255, 255, 255], is_extended_id=True)
-        self.rbc_MSG = Frame(id_=self.rbc_ID, data=[self.braking_percentage, 255, 255, 255, 255, 255, 255, 255], dlc=8)
+        self.rbc_MSG = Frame(id_=self.rbc_ID, data=[self.braking_percentage, 255, 255, 255, 255, 255, 255, 255], dlc=8, flags=4)
 
         # can intialization
         self.get_logger().info("Initializing CAN messaging to iBooster...")
@@ -73,27 +73,18 @@ class BrakeActuation(Node):
 
         self.thrd_stop = False
 
-        def thrd_rbc_fcn():
-            last_time = time.time()
-            while not self.thrd_stop:
-                curr_time = time.time()
-                # send message at 2000hz
-                sleep_time = 0.005 - (curr_time - last_time)
-                if sleep_time > 0:
-                    time.sleep(sleep_time)
-                self.ch.write(self.rbc_MSG)
-
-                # Wait until the message is sent or at most 100 ms.
-                self.ch.writeSync(timeout=100)
-                last_time = curr_time
-
         # self.rbc_TASK = self.bus.send_periodic(self.rbc_MSG, .01) # send message at 100hz
-        self.thrd_rbc = threading.Thread(target=thrd_rbc_fcn)
-        self.thrd_rbc.start()
         self.get_logger().info("Ready for iBooster power on!")
 
         # Set default position of the actuator
         self.set_braking_percentage(self.braking_to_percentage(0)) # Should check position of the actuator and set value that way
+
+        hz100 = 1/100 # 100hz
+        self.timer100 = self.create_timer(hz100, self.timer100_callback)
+
+    def timer100_callback(self):
+        # Wait until the message is sent or at most 100 ms.
+        self.ch.writeWait(self.rbc_MSG, timeout=100)
 
 
     def brake_cmd_callback(self, msg):
@@ -110,7 +101,6 @@ class BrakeActuation(Node):
         # calculate new CAN formatted data
         braking_percentage = self.braking_to_percentage(braking)
         self.set_braking_percentage(braking_percentage)
-
 
 
     # ------------
@@ -131,7 +121,7 @@ class BrakeActuation(Node):
 
         # # update active message data
         # self.rbc_TASK.modify_data(new_MSG)
-        self.rbc_MSG = Frame(id_=self.rbc_ID, data=[self.braking_percentage, 255, 255, 255, 255, 255, 255, 255], dlc=8)
+        self.rbc_MSG = Frame(id_=self.rbc_ID, data=[self.braking_percentage, 255, 255, 255, 255, 255, 255, 255], dlc=8, flags=4)
 
     # ------------
     # Port from ROS1

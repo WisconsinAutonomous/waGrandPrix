@@ -42,7 +42,7 @@ class SteeringActuation(Node):
         # TO DO: need to modify to work with canlib
         self.ccvs_ID = int("18FEF127", 16)
         # self.ccvs_MSG = can.Message(arbitration_id=self.ccvs_ID, data=[255, 0, 0, 255, 255, 255, 255, 255], is_extended_id=True) # use fake data, only commanding steering position for now
-        self.ccvs_MSG = Frame(id_=self.ccvs_ID, data=[255, 0, 0, 255, 255, 255, 255, 255], dlc=8)
+        self.ccvs_MSG = Frame(id_=self.ccvs_ID, data=[255, 0, 0, 255, 255, 255, 255, 255], dlc=8, flags=4)
 
         # remote eps control (REC)
         self.rec_ID = int("18FF7325", 16)
@@ -53,13 +53,13 @@ class SteeringActuation(Node):
         init_angular_position = self.steering_to_angular_position(0)
         self.ang_WX_DATA, self.ang_YZ_DATA = self.angular_position_to_can(init_angular_position)
         # self.rec_MSG = can.Message(arbitration_id=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], is_extended_id=True)
-        self.rec_MSG = Frame(id_=self.rec_ID, data=[self.mode, 0, 255, 255, 0, 0, 0, 0], dlc=8)
+        self.rec_MSG = Frame(id_=self.rec_ID, data=[self.mode, 0, 255, 255, 0, 0, 0, 0], dlc=8, flags=4)
 
         # can intialization
         # TO DO: need to modify to work with canlib
         self.get_logger().info(f"Received Initializing CAN messaging to EPS... on topic {self.steering_cmd_topic}")
         self.ch = canlib.openChannel(
-            channel=0,
+            channel=1,
             flags=canlib.Open.REQUIRE_EXTENDED,
             bitrate= canlib.Bitrate.BITRATE_250K,
         )
@@ -82,10 +82,10 @@ class SteeringActuation(Node):
                 sleep_time = 0.2 - (curr_time - last_time)
                 if sleep_time > 0:
                     time.sleep(sleep_time)
-                self.ch.write(self.ccvs_MSG)
 
                 # Wait until the message is sent or at most 100 ms.
-                self.ch.writeSync(timeout=100)
+                self.ch.writeWait(self.ccvs_MSG, timeout=100)
+
                 last_time = curr_time
         
         def thrd_rec_fcn():
@@ -102,11 +102,16 @@ class SteeringActuation(Node):
                 self.ch.writeSync(timeout=100)
                 last_time = curr_time
 
-        self.thrd_ccvs = threading.Thread(target=thrd_ccvs_fcn)
-        self.thrd_rec = threading.Thread(target=thrd_rec_fcn)
-        self.thrd_ccvs.start()
-        self.thrd_rec.start()
+        #self.thrd_ccvs = threading.Thread(target=thrd_ccvs_fcn)
+        #self.thrd_rec = threading.Thread(target=thrd_rec_fcn)
+        #self.thrd_ccvs.start()
+        #self.thrd_rec.start()
 
+        hz5 = 1/5 # 5hz
+        self.timer5 = self.create_timer(hz5, self.timer5_callback)
+
+        hz1000 = 1/1000 # 1000hz
+        self.timer1000 = self.create_timer(hz1000, self.timer1000_callback)
 
 
         # self.ccvs_TASK = self.bus.send_periodic(self.ccvs_MSG, 0.2) # send message at 5hz
@@ -115,6 +120,12 @@ class SteeringActuation(Node):
 
         # Set default position of the actuator
         self.set_actuator_position(self.steering_to_angular_position(0)) # Should check position of the actuator and set value that way
+
+    def timer5_callback(self):
+        self.ch.writeWait(self.ccvs_MSG, timeout=100)
+
+    def timer1000_callback(self):
+        self.ch.writeWait(self.rec_MSG, timeout=100)
 
 
     def steering_cmd_callback(self, msg):
@@ -142,7 +153,7 @@ class SteeringActuation(Node):
         # create new message
         # TO DO: change this for message sending
         # new_MSG = can.Message(arbitration_id=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], is_extended_id=True)
-        self.rec_MSG = Frame(id_=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], dlc=8)
+        self.rec_MSG = Frame(id_=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], dlc=8, flags=4)
         # update active message data
         # self.rec_TASK.modify_data(new_MSG)
 
