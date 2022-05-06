@@ -23,6 +23,8 @@ def generate_launch_description():
         "mapped_track_topic", default_value=TextSubstitution(text="/perception/mapped_track/mapped")
     )
 
+    launch_description.add_action(mapped_track_topic_arg)
+
     # -----
     # Nodes
     # -----
