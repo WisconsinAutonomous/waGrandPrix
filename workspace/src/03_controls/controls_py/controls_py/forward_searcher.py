@@ -11,6 +11,7 @@ from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
 from wagrandprix_map_srvs.srv import SearchForward
+from wagrandprix_map_msgs.msg import Track
 
 
 class ForwardSearcher(Node):
@@ -35,7 +36,7 @@ class ForwardSearcher(Node):
 
         # Create subscriber handles
         self.subscriber_handles = {}
-        self.subscriber_handles[self.mapped_track_topic] = self.create_subscription(MappedTrack, self.mapped_track_topic, self.mapped_track_callback, 1)
+        self.subscriber_handles[self.mapped_track_topic] = self.create_subscription(Track, self.mapped_track_topic, self.mapped_track_callback, 1)
 
         # Create service handles
         self.service_handles = {}

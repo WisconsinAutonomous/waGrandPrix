@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>vehicle_integration_py</name>
+  <name>wagrandprix_utils</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="aarony3131@gmail.com">root</maintainer>
+  <maintainer email="wagrandprix@todo.todo">wagrandprix</maintainer>
   <license>TODO: License declaration</license>
-	<depend>can-utils</depend>
-	<exec_depend>wagrandprix_control_msgs</exec_depend>
+
+  <depend>rviz2</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
