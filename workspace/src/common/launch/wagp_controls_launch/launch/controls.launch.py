@@ -29,12 +29,10 @@ def generate_launch_description():
         "control_algorithm", default_value=TextSubstitution(text="StanleyController")
     )
 
-
-
-
     # mapped_track_topic_arg = DeclareLaunchArgument(
     #     "mapped_track_topic", default_value=TextSubstitution(text="/perception/mapped_track/mapped")
     # )
+    # launch_description.add_action(mapped_track_topic_arg)
 
     # -----
     # Nodes
