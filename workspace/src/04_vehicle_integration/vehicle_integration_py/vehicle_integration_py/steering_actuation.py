@@ -72,35 +72,35 @@ class SteeringActuation(Node):
         # self.channel = 'can0'
         # self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
 
-        self.thrd_stop = False
+        # self.thrd_stop = False
 
-        def thrd_ccvs_fcn():
-            last_time = time.time()
-            while not self.thrd_stop:
-                curr_time = time.time()
-                # send message at 5hz
-                sleep_time = 0.2 - (curr_time - last_time)
-                if sleep_time > 0:
-                    time.sleep(sleep_time)
+        # def thrd_ccvs_fcn():
+        #     last_time = time.time()
+        #     while not self.thrd_stop:
+        #         curr_time = time.time()
+        #         # send message at 5hz
+        #         sleep_time = 0.2 - (curr_time - last_time)
+        #         if sleep_time > 0:
+        #             time.sleep(sleep_time)
 
-                # Wait until the message is sent or at most 100 ms.
-                self.ch.writeWait(self.ccvs_MSG, timeout=100)
+        #         # Wait until the message is sent or at most 100 ms.
+        #         self.ch.writeWait(self.ccvs_MSG, timeout=10000)
 
-                last_time = curr_time
+        #         last_time = curr_time
         
-        def thrd_rec_fcn():
-            last_time = time.time()
-            while not self.thrd_stop:
-                curr_time = time.time()
-                # send message at 1000hz
-                sleep_time = 0.001 - (curr_time - last_time)
-                if sleep_time > 0:
-                    time.sleep(sleep_time)
-                self.ch.write(self.rec_MSG)
+        # def thrd_rec_fcn():
+        #     last_time = time.time()
+        #     while not self.thrd_stop:
+        #         curr_time = time.time()
+        #         # send message at 1000hz
+        #         sleep_time = 0.001 - (curr_time - last_time)
+        #         if sleep_time > 0:
+        #             time.sleep(sleep_time)
+        #         self.ch.write(self.rec_MSG)
 
-                # Wait until the message is sent or at most 100 ms.
-                self.ch.writeSync(timeout=100)
-                last_time = curr_time
+        #         # Wait until the message is sent or at most 100 ms.
+        #         self.ch.writeSync(timeout=10000)
+        #         last_time = curr_time
 
         #self.thrd_ccvs = threading.Thread(target=thrd_ccvs_fcn)
         #self.thrd_rec = threading.Thread(target=thrd_rec_fcn)
@@ -122,10 +122,10 @@ class SteeringActuation(Node):
         self.set_actuator_position(self.steering_to_angular_position(0)) # Should check position of the actuator and set value that way
 
     def timer5_callback(self):
-        self.ch.writeWait(self.ccvs_MSG, timeout=100)
+        self.ch.writeWait(self.ccvs_MSG, timeout=10000)
 
     def timer1000_callback(self):
-        self.ch.writeWait(self.rec_MSG, timeout=100)
+        self.ch.writeWait(self.rec_MSG, timeout=10000)
 
 
     def steering_cmd_callback(self, msg):

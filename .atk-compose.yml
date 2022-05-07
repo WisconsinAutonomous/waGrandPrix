@@ -17,6 +17,13 @@ services:
       dockerfile: ./containers/dev/dev.dockerfile
       network: host
     container_name: wagrandprix-dev
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - capabilities:
+            - gpu
+            driver: nvidia
     environment:
       DISPLAY: vnc:0.0
       NVIDIA_DRIVER_CAPABILITIES: all
