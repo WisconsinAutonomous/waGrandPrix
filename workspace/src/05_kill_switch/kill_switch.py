@@ -1,5 +1,5 @@
 # General ROS imports
-from pickle import FALSE
+from pickle import FALSE, TRUE
 import rclpy
 from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
@@ -11,14 +11,14 @@ class KILL_PUBLISHER(Node):
     def __init__(self):
         super().__init__('kill_publisher')
         self.publisher_ = self.create_publisher(bool, 'kill', 10)
-        timer_period = 0.1  # seconds
-        self.timer = self.create_timer(timer_period, self.timer_callback)
+        while TRUE:
+            
 
-    def timer_callback(self):
+    def publish(self):
         msg = bool()
         msg.data = FALSE
         self.publisher_.publish(msg)
-        self.get_logger().info('Publishing: "%b"' % msg.data)
+        self.get_logger().info('Publishing kill: "%b"' % msg.data)
 
 
 def main(args=None):
