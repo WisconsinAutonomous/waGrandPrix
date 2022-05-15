@@ -6,7 +6,7 @@ __email__ = "freiremelgiz@wisc.edu"
 
 from launch_ros.substitutions import FindPackageShare
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
@@ -68,6 +68,17 @@ def generate_launch_description():
                     FindPackageShare('wagp_controls_launch'),
                     'launch',
                     'controls.launch.py'
+                ])
+            ])
+        ),
+
+        # bag record
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([
+                PathJoinSubstitution([
+                    FindPackageShare('wagp_launch'),
+                    'launch',
+                    'wagp_bag_record.launch.py'
                 ])
             ])
         )
