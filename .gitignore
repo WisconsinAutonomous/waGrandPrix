@@ -6,3 +6,4 @@ __pycache__/
 .atk-compose.yml
 .atk.user_count
 .dockerignore
+rosbag2*

@@ -17,7 +17,7 @@ group.add_argument("-mb", action="store_true", help="Communicate Matplotlib visu
 
 args = parser.parse_args()
 
-wa.set_wa_data_directory(f"{Path(__file__).parent / 'data'}/")
+wa.set_wa_data_directory(f"{Path(__file__).parent / 'wa_simulator_data'}/")
 
 def main():
     # ---------------

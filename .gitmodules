@@ -16,3 +16,6 @@
 [submodule "workspace/src/external/darknet"]
 	path = workspace/src/external/darknet
 	url = https://github.com/AlexeyAB/darknet.git
+[submodule "sim/wasim/wa_simulator_data"]
+	path = sim/wasim/wa_simulator_data
+	url = git@github.com:WisconsinAutonomous/wa_simulator_data.git
