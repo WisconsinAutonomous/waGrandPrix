@@ -118,7 +118,7 @@ class ControllerNode(Node):
 
         # # Subs and Pubs   -----------   Replace with right ones -- done??
         # self.sub_state = self.create_subscription(VehicleState, "/localization/state", self._save_state, 1) #need another one
-        # self.sub_state = self.create_subscription(Point, "/control/planning", self._save_target, 1)
+        # self.sub_point = self.create_subscription(Point, "/control/planning", self._save_target, 1)
         # # self.pub_cmd = self.create_publisher(VehicleCommand,'/control/input',1)
         # self.pub_steering = self.create_publisher(SteeringCommand,'/control/steering',1)
         # self.pub_braking = self.create_publisher(BrakingCommand,'/control/braking',1)

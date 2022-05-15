@@ -82,7 +82,10 @@ def main():
     bridge.add_sender("gps", gps)
     bridge.add_sender("imu", imu)
     bridge.add_sender("track", track, vehicle=vehicle, fov=30, detection_range=100)
+    
     bridge.add_receiver("vehicle_inputs", vehicle_inputs)
+
+    
 
     if args.mb:
         bridge.add_sender("visualization", bridge_visualization)
