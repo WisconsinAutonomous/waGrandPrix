@@ -13,3 +13,15 @@
 [submodule "workspace/src/external/rosboard"]
 	path = workspace/src/external/rosboard
 	url = git@github.com:WisconsinAutonomous/rosboard.git
+[submodule "darknet"]
+	path = workspace/src/external/darknet
+	url = git@github.com:AlexeyAB/darknet.git
+[submodule "workspace/src/darknet"]
+	path = workspace/src/darknet
+	url = https://github.com/AlexeyAB/darknet.git
+[submodule "workspace/src/external/darknet"]
+	path = workspace/src/external/darknet
+	url = https://github.com/AlexeyAB/darknet.git
+[submodule "sim/wasim/wa_simulator_data"]
+	path = sim/wasim/wa_simulator_data
+	url = git@github.com:WisconsinAutonomous/wa_simulator_data.git
