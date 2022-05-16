@@ -10,7 +10,7 @@ import time
 
 class Kill_Switch_Publisher(Node):
 
-    class BrakingData:
+    class BrakingData(Kill_Switch_Publisher):
         def __init__(self):
             self.last_brake = time.time() # time last message was received
         
@@ -18,9 +18,11 @@ class Kill_Switch_Publisher(Node):
             self.latest_brake = time.time() # time received of current message
             if self.last_brake - self.latest_brake > .2: # if time between messages is greater than .2 seconds, kill
                 super.kill_value = -2.0
+            else:
+                super.kill_value = 0.0
             self.last_brake = self.latest_brake
 
-    class SteeringData:
+    class SteeringData(Kill_Switch_Publisher):
         def __init__(self):
             self.last_steer = time.time() # time last message was received
         
@@ -28,9 +30,11 @@ class Kill_Switch_Publisher(Node):
             self.latest_steer = time.time() # time received of current message
             if self.last_steer - self.latest_steer > .2: # if time between messages is greater than .2 seconds, kill
                 super.kill_value = -2.0
+            else:
+                super.kill_value = 0.0
             self.last_steer = self.latest_steer
 
-    class ThrottleData:
+    class ThrottleData(Kill_Switch_Publisher):
         def __init__(self):
             self.last_throttle = time.time() # time last message was received
         
@@ -38,6 +42,8 @@ class Kill_Switch_Publisher(Node):
             self.latest_throttle = time.time() # time received of current message
             if self.last_throttle - self.latest_throttle > .2: # if time between messages is greater than .2 seconds, kill
                 super.kill_value = -2.0
+            else:
+                super.kill_value = 0.0
             self.last_throttle = self.latest_throttle
 
     def __init__(self):
@@ -49,6 +55,7 @@ class Kill_Switch_Publisher(Node):
         self.steering = self.SteeringData()
         self.throttle = self.ThrottleData()
 
+        self.kill_value = 2.0 # initialized to 2.0 for restart
 
         # ------------
         # Parse params
@@ -77,6 +84,17 @@ class Kill_Switch_Publisher(Node):
         self.publisher_handles = {}
         self.publisher_handles[self.motor_relay_topic] = self.create_publisher(MotorPower, self.motor_relay_topic, 1)
         self.publisher_handles[self.actuator_relay_topic] = self.create_publisher(ActuatorPower, self.actuator_relay_topic, 1)
+        self.publisher_handles[self.e_brake_topic] = self.create_publisher(BrakingCommand, self.e_brake_topic, 1)
+
+        msg = MotorPower() # initialize motor
+        msg.value = 2.0
+        self.publisher_handles[self.motor_relay_topic].publish(msg)
+        self.get_logger().info(f"Sent {msg} on topic {self.motor_relay_topic}")
+
+        msg2 = ActuatorPower() # initialize actuator
+        msg2.value = 2.0
+        self.publisher_handles[self.motor_relay_topic].publish(msg2)
+        self.get_logger().info(f"Sent {msg2} on topic {self.actuator_relay_topic}")
 
         # Create Subscriber handles
         self.subscriber_handles = {}
@@ -87,7 +105,6 @@ class Kill_Switch_Publisher(Node):
         # Timer to make sure we publish at a controlled rate
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.kill_value = 2.0 # initialized to 2.0 for restart
 
 
     def timer_callback(self):
@@ -95,7 +112,7 @@ class Kill_Switch_Publisher(Node):
         # if statement here that parses topics for errors
         # error found: self.i = -2.0
         # nothing found: self.i = 0.0
-        msg.value = kill_value
+        msg.value = super.kill_value
         self.publisher_handles[self.motor_relay_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.motor_relay_topic}")
 
@@ -103,19 +120,16 @@ class Kill_Switch_Publisher(Node):
         # if statement here that parses topics for errors
         # error found: self.i = -2.0
         # nothing found: self.i = 0.0
-        if kill_value != -2.0:
-            msg2.value = kill_value 
-        else:
-            msg2.value = 0.0 # never publish -2.0 (error) on actuator topic
+        msg2.value = 0.0 # never publish -2.0 (error) on actuator topic
         self.publisher_handles[self.actuator_relay_topic].publish(msg2)
         self.get_logger().info(f"Sent {msg2} on topic {self.actuator_relay_topic}")
 
-        msg3 = e_Brake() # need to create and import this message type
+        msg3 = BrakingCommand()
         # if something goes wrong, publish .6
-        if kill_value == -2.0:
-            msg3.value = .6 # apply e brakes if error is found
+        if super.kill_value == -2.0:
+            msg3.value = .6 # apply e_brakes if error is found
         else:
-            msg3.value = 0.0
+            return # do not publish anything to brakes if nothing is wrong
         self.publisher_handles[self.e_brake_topic].publish(msg3)
         self.get_logger().info(f"Sent {msg3} on topic {self.e_brake_topic}")
 
