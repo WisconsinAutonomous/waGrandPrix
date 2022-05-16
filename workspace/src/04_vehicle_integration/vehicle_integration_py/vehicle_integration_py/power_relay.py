@@ -47,15 +47,17 @@ class PowerRelay(Node):
         def __init__(self):
             self.relay_off = False
             self.relay_restart = False
-            self.msg_received = False
+            self.braking_on = False
+            self.steering_on = False
         
         def subscriber_callback(self, msg):
             if msg is not None:
-                self.msg_received = True
-                if msg.value > 1.0:
-                    self.relay_restart = True
-                elif msg.value < -1.0:
-                    self.relay_off = True
+                if msg.value > 0:
+                    self.steering_on = True
+                elif msg.value < 0:
+                    self.braking_on = True
+            if self.steering_on and self.braking_on:
+                self.relay_restart = True
         
         def timer_callback(self, ser):
             if self.relay_restart:
@@ -64,7 +66,7 @@ class PowerRelay(Node):
                 self.relay_off = False
             elif self.relay_off:
                 ser.write(self.ERROR)
-            elif self.msg_received:
+            else:
                 self.msg_received = False
                 ser.write(self.GUARD)
 

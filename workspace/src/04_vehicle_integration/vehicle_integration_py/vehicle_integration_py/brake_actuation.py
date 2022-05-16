@@ -5,6 +5,7 @@ from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
 from wagrandprix_control_msgs.msg import BrakingCommand
+from wagrandprix_vehicle_msgs.msg import ActuatorPower
 
 # ------------
 # Port from ROS1
@@ -30,6 +31,10 @@ class BrakeActuation(Node):
         self.declare_parameter("brake_cmd_topic", "/control/braking", brake_cmd_descriptor)
         self.brake_cmd_topic = self.get_parameter("brake_cmd_topic").value
 
+        actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the actuator relay msg will be shipped on.")
+        self.declare_parameter("actuator_relay_topic", "/control/actuator_relay", actuator_relay_descriptor)
+        self.actuator_relay_topic = self.get_parameter("actuator_relay_topic").value
+
         # ------------
         # ROS Entities
         # ------------
@@ -37,6 +42,8 @@ class BrakeActuation(Node):
         # Create subscriber handles
         self.subscriber_handles = {}
         self.subscriber_handles[self.brake_cmd_topic] = self.create_subscription(BrakingCommand, self.brake_cmd_topic, self.brake_cmd_callback, 1)
+        self.publisher_handles = {}
+        self.publisher_handles[self.actuator_relay_topic] = self.create_publisher(ActuatorPower, self.actuator_relay_topic, 1)
 
         # ------------
         # Port from ROS1
@@ -81,6 +88,10 @@ class BrakeActuation(Node):
 
         hz100 = 1/100 # 100hz
         self.timer100 = self.create_timer(hz100, self.timer100_callback)
+
+        msg = ActuatorPower()
+        msg.value = -1.0 # < 0 for braking
+        self.publisher_handles[self.actuator_relay_topic].publish(msg)
 
     def timer100_callback(self):
         # Wait until the message is sent or at most 100 ms.
