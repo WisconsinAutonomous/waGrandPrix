@@ -56,8 +56,11 @@ setup(
         "console_scripts": [
             "forward_searcher = controls_py.forward_searcher:main",
             "trajectory_tracker = controls_py.trajectory_tracker:main",
+            "speed_encoder_subscriber = controls_py.speed_encoder_subscriber:main",
             "planning_node = controls_py.planning_node:main",
             "controller_node = controls_py.controller_node:main",
+            "steering_publisher = controls_py.steering_publisher:main",
+            "brake_publisher = controls_py.brake_publisher:main",
         ],
     },
 )

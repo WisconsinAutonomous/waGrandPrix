@@ -14,6 +14,7 @@ from geometry_msgs.msg import Point
 from wagrandprix_vehicle_msgs.msg import VehicleState
 from wagrandprix_control_msgs.msg import VehicleCommand, SteeringCommand, BrakingCommand, ThrottleCommand
 from controls_py.StanleyController import StanleyController
+from controls_py.pid import PIDController
 import wa_simulator as wa
 
 
@@ -99,7 +100,7 @@ class ControllerNode(Node):
         self.vehicle_command = VehicleCommand()
 
         # Send cmd at 100 Hz
-        self.step = 0.01  # just for reference for now
+        self.step = 0.01
         self.received_VehicleState = False
         self.received_VehicleTarget = False
         self.timer = self.create_timer(0.5, self.send_control)
@@ -145,26 +146,24 @@ class ControllerNode(Node):
 
     # Callback to store state data from estimator
     def _save_state(self, msg):
+        self.get_logger().info('received state')
         self.received_VehicleState = True
         self.controller.VehicleState = msg
     
     def _save_target(self, msg):
+        self.get_logger().info('received target')
         self.received_VehicleTarget = True
         self.controller.target_point = msg.x, msg.y, msg.z
 
 
     # Send appropriate control signal to input topic
     def send_control(self):
-        self.controller.VehicleState = ( ((0,0,0),(0,0,0,0)) , ((0,0,0),(0,0,0)) , ((0,0,0),(0,0,0)) ) 
-        self.received_VehicleTarget = True
-        if self.received_VehicleTarget:
+        if self.received_VehicleTarget and self.received_VehicleState:
 
             self.controller.advance(self.step)
-            self.get_logger().info('Publishing vehicle command')
-            print(self.controller.steering)
-            self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, self.controller.throttle, self.controller.braking
-            # self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.fakeValues[self.idx][0], self.fakeValues[self.idx][1], self.fakeValues[self.idx][2]
-            # self.idx += 1
+            # self.get_logger().info('Publishing vehicle command')
+            self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, min(0.5, self.controller.throttle), self.controller.braking
+            
             self.pub_steering.publish(self.vehicle_command.steering)
             self.pub_throttle.publish(self.vehicle_command.throttle)
             self.pub_braking.publish(self.vehicle_command.braking)

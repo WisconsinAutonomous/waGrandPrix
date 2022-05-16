@@ -1,0 +1,64 @@
+"""
+This is the launch file for the controls_py package
+
+It will create and start all the nodes specific to controls
+"""
+
+import rclpy
+
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration, TextSubstitution
+from launch_ros.actions import Node
+
+logger = rclpy.logging.get_logger('logger')
+
+def generate_launch_description():
+    launch_description = LaunchDescription()
+
+    # ----------------
+    # Launch Arguments
+    # ----------------
+    # mapped_track_topic_arg = DeclareLaunchArgument(
+    #     "mapped_track_topic", default_value=TextSubstitution(text="/perception/mapped_track/mapped")
+    # )
+
+    # -----
+    # Nodes
+    # -----
+
+    brake_actuation = Node(
+        package='vehicle_integration_py',
+        namespace='vehicle_integration',
+        executable='brake_actuation',
+        name='brake_actuation',
+        parameters=[{
+        }],
+        output="screen",
+    )
+
+    steering_actuation = Node(
+        package='vehicle_integration_py',
+        namespace='vehicle_integration',
+        executable='steering_actuation',
+        name='steering_actuation',
+        parameters=[{
+        }],
+        output="screen",
+    )
+
+    throttle_actuation = Node(
+        package='vehicle_integration_py',
+        namespace='vehicle_integration',
+        executable='throttle_actuation',
+        name='throttle_actuation',
+        parameters=[{
+        }],
+        output="screen",
+    )
+
+    launch_description.add_action(brake_actuation)
+    launch_description.add_action(steering_actuation)
+    launch_description.add_action(throttle_actuation)
+
+    return launch_description

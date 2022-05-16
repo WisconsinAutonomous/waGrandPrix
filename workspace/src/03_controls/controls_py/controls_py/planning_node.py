@@ -20,6 +20,7 @@ The trajectory will be published in state-space
 """
 
 import rclpy
+from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 from rclpy.parameter import Parameter
 from rclpy.node import Node
 from controls_py.CenterlinePlanner import CenterlinePlanner
@@ -33,14 +34,18 @@ from geometry_msgs.msg import Point
 class PlanningNode(Node):
     def __init__(self):
         super().__init__('planning_node')
-
+        
+        self.logger = rclpy.logging.get_logger(self.get_name())
         # ------------
         # Parse params
         # ------------
-        waypoint_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that waypoint will be shipped on.")
-        self.declare_parameter("waypoint", "/control/planning", SteeringCommand_descriptor)
-        self.target_point_topic = self.get_parameter("waypoint").value
+        vehicle_state_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that provides vehicle state information")
+        self.declare_parameter("vehicle_state_topic", "/localization/vehicle/state", vehicle_state_topic_descriptor)
+        self.vehicle_state_topic = self.get_parameter("vehicle_state_topic").value
 
+        mapped_track_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that provides track information")
+        self.declare_parameter("mapped_track_topic", "/localization/track/mapped", mapped_track_topic_descriptor)
+        self.mapped_track_topic = self.get_parameter("mapped_track_topic").value
         # ------------
         # ROS Entities
         # ------------
@@ -48,15 +53,13 @@ class PlanningNode(Node):
         # Create publisher handles
         self.publisher_handles = {}
 
-        self.publisher_handles["/control/planning"] = self.create_publisher(Point, '/control/planning', 1)
+        self.publisher_handles["planning"] = self.create_publisher(Point, 'planning', 1)
 
         # Create subcriber handles
         self.subscriber_handles = {}
-        
 
-
-
-
+        self.subscriber_handles[self.mapped_track_topic] = self.create_subscription(WATrack, self.mapped_track_topic, self._receive_track, 1)
+        self.subscriber_handles[self.vehicle_state_topic] = self.create_subscription(VehicleState, self.vehicle_state_topic, self._receive_state, 1)
 
         # makes it so that nodes with timers use simulation time published in /clock instead of the cpu wall clock
         # sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
@@ -65,15 +68,9 @@ class PlanningNode(Node):
         # Create persistent path msg
         self.msg_waypoint = Point()
 
-        # Create publisher and subscribers
-        # self.pub_waypoint = self.create_publisher(Point, '/control/planning', 1)
-        self.sub_track = self.create_subscription(WATrack, '/track/visible', self._receive_track, 1)
-        # self.sub_state = self.create_subscription(VehicleState, '/localization/state', self._receive_state, 1)
-
         # Create Centerline Planner class
         self.cp = CenterlinePlanner()
 
-        self.timer = self.create_timer(0.5, self.send_waypoint)    
         self.received_track = False
         self.received_state = False
 
@@ -87,19 +84,22 @@ class PlanningNode(Node):
         self.cp.track_right = []
         for point in msg.right_visible_points:
             self.cp.track_right.append([point.x, point.y, point.z])
+        self.send_waypoint()
 
     # Recieve vehicle state
     def _receive_state(self ,msg):
         self.received_state = True
-        self.cp.pos = msg.position
+        self.cp.pos = msg.pose.position
+        self.send_waypoint()
 
     # Publish waypoint to follow
     def send_waypoint(self):
-        if self.received_track:
+        if self.received_track and self.received_state:
             waypoint = self.cp.get_waypoint()
-            self.msg_waypoint.x, self.msg_waypoint.y, self.msg_waypoint.z = waypoint
-            self.pub_waypoint.publish(self.msg_waypoint)
-            self.get_logger().info('Publishing waypoint')
+            if waypoint != None:
+                self.msg_waypoint.x, self.msg_waypoint.y, self.msg_waypoint.z = waypoint
+                self.publisher_handles["planning"].publish(self.msg_waypoint)
+            self.logger.info('Publishing waypoint')
 
 
 # Entry point

@@ -276,7 +276,6 @@ class StanleyLateralController():
         steering = np.clip(steering, -.436, .436)
 
         # Scale the steering value to -1.0 and 1.0 for steering value bounds
-        print(steering)
         self.steering = steering / 0.436
 
 
