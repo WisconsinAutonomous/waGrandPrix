@@ -27,8 +27,8 @@ class SteeringActuation(Node):
         self.steering_cmd_topic = self.get_parameter("steering_cmd_topic").value
 
         actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the actuator relay msg will be shipped on.")
-        self.declare_parameter("actuator_relay_topic", "/control/actuator_relay", actuator_relay_descriptor)
-        self.actuator_relay_topic = self.get_parameter("actuator_relay_topic").value
+        self.declare_parameter("steering_actuator_relay_topic", "/control/steering_actuator_relay", actuator_relay_descriptor)
+        self.actuator_relay_topic = self.get_parameter("steering_actuator_relay").value
 
         # ------------
         # ROS Entities
@@ -85,7 +85,7 @@ class SteeringActuation(Node):
         self.set_actuator_position(self.steering_to_angular_position(0)) # Should check position of the actuator and set value that way
 
         msg = ActuatorPower()
-        msg.value = +1.0 # > 0 for steering
+        msg.value = +1.0 # > 0 for on 
         self.publisher_handles[self.actuator_relay_topic].publish(msg)
 
     def timer5_callback(self):

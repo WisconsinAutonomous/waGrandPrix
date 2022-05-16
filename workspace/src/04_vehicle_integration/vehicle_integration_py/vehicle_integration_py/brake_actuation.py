@@ -32,8 +32,8 @@ class BrakeActuation(Node):
         self.brake_cmd_topic = self.get_parameter("brake_cmd_topic").value
 
         actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the actuator relay msg will be shipped on.")
-        self.declare_parameter("actuator_relay_topic", "/control/actuator_relay", actuator_relay_descriptor)
-        self.actuator_relay_topic = self.get_parameter("actuator_relay_topic").value
+        self.declare_parameter("brake_actuator_relay_topic", "/control/brake_actuator_relay", actuator_relay_descriptor)
+        self.actuator_relay_topic = self.get_parameter("brake_actuator_relay").value
 
         # ------------
         # ROS Entities
@@ -90,7 +90,7 @@ class BrakeActuation(Node):
         self.timer100 = self.create_timer(hz100, self.timer100_callback)
 
         msg = ActuatorPower()
-        msg.value = -1.0 # < 0 for braking
+        msg.value = +1.0 # > 0 for on
         self.publisher_handles[self.actuator_relay_topic].publish(msg)
 
     def timer100_callback(self):

@@ -50,12 +50,17 @@ class PowerRelay(Node):
             self.braking_on = False
             self.steering_on = False
         
-        def subscriber_callback(self, msg):
+        def subscriber_callback_brake(self, msg):
+            if msg is not None:
+                if msg.value > 0:
+                    self.brake_on = True
+            if self.steering_on and self.braking_on:
+                self.relay_restart = True
+
+        def subscriber_callback_steering(self, msg):
             if msg is not None:
                 if msg.value > 0:
                     self.steering_on = True
-                elif msg.value < 0:
-                    self.braking_on = True
             if self.steering_on and self.braking_on:
                 self.relay_restart = True
         
@@ -81,13 +86,18 @@ class PowerRelay(Node):
         self.declare_parameter("motor_relay_topic", "/control/motor_relay", motor_relay_descriptor)
         self.motor_relay_topic = self.get_parameter("motor_relay_topic").value
 
-        actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the actuator relay msg will be shipped on.")
-        self.declare_parameter("actuator_relay_topic", "/control/actuator_relay", motor_relay_descriptor)
-        self.actuator_relay_topic = self.get_parameter("actuator_relay_topic").value
+        brake_actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the brake actuator relay msg will be shipped on.")
+        self.declare_parameter("brake_actuator_relay_topic", "/control/brake_actuator_relay", brake_actuator_relay_descriptor)
+        self.brake_actuator_relay_topic = self.get_parameter("brake_actuator_relay").value
+
+        steering_actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the steering actuator relay msg will be shipped on.")
+        self.declare_parameter("steering_actuator_relay_topic", "/control/actuator_relay", steering_actuator_relay_descriptor)
+        self.steering_actuator_relay_topic = self.get_parameter("steering_actuator_relay_topic").value
 
         self.subscriber_handles = {}
         self.subscriber_handles[self.motor_relay_topic] = self.create_subscription(MotorPower, self.motor_relay_topic, self.motor_relay.subscriber_callback, 1)
-        self.subscriber_handles[self.actuator_relay_topic] = self.create_subscription(ActuatorPower, self.actuator_relay_topic, self.actuator_relay.subscriber_callback, 1)
+        self.subscriber_handles[self.brake_actuator_relay_topic] = self.create_subscription(ActuatorPower, self.brake_actuator_relay_topic, self.actuator_relay.subscriber_callback_brake, 1)
+        self.subscriber_handles[self.steering_actuator_relay_topic] = self.create_subscription(ActuatorPower, self.steering_actuator_relay_topic, self.actuator_relay.subscriber_callback_steering, 1)
 
         self.ser = serial.Serial(port, baudrate=115200, timeout=1000)
         self.relay_off = False
