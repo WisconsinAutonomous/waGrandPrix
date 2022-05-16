@@ -4,47 +4,41 @@ from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
 from wagrandprix_vehicle_msgs.msg import MotorPower, ActuatorPower
+from wagrandprix_control_msgs.msg import SteeringCommand, ThrottleCommand, BrakingCommand
 
 import time
 
-
 class Kill_Switch_Publisher(Node):
-
-    global kill_value # This will be used to monitor all processes. 0.0 means good, -2.0 means bad
-    kill_value = 0.0
 
     class BrakingData:
         def __init__(self):
-            self.last = time.time() # time last message was received
-            self.received = NULL # time received of current message
+            self.last_brake = time.time() # time last message was received
         
         def subscriber_callback(self, msg):
-            second = time.time()
-            if self.last - self.received > .2: # if time between messages is greater than .2 seconds, kill
-                kill_value = -2.0
-            self.last = self.received
+            self.latest_brake = time.time() # time received of current message
+            if self.last_brake - self.latest_brake > .2: # if time between messages is greater than .2 seconds, kill
+                super.kill_value = -2.0
+            self.last_brake = self.latest_brake
 
     class SteeringData:
         def __init__(self):
-            self.last = time.time() # time last message was received
-            self.received = NULL # time received of current message
+            self.last_steer = time.time() # time last message was received
         
         def subscriber_callback(self, msg):
-            second = time.time()
-            if self.last - self.received > .2: # if time between messages is greater than .2 seconds, kill
-                kill_value = -2.0
-            self.last = self.received
+            self.latest_steer = time.time() # time received of current message
+            if self.last_steer - self.latest_steer > .2: # if time between messages is greater than .2 seconds, kill
+                super.kill_value = -2.0
+            self.last_steer = self.latest_steer
 
     class ThrottleData:
         def __init__(self):
-            self.last = time.time() # time last message was received
-            self.received = NULL # time received of current message
+            self.last_throttle = time.time() # time last message was received
         
         def subscriber_callback(self, msg):
-            second = time.time()
-            if self.last - self.received > .2: # if time between messages is greater than .2 seconds, kill
-                kill_value = -2.0
-            self.last = self.received
+            self.latest_throttle = time.time() # time received of current message
+            if self.last_throttle - self.latest_throttle > .2: # if time between messages is greater than .2 seconds, kill
+                super.kill_value = -2.0
+            self.last_throttle = self.latest_throttle
 
     def __init__(self):
         super().__init__('kill_switch_publisher')
@@ -52,7 +46,8 @@ class Kill_Switch_Publisher(Node):
         self.logger = rclpy.logging.get_logger(self.get_name())
 
         self.braking = self.BrakingData()
-        self.actuator_relay = self.ActuationRelayData()
+        self.steering = self.SteeringData()
+        self.throttle = self.ThrottleData()
 
 
         # ------------
@@ -85,13 +80,14 @@ class Kill_Switch_Publisher(Node):
 
         # Create Subscriber handles
         self.subscriber_handles = {}
-        self.subscriber_handles[self.motor_relay_topic] = self.create_subscription(MotorPower, self.motor_relay_topic, self.motor_relay.subscriber_callback, 1)
-        self.subscriber_handles[self.actuator_relay_topic] = self.create_subscription(ActuatorPower, self.actuator_relay_topic, self.actuator_relay.subscriber_callback, 1)
+        self.subscriber_handles[self.braking_topic] = self.create_subscription(BrakingCommand, self.braking_topic, self.braking.subscriber_callback, 1)
+        self.subscriber_handles[self.steering_topic] = self.create_subscription(SteeringCommand, self.steering_topic, self.steering.subscriber_callback, 1)
+        self.subscriber_handles[self.throttle_topic] = self.create_subscription(ThrottleCommand, self.throttle_topic, self.throttle.subscriber_callback, 1)
 
         # Timer to make sure we publish at a controlled rate
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
-        kill_value = 2.0
+        self.kill_value = 2.0 # initialized to 2.0 for restart
 
 
     def timer_callback(self):
@@ -122,10 +118,6 @@ class Kill_Switch_Publisher(Node):
             msg3.value = 0.0
         self.publisher_handles[self.e_brake_topic].publish(msg3)
         self.get_logger().info(f"Sent {msg3} on topic {self.e_brake_topic}")
-
-
-
-
 
 
 def main(args=None):
