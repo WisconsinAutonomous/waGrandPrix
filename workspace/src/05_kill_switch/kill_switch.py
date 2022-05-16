@@ -91,10 +91,10 @@ class Kill_Switch_Publisher(Node):
         self.publisher_handles[self.motor_relay_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.motor_relay_topic}")
 
-        msg2 = ActuatorPower() # initialize actuator
-        msg2.value = 2.0
-        self.publisher_handles[self.motor_relay_topic].publish(msg2)
-        self.get_logger().info(f"Sent {msg2} on topic {self.actuator_relay_topic}")
+        # msg2 = ActuatorPower() # initialize actuator
+        # msg2.value = 2.0
+        # self.publisher_handles[self.motor_relay_topic].publish(msg2)
+        # self.get_logger().info(f"Sent {msg2} on topic {self.actuator_relay_topic}")
 
         # Create Subscriber handles
         self.subscriber_handles = {}
@@ -116,13 +116,13 @@ class Kill_Switch_Publisher(Node):
         self.publisher_handles[self.motor_relay_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.motor_relay_topic}")
 
-        msg2 = ActuatorPower()
+        # msg2 = ActuatorPower()
         # if statement here that parses topics for errors
         # error found: self.i = -2.0
         # nothing found: self.i = 0.0
-        msg2.value = 0.0 # never publish -2.0 (error) on actuator topic
-        self.publisher_handles[self.actuator_relay_topic].publish(msg2)
-        self.get_logger().info(f"Sent {msg2} on topic {self.actuator_relay_topic}")
+        # msg2.value = 0.0 # never publish -2.0 (error) on actuator topic
+        # self.publisher_handles[self.actuator_relay_topic].publish(msg2)
+        # self.get_logger().info(f"Sent {msg2} on topic {self.actuator_relay_topic}")
 
         msg3 = BrakingCommand()
         # if something goes wrong, publish .6
