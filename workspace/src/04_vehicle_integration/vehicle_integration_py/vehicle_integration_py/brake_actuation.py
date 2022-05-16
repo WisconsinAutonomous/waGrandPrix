@@ -33,7 +33,7 @@ class BrakeActuation(Node):
 
         actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the actuator relay msg will be shipped on.")
         self.declare_parameter("brake_actuator_relay_topic", "/control/brake_actuator_relay", actuator_relay_descriptor)
-        self.actuator_relay_topic = self.get_parameter("brake_actuator_relay").value
+        self.actuator_relay_topic = self.get_parameter("brake_actuator_relay_topic").value
 
         # ------------
         # ROS Entities

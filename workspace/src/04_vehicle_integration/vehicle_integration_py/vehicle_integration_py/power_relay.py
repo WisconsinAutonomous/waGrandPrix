@@ -88,10 +88,10 @@ class PowerRelay(Node):
 
         brake_actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the brake actuator relay msg will be shipped on.")
         self.declare_parameter("brake_actuator_relay_topic", "/control/brake_actuator_relay", brake_actuator_relay_descriptor)
-        self.brake_actuator_relay_topic = self.get_parameter("brake_actuator_relay").value
+        self.brake_actuator_relay_topic = self.get_parameter("brake_actuator_relay_topic").value
 
         steering_actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the steering actuator relay msg will be shipped on.")
-        self.declare_parameter("steering_actuator_relay_topic", "/control/actuator_relay", steering_actuator_relay_descriptor)
+        self.declare_parameter("steering_actuator_relay_topic", "/control/steering_actuator_relay", steering_actuator_relay_descriptor)
         self.steering_actuator_relay_topic = self.get_parameter("steering_actuator_relay_topic").value
 
         self.subscriber_handles = {}
