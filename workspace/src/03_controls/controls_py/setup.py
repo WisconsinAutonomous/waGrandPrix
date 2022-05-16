@@ -61,6 +61,7 @@ setup(
             "controller_node = controls_py.controller_node:main",
             "steering_publisher = controls_py.steering_publisher:main",
             "brake_publisher = controls_py.brake_publisher:main",
+            "throttle_publisher = controls_py.throttle_publisher:main"
         ],
     },
 )

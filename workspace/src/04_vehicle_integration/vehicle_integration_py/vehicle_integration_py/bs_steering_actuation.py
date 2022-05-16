@@ -11,19 +11,25 @@ from wagrandprix_utilities import clamp, scale_to_range
 # Import specific message types
 from wagrandprix_control_msgs.msg import SteeringCommand
 
-class SteeringActuation(Node):
+class BSSteeringActuation:
 
-    def __init__(self):
-        super().__init__('steering_actuation')
+    def __init__(self, parent):
+        # requriement of the parent:
+        #       parent.ch is the return value of canlib.openChannel
+        #       parent.thrd_stop is boolean
+        #       parent inherts from rclpy.Node
 
-        self.logger = rclpy.logging.get_logger(self.get_name())
+        self.parent = parent
+
+        # self.logger = rclpy.logging.get_logger(self.parent.get_name())
+        self.parent.get_logger().info("steering actuation init start")
         
         # ------------
         # Parse params
         # ------------
         steering_cmd_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the steering command msg will be shipped on.")
-        self.declare_parameter("steering_cmd_topic", "/control/steering", steering_cmd_descriptor)
-        self.steering_cmd_topic = self.get_parameter("steering_cmd_topic").value
+        self.parent.declare_parameter("steering_cmd_topic", "/control/steering", steering_cmd_descriptor)
+        self.steering_cmd_topic = self.parent.get_parameter("steering_cmd_topic").value
 
         # ------------
         # ROS Entities
@@ -31,7 +37,7 @@ class SteeringActuation(Node):
 
         # Create subscriber handles
         self.subscriber_handles = {}
-        self.subscriber_handles[self.steering_cmd_topic] = self.create_subscription(SteeringCommand, self.steering_cmd_topic, self.steering_cmd_callback, 1)
+        self.subscriber_handles[self.steering_cmd_topic] = self.parent.create_subscription(SteeringCommand, self.steering_cmd_topic, self.steering_cmd_callback, 1)
 
         # Actuator values
         self.offset = 195 # offset from "global 0" to "local 0" (local 0 is defined as the postion of the actuator where the wheels point directly forward)
@@ -42,97 +48,56 @@ class SteeringActuation(Node):
         # TO DO: need to modify to work with canlib
         self.ccvs_ID = int("18FEF127", 16)
         # self.ccvs_MSG = can.Message(arbitration_id=self.ccvs_ID, data=[255, 0, 0, 255, 255, 255, 255, 255], is_extended_id=True) # use fake data, only commanding steering position for now
-        self.ccvs_MSG = Frame(id_=self.ccvs_ID, data=[255, 0, 0, 255, 255, 255, 255, 255], dlc=8, flags=4)
+        self.ccvs_MSG = Frame(id_=self.ccvs_ID, data=[255, 0, 0, 255, 255, 255, 255, 255], dlc=8)
 
         # remote eps control (REC)
         self.rec_ID = int("18FF7325", 16)
         self.mode = 4 # 0=off, 2=torque assist, 4=position (speed ignored), 5=position with speed
 
         # Create default value to begin with
-        # TO DO: need to modify to work with canlib
         init_angular_position = self.steering_to_angular_position(0)
         self.ang_WX_DATA, self.ang_YZ_DATA = self.angular_position_to_can(init_angular_position)
-        # self.rec_MSG = can.Message(arbitration_id=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], is_extended_id=True)
-        self.rec_MSG = Frame(id_=self.rec_ID, data=[self.mode, 0, 255, 255, 0, 0, 0, 0], dlc=8, flags=4)
+        self.rec_MSG = Frame(id_=self.rec_ID, data=[self.mode, 0, 255, 255, 0, 0, 0, 0], dlc=8)
 
-        # can intialization
-        # TO DO: need to modify to work with canlib
-        self.get_logger().info(f"Received Initializing CAN messaging to EPS... on topic {self.steering_cmd_topic}")
-        self.ch = canlib.openChannel(
-            channel=1,
-            flags=canlib.Open.REQUIRE_EXTENDED,
-            bitrate= canlib.Bitrate.BITRATE_250K,
-        )
-        # Set the CAN bus driver type to NORMAL.
-        self.ch.setBusOutputControl(canlib.Driver.NORMAL)
-        # Activate the CAN chip.
-        self.ch.busOn()
-
-        # self.bustype = 'socketcan'
-        # self.channel = 'can0'
-        # self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
-
-        # self.thrd_stop = False
-
-        # def thrd_ccvs_fcn():
-        #     last_time = time.time()
-        #     while not self.thrd_stop:
-        #         curr_time = time.time()
-        #         # send message at 5hz
-        #         sleep_time = 0.2 - (curr_time - last_time)
-        #         if sleep_time > 0:
-        #             time.sleep(sleep_time)
-
-        #         # Wait until the message is sent or at most 100 ms.
-        #         self.ch.writeWait(self.ccvs_MSG, timeout=10000)
-
-        #         last_time = curr_time
+        def thrd_ccvs_fcn():
+            last_time = time.time()
+            while not self.parent.thrd_stop:
+                curr_time = time.time()
+                # send message at 5hz
+                sleep_time = 1.0 - (curr_time - last_time)
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+                self.parent.can_write(self.ccvs_MSG)
+                last_time = curr_time
         
-        # def thrd_rec_fcn():
-        #     last_time = time.time()
-        #     while not self.thrd_stop:
-        #         curr_time = time.time()
-        #         # send message at 1000hz
-        #         sleep_time = 0.001 - (curr_time - last_time)
-        #         if sleep_time > 0:
-        #             time.sleep(sleep_time)
-        #         self.ch.write(self.rec_MSG)
+        def thrd_rec_fcn():
+            last_time = time.time()
+            while not self.parent.thrd_stop:
+                curr_time = time.time()
+                # send message at 1000hz
+                sleep_time = 0.5 - (curr_time - last_time)
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+                self.parent.can_write(self.rec_MSG)
+                last_time = curr_time
 
-        #         # Wait until the message is sent or at most 100 ms.
-        #         self.ch.writeSync(timeout=10000)
-        #         last_time = curr_time
-
-        #self.thrd_ccvs = threading.Thread(target=thrd_ccvs_fcn)
-        #self.thrd_rec = threading.Thread(target=thrd_rec_fcn)
-        #self.thrd_ccvs.start()
-        #self.thrd_rec.start()
-
-        hz5 = 1/5 # 5hz
-        self.timer5 = self.create_timer(hz5, self.timer5_callback)
-
-        hz1000 = 1/1000 # 1000hz
-        self.timer1000 = self.create_timer(hz1000, self.timer1000_callback)
-
-
-        # self.ccvs_TASK = self.bus.send_periodic(self.ccvs_MSG, 0.2) # send message at 5hz
-        # self.rec_TASK = self.bus.send_periodic(self.rec_MSG, 0.001) # send message at 1000hz
-        # self.get_logger().info(f"Received Ready for EPS power on! on topic {self.steering_cmd_topic}")
+        self.thrd_ccvs = threading.Thread(target=thrd_ccvs_fcn)
+        self.thrd_rec = threading.Thread(target=thrd_rec_fcn)
+        self.thrd_ccvs.start()
+        self.thrd_rec.start()
 
         # Set default position of the actuator
         self.set_actuator_position(self.steering_to_angular_position(0)) # Should check position of the actuator and set value that way
 
-    def timer5_callback(self):
-        self.ch.writeWait(self.ccvs_MSG, timeout=10000)
+        self.parent.get_logger().info("steering actuation init end")
 
-    def timer1000_callback(self):
-        self.ch.writeWait(self.rec_MSG, timeout=10000)
 
 
     def steering_cmd_callback(self, msg):
         """
         Callback for the steering_cmd topic.
         """
-        self.get_logger().info(f"Received {msg} on topic {self.steering_cmd_topic}")
+        self.parent.get_logger().info(f"Received {msg} on topic {self.steering_cmd_topic}")
 
 
         steering = msg.value
@@ -153,7 +118,7 @@ class SteeringActuation(Node):
         # create new message
         # TO DO: change this for message sending
         # new_MSG = can.Message(arbitration_id=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], is_extended_id=True)
-        self.rec_MSG = Frame(id_=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], dlc=8, flags=4)
+        self.rec_MSG = Frame(id_=self.rec_ID, data=[self.mode, 0, 255, 255, self.ang_YZ_DATA, self.ang_WX_DATA, 0, 0], dlc=8)
         # update active message data
         # self.rec_TASK.modify_data(new_MSG)
 
@@ -184,12 +149,3 @@ class SteeringActuation(Node):
         YZ_DATA = int(YZ, 16)
 
         return WX_DATA, YZ_DATA
-
-def main(args=None):
-    rclpy.init(args=args)
-    steering = SteeringActuation()
-    rclpy.spin(steering)
-
-
-if __name__ == '__main__':
-    main()
