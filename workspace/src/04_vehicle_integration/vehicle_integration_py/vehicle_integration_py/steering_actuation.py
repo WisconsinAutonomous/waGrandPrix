@@ -10,6 +10,7 @@ from wagrandprix_utilities import clamp, scale_to_range
 
 # Import specific message types
 from wagrandprix_control_msgs.msg import SteeringCommand
+from wagrandprix_vehicle_msgs.msg import ActuatorPower
 
 class SteeringActuation(Node):
 
@@ -25,6 +26,10 @@ class SteeringActuation(Node):
         self.declare_parameter("steering_cmd_topic", "/control/steering", steering_cmd_descriptor)
         self.steering_cmd_topic = self.get_parameter("steering_cmd_topic").value
 
+        actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the actuator relay msg will be shipped on.")
+        self.declare_parameter("steering_actuator_relay_topic", "/control/steering_actuator_relay", actuator_relay_descriptor)
+        self.actuator_relay_topic = self.get_parameter("steering_actuator_relay_topic").value
+
         # ------------
         # ROS Entities
         # ------------
@@ -32,7 +37,9 @@ class SteeringActuation(Node):
         # Create subscriber handles
         self.subscriber_handles = {}
         self.subscriber_handles[self.steering_cmd_topic] = self.create_subscription(SteeringCommand, self.steering_cmd_topic, self.steering_cmd_callback, 1)
-
+        self.publisher_handles = {}
+        self.publisher_handles[self.actuator_relay_topic] = self.create_publisher(ActuatorPower, self.actuator_relay_topic, 1)
+        
         # Actuator values
         self.offset = 195 # offset from "global 0" to "local 0" (local 0 is defined as the postion of the actuator where the wheels point directly forward)
         self.max = 64 # Max angle in degrees from local 0
@@ -58,6 +65,11 @@ class SteeringActuation(Node):
         # can intialization
         # TO DO: need to modify to work with canlib
         self.get_logger().info(f"Received Initializing CAN messaging to EPS... on topic {self.steering_cmd_topic}")
+
+        msg = ActuatorPower()
+        msg.value = +1.0 # > 0 for on 
+        self.publisher_handles[self.actuator_relay_topic].publish(msg)
+
         self.ch = canlib.openChannel(
             channel=1,
             flags=canlib.Open.REQUIRE_EXTENDED,
@@ -68,44 +80,6 @@ class SteeringActuation(Node):
         # Activate the CAN chip.
         self.ch.busOn()
 
-        # self.bustype = 'socketcan'
-        # self.channel = 'can0'
-        # self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
-
-        # self.thrd_stop = False
-
-        # def thrd_ccvs_fcn():
-        #     last_time = time.time()
-        #     while not self.thrd_stop:
-        #         curr_time = time.time()
-        #         # send message at 5hz
-        #         sleep_time = 0.2 - (curr_time - last_time)
-        #         if sleep_time > 0:
-        #             time.sleep(sleep_time)
-
-        #         # Wait until the message is sent or at most 100 ms.
-        #         self.ch.writeWait(self.ccvs_MSG, timeout=10000)
-
-        #         last_time = curr_time
-        
-        # def thrd_rec_fcn():
-        #     last_time = time.time()
-        #     while not self.thrd_stop:
-        #         curr_time = time.time()
-        #         # send message at 1000hz
-        #         sleep_time = 0.001 - (curr_time - last_time)
-        #         if sleep_time > 0:
-        #             time.sleep(sleep_time)
-        #         self.ch.write(self.rec_MSG)
-
-        #         # Wait until the message is sent or at most 100 ms.
-        #         self.ch.writeSync(timeout=10000)
-        #         last_time = curr_time
-
-        #self.thrd_ccvs = threading.Thread(target=thrd_ccvs_fcn)
-        #self.thrd_rec = threading.Thread(target=thrd_rec_fcn)
-        #self.thrd_ccvs.start()
-        #self.thrd_rec.start()
 
         hz5 = 1/5 # 5hz
         self.timer5 = self.create_timer(hz5, self.timer5_callback)
@@ -113,13 +87,9 @@ class SteeringActuation(Node):
         hz1000 = 1/1000 # 1000hz
         self.timer1000 = self.create_timer(hz1000, self.timer1000_callback)
 
-
-        # self.ccvs_TASK = self.bus.send_periodic(self.ccvs_MSG, 0.2) # send message at 5hz
-        # self.rec_TASK = self.bus.send_periodic(self.rec_MSG, 0.001) # send message at 1000hz
-        # self.get_logger().info(f"Received Ready for EPS power on! on topic {self.steering_cmd_topic}")
-
         # Set default position of the actuator
         self.set_actuator_position(self.steering_to_angular_position(0)) # Should check position of the actuator and set value that way
+
 
     def timer5_callback(self):
         self.ch.writeWait(self.ccvs_MSG, timeout=10000)

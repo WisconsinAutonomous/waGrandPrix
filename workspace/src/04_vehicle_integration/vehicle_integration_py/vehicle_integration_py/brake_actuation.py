@@ -5,6 +5,7 @@ from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
 from wagrandprix_control_msgs.msg import BrakingCommand
+from wagrandprix_vehicle_msgs.msg import ActuatorPower
 
 # ------------
 # Port from ROS1
@@ -30,6 +31,10 @@ class BrakeActuation(Node):
         self.declare_parameter("brake_cmd_topic", "/control/braking", brake_cmd_descriptor)
         self.brake_cmd_topic = self.get_parameter("brake_cmd_topic").value
 
+        actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the actuator relay msg will be shipped on.")
+        self.declare_parameter("brake_actuator_relay_topic", "/control/brake_actuator_relay", actuator_relay_descriptor)
+        self.actuator_relay_topic = self.get_parameter("brake_actuator_relay_topic").value
+
         # ------------
         # ROS Entities
         # ------------
@@ -37,6 +42,8 @@ class BrakeActuation(Node):
         # Create subscriber handles
         self.subscriber_handles = {}
         self.subscriber_handles[self.brake_cmd_topic] = self.create_subscription(BrakingCommand, self.brake_cmd_topic, self.brake_cmd_callback, 1)
+        self.publisher_handles = {}
+        self.publisher_handles[self.actuator_relay_topic] = self.create_publisher(ActuatorPower, self.actuator_relay_topic, 1)
 
         # ------------
         # Port from ROS1
@@ -61,6 +68,11 @@ class BrakeActuation(Node):
         # self.channel = 'can0'
         # self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
         # self.rbc_TASK = self.bus.send_periodic(self.rbc_MSG, .01) # send message at 100hz
+
+        msg = ActuatorPower()
+        msg.value = +1.0 # > 0 for on
+        self.publisher_handles[self.actuator_relay_topic].publish(msg)
+
         self.ch = canlib.openChannel(
             channel=0,
             flags=canlib.Open.REQUIRE_EXTENDED,
@@ -74,17 +86,19 @@ class BrakeActuation(Node):
         self.thrd_stop = False
 
         # self.rbc_TASK = self.bus.send_periodic(self.rbc_MSG, .01) # send message at 100hz
-        self.get_logger().info("Ready for iBooster power on!")
 
         # Set default position of the actuator
         self.set_braking_percentage(self.braking_to_percentage(0)) # Should check position of the actuator and set value that way
 
+
         hz100 = 1/100 # 100hz
         self.timer100 = self.create_timer(hz100, self.timer100_callback)
 
+        self.get_logger().info("Ready for iBooster power on!")
+
     def timer100_callback(self):
-        # Wait until the message is sent or at most 100 ms.
-        self.ch.writeWait(self.rbc_MSG, timeout=100)
+        # Wait until the message is sent or at most 10s.
+        self.ch.writeWait(self.rbc_MSG, timeout=10000)
 
 
     def brake_cmd_callback(self, msg):

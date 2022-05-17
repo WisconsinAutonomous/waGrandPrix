@@ -24,21 +24,23 @@ class SpeedEncoder(Node):
         # Parse params
         # ------------
         vehicle_state_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic the vehicle state estimation will be shipped on.")
-        self.declare_parameter("vehicle_state_topic", "vehicle/state", vehicle_state_descriptor)
+        self.declare_parameter("vehicle_state_topic", "encoder_speed", vehicle_state_descriptor)
         self.vehicle_state_topic = self.get_parameter("vehicle_state_topic").value
+
+        self.logger.info(f"encoder topic: {self.vehicle_state_topic}")
 
         # Create publisher handles
         self.publisher_handles = {}
         self.publisher_handles[self.vehicle_state_topic] = self.create_publisher(VehicleState, self.vehicle_state_topic, 1)
 
         # Timer to make sure we publish at a controlled rate
-        timer_period = 0.5  # seconds
+        timer_period = 0.01  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         # It is important that i is a float
         self.speed = 0.0
 
         # Set up serial connection with Arduino
-        self.ser = serial.Serial("/dev/ttyACM2", baudrate=9600, timeout=None)
+        self.ser = serial.Serial("/dev/ttyACM0", baudrate=9600, timeout=None)
 
 
     def timer_callback(self):
@@ -47,7 +49,7 @@ class SpeedEncoder(Node):
         self.speed = get_speed(self)
         msg.twist.linear.x = self.speed
         self.publisher_handles[self.vehicle_state_topic].publish(msg)
-        self.get_logger().info(f"Sent {msg} on topic {self.vehicle_state_topic}")
+        self.logger.info(f"Sent {msg} on topic {self.vehicle_state_topic}")
 
 
 def get_speed(self) -> float:
@@ -56,6 +58,7 @@ def get_speed(self) -> float:
     """
     self.ser.write(b'\1')
     read_value = self.ser.read_until(b'\n').decode("utf-8")
+    self.logger.info("test")
     value = int(read_value) * VALUE_TO_SPEED_COEF
     return value
 

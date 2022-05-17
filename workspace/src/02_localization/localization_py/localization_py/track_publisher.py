@@ -49,7 +49,7 @@ class TrackPublisher(Node):
         self.timer = self.create_timer(0.01, self.timer_callback)
 
     def timer_callback(self):
-        self.logger.info("Publishing track")
+        # self.logger.info("Publishing track")
         self.publisher_handles["track/mapped"].publish(self.track)
 
 def main(args=None):
