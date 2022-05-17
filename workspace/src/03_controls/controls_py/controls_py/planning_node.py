@@ -26,7 +26,7 @@ from rclpy.node import Node
 from controls_py.CenterlinePlanner import CenterlinePlanner
 import numpy as np
 
-from wa_simulator_ros_msgs.msg import WATrack
+from wa_simulator_ros_msgs.msg import WATrack, WAVehicle
 from wagrandprix_vehicle_msgs.msg import VehicleState
 from geometry_msgs.msg import Point
 
@@ -40,11 +40,11 @@ class PlanningNode(Node):
         # Parse params
         # ------------
         vehicle_state_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that provides vehicle state information")
-        self.declare_parameter("vehicle_state_topic", "/localization/vehicle/state", vehicle_state_topic_descriptor)
+        self.declare_parameter("vehicle_state_topic", "/vehicle/state", vehicle_state_topic_descriptor)
         self.vehicle_state_topic = self.get_parameter("vehicle_state_topic").value
 
         mapped_track_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that provides track information")
-        self.declare_parameter("mapped_track_topic", "/localization/track/mapped", mapped_track_topic_descriptor)
+        self.declare_parameter("mapped_track_topic", "/track/visible", mapped_track_topic_descriptor)
         self.mapped_track_topic = self.get_parameter("mapped_track_topic").value
         # ------------
         # ROS Entities
@@ -59,7 +59,7 @@ class PlanningNode(Node):
         self.subscriber_handles = {}
 
         self.subscriber_handles[self.mapped_track_topic] = self.create_subscription(WATrack, self.mapped_track_topic, self._receive_track, 1)
-        self.subscriber_handles[self.vehicle_state_topic] = self.create_subscription(VehicleState, self.vehicle_state_topic, self._receive_state, 1)
+        self.subscriber_handles[self.vehicle_state_topic] = self.create_subscription(WAVehicle, self.vehicle_state_topic, self._receive_state, 1)
 
         # makes it so that nodes with timers use simulation time published in /clock instead of the cpu wall clock
         # sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)

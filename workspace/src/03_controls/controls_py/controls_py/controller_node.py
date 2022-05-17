@@ -6,13 +6,17 @@ __email__ = "ashokkumar2@wisc.edu"
 __author__ = "Victor Freire"
 __email__ = "freiremelgiz@wisc.edu"
 
+# ROS imports
 import rclpy
 from rclpy.parameter import Parameter
+from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 from rclpy.node import Node
-from sys import argv
+
+# Message imports
 from geometry_msgs.msg import Point
 from wagrandprix_vehicle_msgs.msg import VehicleState
 from wagrandprix_control_msgs.msg import VehicleCommand, SteeringCommand, BrakingCommand, ThrottleCommand
+
 from controls_py.StanleyController import StanleyController
 from controls_py.pid import PIDController
 import wa_simulator as wa
@@ -27,24 +31,12 @@ class ControllerNode(Node):
         # ------------
         # Parse params
         # ------------
-        SteeringCommand_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that SteeringCommand will be shipped on.")
-        self.declare_parameter("SteeringCommand", "/control/steering", SteeringCommand_descriptor)
-        self.target_point_topic = self.get_parameter("SteeringCommand").value
-
-        BrakingCommand_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that BrakingCommand will be shipped on.")
-        self.declare_parameter("BrakingCommand", "/control/braking", BrakingCommand_descriptor)
-        self.target_point_topic = self.get_parameter("BrakingCommand").value
-
-        ThrottleCommand_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that ThrottleCommand will be shipped on.")
-        self.declare_parameter("ThrottleCommand", "/control/throttle", ThrottleCommand_descriptor)
-        self.target_point_topic = self.get_parameter("ThrottleCommand").value
-
         target_point_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that target point will be shipped on.")
-        self.declare_parameter("target_point", "/control/planning", target_point_descriptor)
+        self.declare_parameter("target_point", "planning", target_point_descriptor)
         self.target_point_topic = self.get_parameter("target_point").value
 
         vehicle_state_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that provides vehicle state information")
-        self.declare_parameter("vehicle_state_topic", "/localization/state", vehicle_state_topic_descriptor)
+        self.declare_parameter("vehicle_state_topic", "/localization/vehicle/state", vehicle_state_topic_descriptor)
         self.vehicle_state_topic = self.get_parameter("vehicle_state_topic").value
 
         fake_with_sim_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_BOOL, description="Whether to run this nodes algorithms or fake it with sim data.")
@@ -52,7 +44,7 @@ class ControllerNode(Node):
         self.fake_with_sim = self.get_parameter("fake_with_sim").value
         
         control_algorithm_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="Which control agorithm to run")
-        self.declare_parameter("control_algorithm", False, control_algorithm_descriptor)
+        self.declare_parameter("control_algorithm", "StanleyController", control_algorithm_descriptor)
         self.control_algorithm = self.get_parameter("control_algorithm").value
 
 
@@ -67,9 +59,9 @@ class ControllerNode(Node):
         # Create publisher handles
         self.publisher_handles = {}
 
-        self.publisher_handles["/control/steering"] = self.create_publisher(SteeringCommand,'/control/steering',1)
-        self.publisher_handles["/control/braking"] = self.create_publisher(BrakingCommand,'/control/braking',1)
-        self.publisher_handles["/control/throttle"] = self.create_publisher(ThrottleCommand,'/control/throttle',1)
+        self.publisher_handles["steering"] = self.create_publisher(SteeringCommand,'steering',1)
+        self.publisher_handles["braking"] = self.create_publisher(BrakingCommand,'braking',1)
+        self.publisher_handles["throttle"] = self.create_publisher(ThrottleCommand,'throttle',1)
 
         # Create subcriber handles
         self.subscriber_handles = {}
@@ -77,10 +69,10 @@ class ControllerNode(Node):
         # If desired, we may "fake" the vehicle state estimator node
         # This can be done using sim, where we grab all of the vehicle state information directly from the simulation
         self.logger.info(f"vehicle_state_topic: {self.vehicle_state_topic}")
-        self.logger.info(f"target_point_descriptor: {self.target_point_descriptor}")
+        self.logger.info(f"target_point_topic: {self.target_point_topic}")
 
         self.subscriber_handles[self.vehicle_state_topic] = self.create_subscription(VehicleState, self.vehicle_state_topic, self._save_state, 1)
-        self.subscriber_handles[self.target_point_descriptor] = self.create_subscription(Point, self.target_point_topic, self._save_target, 1)
+        self.subscriber_handles[self.target_point_topic] = self.create_subscription(Point, self.target_point_topic, self._save_target, 1)
         
         # ------------------------
         # Initialize Class Members
@@ -95,7 +87,7 @@ class ControllerNode(Node):
         
 
 
-        self.controller = pid(wa.WASystem(), wa.WAVehicleInputs(), VehicleState(), [1,1,1], wa.WAVehicleInputs())
+        self.controller = PIDController(wa.WASystem(), wa.WAVehicleInputs(), VehicleState(), [1,1,1])
 
         self.vehicle_command = VehicleCommand()
 
@@ -103,7 +95,7 @@ class ControllerNode(Node):
         self.step = 0.01
         self.received_VehicleState = False
         self.received_VehicleTarget = False
-        self.timer = self.create_timer(0.5, self.send_control)
+        self.timer = self.create_timer(0.01, self.send_control)
 
         # # Use sim time by default
         # # sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
@@ -158,15 +150,18 @@ class ControllerNode(Node):
 
     # Send appropriate control signal to input topic
     def send_control(self):
-        if self.received_VehicleTarget and self.received_VehicleState:
+        # self.controller.VehicleState = ( ((0,0,0),(0,0,0,0)) , ((0,0,0),(0,0,0)) , ((0,0,0),(0,0,0)) ) 
+        # self.received_VehicleTarget = True
+        if self.received_VehicleTarget:
 
             self.controller.advance(self.step)
-            # self.get_logger().info('Publishing vehicle command')
-            self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, min(0.5, self.controller.throttle), self.controller.braking
-            
-            self.pub_steering.publish(self.vehicle_command.steering)
-            self.pub_throttle.publish(self.vehicle_command.throttle)
-            self.pub_braking.publish(self.vehicle_command.braking)
+            self.logger.info('Publishing vehicle command')
+            self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, self.controller.throttle, self.controller.braking
+            # self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.fakeValues[self.idx][0], self.fakeValues[self.idx][1], self.fakeValues[self.idx][2]
+            # self.idx += 1
+            self.publisher_handles["steering"].publish(self.vehicle_command.steering)
+            self.publisher_handles["braking"].publish(self.vehicle_command.braking)
+            self.publisher_handles["throttle"].publish(self.vehicle_command.throttle)
             # self.pub_cmd.publish(self.vehicle_command) # Send control
             # self.controller.update_u() # Get next control
 

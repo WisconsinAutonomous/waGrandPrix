@@ -29,6 +29,15 @@ def generate_launch_description():
         "control_algorithm", default_value=TextSubstitution(text="StanleyController")
     )
 
+    sim_vehicle_state_topic_arg = DeclareLaunchArgument(
+        "sim_vehicle_state_topic", default_value=TextSubstitution(text="/vehicle/state")
+    )
+
+    launch_description.add_action(fake_with_sim_arg)
+    launch_description.add_action(control_algorithm_arg)
+    launch_description.add_action(sim_vehicle_state_topic_arg)
+
+
     # mapped_track_topic_arg = DeclareLaunchArgument(
     #     "mapped_track_topic", default_value=TextSubstitution(text="/perception/mapped_track/mapped")
     # )
@@ -64,6 +73,8 @@ def generate_launch_description():
         executable='planning_node',
         name='planning_node',
         parameters=[{
+            "fake_with_sim": LaunchConfiguration("fake_with_sim"),
+            "vehicle_state_topic": LaunchConfiguration("sim_vehicle_state_topic"),
         }],
         output="screen",
     )
@@ -74,6 +85,9 @@ def generate_launch_description():
         executable='controller_node',
         name='controller_node',
         parameters=[{
+            "control_algorithm": LaunchConfiguration("control_algorithm"),
+            "fake_with_sim": LaunchConfiguration("fake_with_sim"),
+            "vehicle_state_topic": LaunchConfiguration("sim_vehicle_state_topic"),
         }],
         output="screen",
     )

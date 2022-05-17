@@ -26,14 +26,14 @@ class PIDController(wa.WAController):
 
         # Lateral controller (steering)
         if lat_controller is None:
-            lat_controller = PIDLateralController(VehicleState, target_point, system, vehicle, vehicle_inputs)
+            lat_controller = PIDLateralController(VehicleState, target_point, system, vehicle_inputs)
             lat_controller.set_gains(Kp=0.4, Ki=0, Kd=0)
             lat_controller.set_lookahead_distance(dist=5)
         self._lat_controller = lat_controller
 
         if long_controller is None:
             # Longitudinal controller (throttle and braking)
-            long_controller = PIDLongitudinalController(VehicleState, target_point, system, vehicle, vehicle_inputs)
+            long_controller = PIDLongitudinalController(VehicleState, target_point, system, vehicle_inputs)
             long_controller.set_gains(Kp=0.4, Ki=0, Kd=0)
             long_controller.set_target_speed(speed=7.0)
         self._long_controller = long_controller
@@ -153,7 +153,7 @@ class PIDLateralController(wa.WAController):
         path (WAPath): the path the vehicle is attempting to follow
     """
 
-    def __init__(self, vehicle_state, target_point, system: wa.WASystem, vehicle: wa.WAVehicle, vehicle_inputs: wa.WAVehicleInputs):
+    def __init__(self, vehicle_state, target_point, system: wa.WASystem, vehicle_inputs: wa.WAVehicleInputs):
         super().__init__(system, vehicle_inputs)
 
         self._Kp = 0
@@ -167,8 +167,6 @@ class PIDLateralController(wa.WAController):
         self._err = 0
         self._errd = 0
         self._erri = 0
-
-        self._vehicle = vehicle
 
         self.VehicleState = vehicle_state
         self.target_point = target_point
@@ -270,7 +268,7 @@ class PIDLongitudinalController(wa.WAController):
         vehicle (WAVehicle): the vehicle who has dynamics
     """
 
-    def __init__(self,  vehicle_state, target_point, system: wa.WASystem, vehicle: wa.WAVehicle, vehicle_inputs: wa.WAVehicleInputs):
+    def __init__(self,  vehicle_state, target_point, system: wa.WASystem, vehicle_inputs: wa.WAVehicleInputs):
         super().__init__(system, vehicle_inputs)
 
         self._Kp = 0
@@ -285,8 +283,6 @@ class PIDLongitudinalController(wa.WAController):
         self._target_speed = 0
 
         self._throttle_threshold = 0.2
-
-        self._vehicle = vehicle
 
         self.VehicleState = vehicle_state
         self.target_point = target_point
