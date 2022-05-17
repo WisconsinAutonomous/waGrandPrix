@@ -1,0 +1,2059 @@
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
+sentinel: [5. 0. 0.]
+steering: -38.89016464647999
+yaw: 0.0
