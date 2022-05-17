@@ -1,0 +1,5 @@
+classes = 2
+train   = data/evgrandprix22/train.txt
+valid   = data/evgrandprix22/test.txt
+names   = data/evgrandprix22/evgrandprix22.names
+backup  = backup/evgrandprix22/
