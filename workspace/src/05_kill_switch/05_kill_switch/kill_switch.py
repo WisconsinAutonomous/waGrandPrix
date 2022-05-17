@@ -39,10 +39,6 @@ class Kill_Switch_Publisher(Node):
 
         self.logger = rclpy.logging.get_logger(self.get_name())
 
-        self.braking = self.BrakingData(self)
-        self.steering = self.SteeringData(self)
-        self.throttle = self.ThrottleData(self)
-
         # ------------
         # Parse params
         # ------------
@@ -50,9 +46,9 @@ class Kill_Switch_Publisher(Node):
         self.declare_parameter("motor_relay_topic", "/control/motor_relay", motor_relay_descriptor)
         self.motor_relay_topic = self.get_parameter("motor_relay_topic").value
 
-        actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the actuator relay msg will be shipped on.")
-        self.declare_parameter("actuator_relay_topic", "/control/actuator_relay", actuator_relay_descriptor)
-        self.actuator_relay_topic = self.get_parameter("actuator_relay_topic").value
+        # actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the actuator relay msg will be shipped on.")
+        # self.declare_parameter("actuator_relay_topic", "/control/actuator_relay", actuator_relay_descriptor)
+        # self.actuator_relay_topic = self.get_parameter("actuator_relay_topic").value
 
         braking_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the braking msg will be shipped on.")
         self.declare_parameter("braking_topic", "/control/braking", braking_descriptor)
@@ -69,7 +65,7 @@ class Kill_Switch_Publisher(Node):
         # Create publisher handles
         self.publisher_handles = {}
         self.publisher_handles[self.motor_relay_topic] = self.create_publisher(MotorPower, self.motor_relay_topic, 1)
-        self.publisher_handles[self.actuator_relay_topic] = self.create_publisher(ActuatorPower, self.actuator_relay_topic, 1)
+        # self.publisher_handles[self.actuator_relay_topic] = self.create_publisher(ActuatorPower, self.actuator_relay_topic, 1)
         self.publisher_handles[self.e_brake_topic] = self.create_publisher(BrakingCommand, self.e_brake_topic, 1)
 
         msg = MotorPower() # initialize motor
@@ -77,10 +73,9 @@ class Kill_Switch_Publisher(Node):
         self.publisher_handles[self.motor_relay_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.motor_relay_topic}")
 
-
-        self.last_brake = 0.0 # initialize first message for braking
-        self.last_steer = 0.0 # initialize first message for steering
-        self.last_throttle = 0.0 # initialize first message for throttle
+        self.last_brake = time.time() # initialize first message for braking
+        self.last_steer = time.time() # initialize first message for steering
+        self.last_throttle = time.time() # initialize first message for throttle
         # Create Subscriber handles
         self.subscriber_handles = {}
         self.subscriber_handles[self.braking_topic] = self.create_subscription(BrakingCommand, self.braking_topic, self.braking_subscriber_callback, 1)
