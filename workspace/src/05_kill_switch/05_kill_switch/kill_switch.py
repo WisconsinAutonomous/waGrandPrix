@@ -76,6 +76,7 @@ class Kill_Switch_Publisher(Node):
         self.last_brake = time.time() # initialize first message for braking
         self.last_steer = time.time() # initialize first message for steering
         self.last_throttle = time.time() # initialize first message for throttle
+        
         # Create Subscriber handles
         self.subscriber_handles = {}
         self.subscriber_handles[self.braking_topic] = self.create_subscription(BrakingCommand, self.braking_topic, self.braking_subscriber_callback, 1)
