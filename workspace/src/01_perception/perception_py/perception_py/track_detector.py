@@ -9,13 +9,14 @@ from geometry_msgs.msg import PoseArray
 from wagrandprix_map_msgs.msg import DetectedTrack, Point
 
 import numpy as np
-import sensor_msgs.point_cloud2 as pc2
+import os
+# import sensor_msgs.point_cloud2 as pc2
 
 DARKNET_BATCH_SIZE = 1
 DARKNET_THRESH = 0.6
-DARKNET_CONFIG_PATH = '<todo>/cfg/yolov4-tiny-evgrandprix22.cfg'
-DARKNET_WEIGHTS_PATH = '<todo>/backup/evgrandprix22/yolov4-tiny-evgrandprix22_last.weights'
-DARKNET_DATA_PATH = '<todo>/data/evgrandprix22/evgrandprix22.data'
+DARKNET_CONFIG_PATH = 'src/01_perception/perception_py/resource/cfg/yolov4-tiny-evgrandprix22.cfg'
+DARKNET_WEIGHTS_PATH = 'src/01_perception/perception_py/resource/backup/evgrandprix22/yolov4-tiny-evgrandprix22_last.weights'
+DARKNET_DATA_PATH = 'src/01_perception/perception_py/resource/data/evgrandprix22/evgrandprix22.data'
 
 network = None
 network_width, network_height = None, None
