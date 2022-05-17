@@ -68,6 +68,11 @@ class BrakeActuation(Node):
         # self.channel = 'can0'
         # self.bus = can.interface.Bus(channel=self.channel, bustype=self.bustype)
         # self.rbc_TASK = self.bus.send_periodic(self.rbc_MSG, .01) # send message at 100hz
+
+        msg = ActuatorPower()
+        msg.value = +1.0 # > 0 for on
+        self.publisher_handles[self.actuator_relay_topic].publish(msg)
+
         self.ch = canlib.openChannel(
             channel=0,
             flags=canlib.Open.REQUIRE_EXTENDED,
@@ -81,21 +86,19 @@ class BrakeActuation(Node):
         self.thrd_stop = False
 
         # self.rbc_TASK = self.bus.send_periodic(self.rbc_MSG, .01) # send message at 100hz
-        self.get_logger().info("Ready for iBooster power on!")
 
         # Set default position of the actuator
         self.set_braking_percentage(self.braking_to_percentage(0)) # Should check position of the actuator and set value that way
 
+
         hz100 = 1/100 # 100hz
         self.timer100 = self.create_timer(hz100, self.timer100_callback)
 
-        msg = ActuatorPower()
-        msg.value = +1.0 # > 0 for on
-        self.publisher_handles[self.actuator_relay_topic].publish(msg)
+        self.get_logger().info("Ready for iBooster power on!")
 
     def timer100_callback(self):
-        # Wait until the message is sent or at most 100 ms.
-        self.ch.writeWait(self.rbc_MSG, timeout=100)
+        # Wait until the message is sent or at most 10s.
+        self.ch.writeWait(self.rbc_MSG, timeout=10000)
 
 
     def brake_cmd_callback(self, msg):

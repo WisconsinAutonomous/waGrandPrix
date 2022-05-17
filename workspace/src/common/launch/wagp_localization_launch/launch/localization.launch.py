@@ -94,7 +94,18 @@ def generate_launch_description():
         output="screen",
     )
 
+    speed_encoder_node = Node(
+        package='localization_py',
+        namespace='localization',
+        executable='speed_encoder',
+        name='speed_encoder',
+        parameters=[{
+        }],
+        output="screen",
+    )
+
     launch_description.add_action(vehicle_state_estimator_node)
     launch_description.add_action(track_mapper_node)
+    launch_description.add_action(speed_encoder_node)
 
     return launch_description

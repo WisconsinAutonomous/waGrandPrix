@@ -37,7 +37,7 @@ class ThrottleActuation(Node):
         # Load params from actuator_throttle.launch file (if those parameters do not exist, defaults are used instead)
         self.declare_parameter("~throttle_min", 0)
         self.declare_parameter("~throttle_max", 4095)
-        self.declare_parameter("~serial_port", "/dev/ttyACM0")
+        self.declare_parameter("~serial_port", "/dev/ttyACM1")
         self.declare_parameter("~baudrate", 115200)
         throttle_min = int(self.get_parameter("~throttle_min").value)
         throttle_max = int(self.get_parameter("~throttle_max").value)

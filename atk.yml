@@ -7,12 +7,21 @@ custom_cli_arguments:
     argparse:
       action: 'store_true'
     all:
+      runtime: "nvidia"
       deploy:
         resources:
           reservations:
             devices:
             - driver: nvidia
+              count: all
               capabilities: ["gpu"]
+  seccomp:
+    argparse:
+      action: 'store_true'
+    all:
+      security_opt:
+        - seccomp:unconfined
+
   devices:
     argparse:
       action: 'store_true'
@@ -63,7 +72,8 @@ services:
       args:
         <<: *dev_build_args
         CONTAINERNAME: "agx"
-        PIP_REQUIREMENTS: "wa_simulator pandas matplotlib python-can psutil twisted numpy>=1.19 opencv-python tornado black Pillow canlib"
+        APT_DEPENDENCIES: "libusb-1.0-0-dev libopenblas-dev"
+        PIP_REQUIREMENTS: "wa_simulator pandas matplotlib python-can psutil twisted numpy>=1.19 opencv-python tornado black Pillow canlib pyserial"
   vnc:
     image: "atk/@{project}:vnc"
     hostname: "@{project}-vnc"

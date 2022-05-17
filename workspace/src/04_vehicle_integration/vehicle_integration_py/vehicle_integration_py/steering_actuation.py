@@ -65,6 +65,11 @@ class SteeringActuation(Node):
         # can intialization
         # TO DO: need to modify to work with canlib
         self.get_logger().info(f"Received Initializing CAN messaging to EPS... on topic {self.steering_cmd_topic}")
+
+        msg = ActuatorPower()
+        msg.value = +1.0 # > 0 for on 
+        self.publisher_handles[self.actuator_relay_topic].publish(msg)
+
         self.ch = canlib.openChannel(
             channel=1,
             flags=canlib.Open.REQUIRE_EXTENDED,
@@ -84,9 +89,6 @@ class SteeringActuation(Node):
         # Set default position of the actuator
         self.set_actuator_position(self.steering_to_angular_position(0)) # Should check position of the actuator and set value that way
 
-        msg = ActuatorPower()
-        msg.value = +1.0 # > 0 for on 
-        self.publisher_handles[self.actuator_relay_topic].publish(msg)
 
     def timer5_callback(self):
         self.ch.writeWait(self.ccvs_MSG, timeout=10000)

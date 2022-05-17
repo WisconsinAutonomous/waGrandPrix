@@ -86,7 +86,7 @@ class ControllerNode(Node):
 
             self.controller.advance(self.step)
             # self.get_logger().info('Publishing vehicle command')
-            self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, min(0.5, self.controller.throttle), self.controller.braking
+            self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = max(-0.3, self.controller.steering), min(0.1, self.controller.throttle), self.controller.braking
             
             self.pub_steering.publish(self.vehicle_command.steering)
             self.pub_throttle.publish(self.vehicle_command.throttle)

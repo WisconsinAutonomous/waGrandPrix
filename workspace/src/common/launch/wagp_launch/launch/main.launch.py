@@ -18,15 +18,15 @@ def generate_launch_description():
     return LaunchDescription([
 
         # vehicle integration
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                PathJoinSubstitution([
-                    FindPackageShare('wagp_vehicle_integration_launch'),
-                    'launch',
-                    'vehicle_integration.launch.py'
-                ])
-            ])
-        ),
+        # IncludeLaunchDescription(
+        #     PythonLaunchDescriptionSource([
+        #         PathJoinSubstitution([
+        #             FindPackageShare('wagp_vehicle_integration_launch'),
+        #             'launch',
+        #             'vehicle_integration.launch.py'
+        #         ])
+        #     ])
+        # ),
 
         # perception
         IncludeLaunchDescription(

@@ -2,6 +2,7 @@
 import rclpy
 from rclpy.node import Node
 import serial
+import time
 
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
@@ -44,43 +45,54 @@ class PowerRelay(Node):
         ERROR = b'e'
         GUARD = b'g'
 
-        def __init__(self):
+        def __init__(self, logger):
             self.relay_off = False
             self.relay_restart = False
             self.braking_on = False
             self.steering_on = False
+            self.logger = logger
         
         def subscriber_callback_brake(self, msg):
+            self.logger.info("callback brake")
             if msg is not None:
-                if msg.value > 0:
-                    self.brake_on = True
+                self.logger.info(f"{msg} {self.braking_on} {self.steering_on}")
+                if msg.value > 0.0:
+                    self.braking_on = True
+                    time.sleep(1)
             if self.steering_on and self.braking_on:
+                self.logger.info("start")
                 self.relay_restart = True
 
         def subscriber_callback_steering(self, msg):
+            self.logger.info("callback steering")
             if msg is not None:
-                if msg.value > 0:
+                self.logger.info(f"{msg} {self.braking_on} {self.steering_on}")
+                if msg.value > 0.0:
                     self.steering_on = True
+                    time.sleep(1)
             if self.steering_on and self.braking_on:
+                self.logger.info("start")
                 self.relay_restart = True
         
         def timer_callback(self, ser):
             if self.relay_restart:
+                self.logger.info("restart!!!")
                 ser.write(self.RESTART)
                 self.relay_restart = False
                 self.relay_off = False
             elif self.relay_off:
                 ser.write(self.ERROR)
             else:
-                self.msg_received = False
                 ser.write(self.GUARD)
 
 
     def __init__(self, port):
         super().__init__('motor_relay')
 
+        self.logger = rclpy.logging.get_logger(self.get_name())
+
         self.motor_relay = self.MotorRelayData()
-        self.actuator_relay = self.ActuationRelayData()
+        self.actuator_relay = self.ActuationRelayData(self.logger)
 
         motor_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the motor relay msg will be shipped on.")
         self.declare_parameter("motor_relay_topic", "/control/motor_relay", motor_relay_descriptor)
