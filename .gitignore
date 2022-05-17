@@ -7,3 +7,7 @@ __pycache__/
 .atk.user_count
 .dockerignore
 rosbag2*
+yolov4-tiny-evgrandprix22_last.weights
+yolov4-tiny-evgrandprix22.cfg
+evgrandprix22.data
+evgrandprix22.names
