@@ -3,8 +3,11 @@ from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
-from wagrandprix_vehicle_msgs.msg import MotorPower, ActuatorPower
+from wagrandprix_vehicle_msgs.msg import MotorPower
 from wagrandprix_control_msgs.msg import SteeringCommand, ThrottleCommand, BrakingCommand
+from sensor_msgs.msg import PointCloud2, Imu
+from geometry_msgs.msg import TwistStamped
+from sng_driver.msg import SbgGpsPos
 
 import time
 
@@ -34,6 +37,38 @@ class Kill_Switch_Publisher(Node):
             self.kill_value3 = 0.0
         self.last_throttle = self.latest_throttle
 
+    def zed_subscriber_callback(self, msg):
+        self.latest_zed = time.time() # time received of current message
+        if self.last_zed - self.latest_zed > 0.3: # if time between messages is greater than 0.28 seconds, kill
+            self.kill_value4 = -2.0
+        else:
+            self.kill_value4 = 0.0
+        self.last_zed = self.latest_zed
+
+    def imu_subscriber_callback(self, msg):
+        self.latest_imu = time.time() # time received of current message
+        if self.last_imu - self.latest_imu > 0.06: # if time between messages is greater than 0.06 seconds, kill
+            self.kill_value5 = -2.0
+        else:
+            self.kill_value5 = 0.0
+        self.last_imu = self.latest_imu
+
+    def vel_subscriber_callback(self, msg):
+        self.latest_vel = time.time() # time received of current message
+        if self.last_vel - self.latest_vel > 0.015: # if time between messages is greater than 0.28 seconds, kill
+            self.kill_value6 = -2.0
+        else:
+            self.kill_value6 = 0.0
+        self.last_vel = self.latest_vel
+
+    def gps_subscriber_callback(self, msg):
+        self.latest_gps = time.time() # time received of current message
+        if self.last_gps - self.latest_gps > 0.3: # if time between messages is greater than 0.28 seconds, kill
+            self.kill_value7 = -2.0
+        else:
+            self.kill_value7 = 0.0
+        self.last_gps = self.latest_gps
+
     def __init__(self):
         super().__init__('kill_switch_publisher')
 
@@ -45,10 +80,6 @@ class Kill_Switch_Publisher(Node):
         motor_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the motor relay msg will be shipped on.")
         self.declare_parameter("motor_relay_topic", "/control/motor_relay", motor_relay_descriptor)
         self.motor_relay_topic = self.get_parameter("motor_relay_topic").value
-
-        # actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the actuator relay msg will be shipped on.")
-        # self.declare_parameter("actuator_relay_topic", "/control/actuator_relay", actuator_relay_descriptor)
-        # self.actuator_relay_topic = self.get_parameter("actuator_relay_topic").value
 
         braking_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the braking msg will be shipped on.")
         self.declare_parameter("braking_topic", "/control/braking", braking_descriptor)
@@ -62,10 +93,25 @@ class Kill_Switch_Publisher(Node):
         self.declare_parameter("throttle_topic", "/control/throttle", throttle_descriptor)
         self.throttle_topic = self.get_parameter("throttle_topic").value
 
+        zed_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the zed camera msg will be shipped on.")
+        self.declare_parameter("zed_topic", "/zed/zed_node/point_cloud/cloud_registered", zed_descriptor)
+        self.zed_topic = self.get_parameter("zed_topic").value
+
+        imu_data_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the imu data msg will be shipped on.")
+        self.declare_parameter("imu_data_topic", "/imu/data", imu_data_descriptor)
+        self.imu_data_topic = self.get_parameter("imu_data_topic").value
+
+        velocity_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the imu velocity msg will be shipped on.")
+        self.declare_parameter("velocity_topic", "/imu/velocity", velocity_descriptor)
+        self.velocity_topic = self.get_parameter("velocity_topic").value
+
+        gps_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the sbg gps pos msg will be shipped on.")
+        self.declare_parameter("gps_topic", "/sbg/gps_pos", gps_descriptor)
+        self.gps_topic = self.get_parameter("gps_topic").value
+
         # Create publisher handles
         self.publisher_handles = {}
         self.publisher_handles[self.motor_relay_topic] = self.create_publisher(MotorPower, self.motor_relay_topic, 1)
-        # self.publisher_handles[self.actuator_relay_topic] = self.create_publisher(ActuatorPower, self.actuator_relay_topic, 1)
         self.publisher_handles[self.e_brake_topic] = self.create_publisher(BrakingCommand, self.e_brake_topic, 1)
 
         msg = MotorPower() # initialize motor
@@ -76,12 +122,21 @@ class Kill_Switch_Publisher(Node):
         self.last_brake = time.time() # initialize first message for braking
         self.last_steer = time.time() # initialize first message for steering
         self.last_throttle = time.time() # initialize first message for throttle
-        
+        self.last_zed = time.time() # initialize first message for zed
+        self.last_imu = time.time() # initialize first message for imu data
+        self.last_vel = time.time() # initialize first message for velocity
+        self.last_gps = time.time() # initialize first message for gps
+
         # Create Subscriber handles
         self.subscriber_handles = {}
         self.subscriber_handles[self.braking_topic] = self.create_subscription(BrakingCommand, self.braking_topic, self.braking_subscriber_callback, 1)
         self.subscriber_handles[self.steering_topic] = self.create_subscription(SteeringCommand, self.steering_topic, self.steering_subscriber_callback, 1)
         self.subscriber_handles[self.throttle_topic] = self.create_subscription(ThrottleCommand, self.throttle_topic, self.throttle_subscriber_callback, 1)
+        self.subscriber_handles[self.zed_topic] = self.create_subscription(PointCloud2, self.zed_topic, self.zed_subscriber_callback, 1)
+        self.subscriber_handles[self.imu_data_topic] = self.create_subscription(Imu, self.imu_data_topic, self.imu_subscriber_callback, 1)
+        self.subscriber_handles[self.velocity_topic] = self.create_subscription(TwistStamped, self.velocity_topic, self.vel_subscriber_callback, 1)
+        self.subscriber_handles[self.gps_topic] = self.create_subscription(SbgGpsPos, self.gps_topic, self.gps_subscriber_callback, 1)
+        # UPDATE MESSAGE TYPES FOR NEW TOPICS
 
         # Timer to make sure we publish at a controlled rate
         timer_period = 0.01  # 100 Hz
@@ -93,13 +148,15 @@ class Kill_Switch_Publisher(Node):
         # if statement here that parses topics for errors
         # error found: self.i = -2.0
         # nothing found: self.i = 0.0
-        msg.value = min(self.kill_value, self.kill_value2, self.kill_value3)
+        msg.value = min(self.kill_value, self.kill_value2, self.kill_value3, 
+        self.kill_value4, self.kill_value5, self.kill_value6, self.kill_value7)
         self.publisher_handles[self.motor_relay_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.motor_relay_topic}")
 
         msg2 = BrakingCommand()
-        # if something goes wrong, publish .6
-        if min(self.kill_value, self.kill_value2, self.kill_value3) == -2.0:
+        # if something goes wrong, publish .6 to e_brake
+        if min(self.kill_value, self.kill_value2, self.kill_value3, 
+        self.kill_value4, self.kill_value5, self.kill_value6, self.kill_value7) == -2.0:  # add new kills to min
             msg2.value = .6 # apply e_brakes if error is found
         else:
             return # do not publish anything to brakes if nothing is wrong
