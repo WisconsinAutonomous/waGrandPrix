@@ -12,7 +12,7 @@ from sbg_driver.msg import SbgGpsPos
 import time
 
 class Kill_Switch_Publisher(Node):
-    
+
     def publish_kill(self):
         msg = MotorPower()
         msg.value = -2.0
@@ -138,8 +138,8 @@ class Kill_Switch_Publisher(Node):
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
     def timer_callback(self):
-        if min(self.last_brake, self.last_gps, self.last_imu, 
-        self.last_steer, self.last_imu, self.last_vel, self.last_zed) - time.time() > .3: # If any messages are beyond maximum threshold
+        if time.time() - min(self.last_brake, self.last_gps, self.last_imu, 
+        self.last_steer, self.last_imu, self.last_vel, self.last_zed) > .3: # If any messages are beyond maximum threshold
             self.publish_kill
         msg = MotorPower()
         msg.value = 0.0
