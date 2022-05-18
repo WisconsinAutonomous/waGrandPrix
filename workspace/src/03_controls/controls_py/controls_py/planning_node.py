@@ -26,7 +26,7 @@ from rclpy.node import Node
 from controls_py.CenterlinePlanner import CenterlinePlanner
 import numpy as np
 
-from wa_simulator_ros_msgs.msg import WATrack, WAVehicle
+from wagrandprix_map_msgs.msg import DetectedTrack
 from wagrandprix_vehicle_msgs.msg import VehicleState
 from geometry_msgs.msg import Point
 
@@ -40,11 +40,11 @@ class PlanningNode(Node):
         # Parse params
         # ------------
         vehicle_state_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that provides vehicle state information")
-        self.declare_parameter("vehicle_state_topic", "/sim/vehicle/state", vehicle_state_topic_descriptor)
+        self.declare_parameter("vehicle_state_topic", "/localization/vehicle/state", vehicle_state_topic_descriptor)
         self.vehicle_state_topic = self.get_parameter("vehicle_state_topic").value
 
         track_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that provides track information")
-        self.declare_parameter("track_topic", "/sim/track/visible", track_topic_descriptor)
+        self.declare_parameter("track_topic", "/perception/detected/track", track_topic_descriptor)
         self.track_topic = self.get_parameter("track_topic").value
         # ------------
         # ROS Entities
@@ -61,8 +61,8 @@ class PlanningNode(Node):
         self.logger.info(f"vehicle_state_topic: {self.vehicle_state_topic}")
         self.logger.info(f"track_topic: {self.track_topic}")
 
-        self.subscriber_handles[self.track_topic] = self.create_subscription(WATrack, self.track_topic, self._receive_track, 1)
-        self.subscriber_handles[self.vehicle_state_topic] = self.create_subscription(WAVehicle, self.vehicle_state_topic, self._receive_state, 1)
+        self.subscriber_handles[self.track_topic] = self.create_subscription(DetectedTrack, self.track_topic, self._receive_track, 1)
+        self.subscriber_handles[self.vehicle_state_topic] = self.create_subscription(VehicleState, self.vehicle_state_topic, self._receive_state, 1)
 
         # makes it so that nodes with timers use simulation time published in /clock instead of the cpu wall clock
         # sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
@@ -88,11 +88,11 @@ class PlanningNode(Node):
     def _receive_track(self, msg):
         self.received_track = True
         self.cp.track_left = []
-        for point in msg.left_visible_points:
+        for point in msg.left_points:
             self.cp.track_left.append([point.x, point.y, point.z])
 
         self.cp.track_right = []
-        for point in msg.right_visible_points:
+        for point in msg.right_points:
             self.cp.track_right.append([point.x, point.y, point.z])
         self.send_waypoint()
 
