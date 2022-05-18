@@ -155,14 +155,6 @@ class ControllerNode(Node):
         if self.received_VehicleTarget:
 
             self.controller.advance(self.step)
-<<<<<<< HEAD
-            # self.get_logger().info('Publishing vehicle command')
-            self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = max(-0.3, self.controller.steering), min(0.1, self.controller.throttle), self.controller.braking
-            
-            self.pub_steering.publish(self.vehicle_command.steering)
-            self.pub_throttle.publish(self.vehicle_command.throttle)
-            self.pub_braking.publish(self.vehicle_command.braking)
-=======
             # self.logger.info('Publishing vehicle command')
             self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, self.controller.throttle, self.controller.braking
             # self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.fakeValues[self.idx][0], self.fakeValues[self.idx][1], self.fakeValues[self.idx][2]
@@ -170,7 +162,6 @@ class ControllerNode(Node):
             self.publisher_handles["steering"].publish(self.vehicle_command.steering)
             self.publisher_handles["braking"].publish(self.vehicle_command.braking)
             self.publisher_handles["throttle"].publish(self.vehicle_command.throttle)
->>>>>>> controls
             # self.pub_cmd.publish(self.vehicle_command) # Send control
             # self.controller.update_u() # Get next control
 
