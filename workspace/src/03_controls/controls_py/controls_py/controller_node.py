@@ -138,12 +138,12 @@ class ControllerNode(Node):
 
     # Callback to store state data from estimator
     def _save_state(self, msg):
-        self.get_logger().info('received state')
+        # self.get_logger().info('received state')
         self.received_VehicleState = True
         self.controller.VehicleState = msg
     
     def _save_target(self, msg):
-        self.get_logger().info('received target')
+        # self.get_logger().info('received target')
         self.received_VehicleTarget = True
         self.controller.target_point = msg.x, msg.y, msg.z
 
@@ -155,7 +155,7 @@ class ControllerNode(Node):
         if self.received_VehicleTarget:
 
             self.controller.advance(self.step)
-            self.logger.info('Publishing vehicle command')
+            # self.logger.info('Publishing vehicle command')
             self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.controller.steering, self.controller.throttle, self.controller.braking
             # self.vehicle_command.steering.value, self.vehicle_command.throttle.value, self.vehicle_command.braking.value = self.fakeValues[self.idx][0], self.fakeValues[self.idx][1], self.fakeValues[self.idx][2]
             # self.idx += 1

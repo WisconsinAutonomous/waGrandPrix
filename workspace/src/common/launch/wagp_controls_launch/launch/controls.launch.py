@@ -74,7 +74,7 @@ def generate_launch_description():
         name='planning_node',
         parameters=[{
             "fake_with_sim": LaunchConfiguration("fake_with_sim"),
-            "vehicle_state_topic": LaunchConfiguration("sim_vehicle_state_topic"),
+            # "vehicle_state_topic": LaunchConfiguration("sim_vehicle_state_topic"),
         }],
         output="screen",
     )
@@ -87,7 +87,7 @@ def generate_launch_description():
         parameters=[{
             "control_algorithm": LaunchConfiguration("control_algorithm"),
             "fake_with_sim": LaunchConfiguration("fake_with_sim"),
-            "vehicle_state_topic": LaunchConfiguration("sim_vehicle_state_topic"),
+            # "vehicle_state_topic": LaunchConfiguration("sim_vehicle_state_topic"),
         }],
         output="screen",
     )

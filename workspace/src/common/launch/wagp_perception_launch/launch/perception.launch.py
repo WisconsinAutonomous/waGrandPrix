@@ -52,7 +52,7 @@ def generate_launch_description():
             "lidar_topic": LaunchConfiguration("lidar_topic"),
             "camera_topic": LaunchConfiguration("camera_topic"),
             "fake_with_sim": LaunchConfiguration("fake_with_sim"),
-            "sim_track_topic": LaunchConfiguration("sim_track_topic"),
+            # "sim_track_topic": LaunchConfiguration("sim_track_topic"),
         }],
         output="screen",
     )

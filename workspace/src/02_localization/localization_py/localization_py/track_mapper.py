@@ -23,10 +23,6 @@ class TrackMapper(Node):
         self.declare_parameter("detected_track_topic", "/perception/track/detected", detected_track_descriptor)
         self.detected_track_topic = self.get_parameter("detected_track_topic").value
 
-        vehicle_state_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic the vehicle state estimation will be shipped on.")
-        self.declare_parameter("vehicle_state_topic", "vehicle/state", vehicle_state_descriptor)
-        self.vehicle_state_topic = self.get_parameter("vehicle_state_topic").value
-
         fake_with_sim_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_BOOL, description="Whether to run this nodes algorithms or fake it with sim data.")
         self.declare_parameter("fake_with_sim", False, fake_with_sim_descriptor)
         self.fake_with_sim = self.get_parameter("fake_with_sim").value
@@ -50,18 +46,16 @@ class TrackMapper(Node):
 
         # If desired, we may "fake" the track mapper node
         # This can be done using sim, where we grab all of the vehicle state information directly from the simulation
-        # if self.fake_with_sim:
-        #     from wa_simulator_ros_msgs.msg import WAVehicle
+        if self.fake_with_sim:
+            from wa_simulator_ros_msgs.msg import WAVehicle
 
-        #     self.logger.info(f"sim_track_topic: {self.sim_track_topic}")
+            self.logger.info(f"sim_track_topic: {self.sim_track_topic}")
 
-        #     self.subscriber_handles[self.sim_track_topic] = self.create_subscription(WATrack, self.sim_track_topic, self.sim_track_callback, 1)
-        # else:
-        self.logger.info(f"detected_track_topic: {self.detected_track_topic}")
-        self.logger.info(f"vehicle_state_topic: {self.vehicle_state_topic}")
+            self.subscriber_handles[self.sim_track_topic] = self.create_subscription(WATrack, self.sim_track_topic, self.sim_track_callback, 1)
+        else:
+            self.logger.info(f"detected_track_topic: {self.detected_track_topic}")
 
-        self.subscriber_handles[self.detected_track_topic] = self.create_subscription(DetectedTrack, self.detected_track_topic, self.detected_track_callback, 1)
-        self.subscriber_handles[self.vehicle_state_topic] = self.create_subscription(VehicleState, self.vehicle_state_topic, self.vehicle_state_callback, 1)
+            self.subscriber_handles[self.detected_track_topic] = self.create_subscription(DetectedTrack, self.detected_track_topic, self.detected_track_callback, 1)
 
         # ------------------------
         # Initialize Class Members
@@ -72,12 +66,6 @@ class TrackMapper(Node):
         Callback for the detected track data topic.
         """
         self.logger.debug(f"Received {msg} on topic {self.detected_track_topic}")
-
-    def vehicle_state_callback(self, msg):
-        """
-        Callback for the vehicle state data topic.
-        """
-        self.logger.debug(f"Received {msg} on topic {self.vehicle_state_topic}")
 
     def sim_track_callback(self, msg):
         """
