@@ -253,8 +253,8 @@ class PIDLateralController(wa.WAController):
 
         # Return PID output (steering value)
         steering = self._Kp * self._err + self._Ki * self._erri + self._Kd * self._errd
-        self.f.write("steering: " + str(steering) + "\n")
-        self.f.flush()
+        # self.f.write("steering: " + str(steering) + "\n")
+        # self.f.flush()
         self.steering = np.clip(steering, -1.0, 1.0)
         
 
