@@ -38,17 +38,12 @@ class ControllerNode(Node):
         vehicle_state_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that provides vehicle state information")
         self.declare_parameter("vehicle_state_topic", "/localization/vehicle/state", vehicle_state_topic_descriptor)
         self.vehicle_state_topic = self.get_parameter("vehicle_state_topic").value
-
-        fake_with_sim_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_BOOL, description="Whether to run this nodes algorithms or fake it with sim data.")
-        self.declare_parameter("fake_with_sim", False, fake_with_sim_descriptor)
-        self.fake_with_sim = self.get_parameter("fake_with_sim").value
         
         control_algorithm_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="Which control agorithm to run")
         self.declare_parameter("control_algorithm", "StanleyController", control_algorithm_descriptor)
         self.control_algorithm = self.get_parameter("control_algorithm").value
 
 
-        self.logger.info(f"fake_with_sim: {self.fake_with_sim}")
         self.logger.info(f"control_algorithm: {self.control_algorithm}")
 
 
@@ -66,8 +61,6 @@ class ControllerNode(Node):
         # Create subcriber handles
         self.subscriber_handles = {}
 
-        # If desired, we may "fake" the vehicle state estimator node
-        # This can be done using sim, where we grab all of the vehicle state information directly from the simulation
         self.logger.info(f"vehicle_state_topic: {self.vehicle_state_topic}")
         self.logger.info(f"target_point_topic: {self.target_point_topic}")
 
