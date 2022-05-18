@@ -102,7 +102,7 @@ class PlanningNode(Node):
             if waypoint != None:
                 self.msg_waypoint.x, self.msg_waypoint.y, self.msg_waypoint.z = waypoint
                 self.publisher_handles["planning"].publish(self.msg_waypoint)
-            self.logger.info('Publishing waypoint')
+            # self.logger.info('Publishing waypoint')
 
 
 # Entry point
