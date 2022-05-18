@@ -65,8 +65,8 @@ def generate_launch_description():
     planning_node = Node(
         package='controls_py',
         namespace='controls',
-        executable='planning_node',
-        name='planning_node',
+        executable='global_planning_node',
+        name='global_planning_node',
         parameters=[{
             # "vehicle_state_topic": LaunchConfiguration("sim_vehicle_state_topic"),
         }],
