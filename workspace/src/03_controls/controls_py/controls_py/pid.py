@@ -212,7 +212,7 @@ class PIDLateralController(wa.WAController):
         pos = wa.WAVector([self.VehicleState.pose.position.x, self.VehicleState.pose.position.y, self.VehicleState.pose.position.z])
         temp = [self.VehicleState.pose.orientation.x, self.VehicleState.pose.orientation.y, self.VehicleState.pose.orientation.z, self.VehicleState.pose.orientation.w]
         _, _, yaw = wa.WAQuaternion(temp).to_euler()
-        # self.f.write("vehicle state: " + str((self.VehicleState.pose.position.x, self.VehicleState.pose.position.y, self.VehicleState.pose.position.z)) + "\n")
+        # self.f.write("vehicle state: " + str((self.VehicleState.pose.position.x, self.VehicleState.pose.position.y, self.VehicleState.pose.position.z)) + "  ")
         # self.f.write("yaw: " + str(yaw) + "\n")
         # self.f.flush()
 
@@ -223,11 +223,11 @@ class PIDLateralController(wa.WAController):
                 0,
             ]
         )
-        # self.f.write("sentinel: " + str(self._sentinel) + "\n")
+        # self.f.write("sentinel: " + str(self._sentinel) + "  ")
         # self.f.flush()
 
         self._target = self.target_point
-        # self.f.write("target: " + str(self.target_point) + "\n")
+        # self.f.write("target: " + str(self.target_point) + "  ")
         # self.f.flush()
 
         # The "error" vector is the projection onto the horizontal plane (z=0) of
@@ -253,9 +253,10 @@ class PIDLateralController(wa.WAController):
 
         # Return PID output (steering value)
         steering = self._Kp * self._err + self._Ki * self._erri + self._Kd * self._errd
-        # self.f.write("steering: " + str(steering) + "\n")
-        # self.f.flush()
+        self.f.write("steering: " + str(steering) + "\n")
+        self.f.flush()
         self.steering = np.clip(steering, -1.0, 1.0)
+        
 
     def _calc_sign(self, pos: wa.WAVector) -> int:
         """Calculate the sign of the angle between the projections of the sentinel vector
