@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = '05_kill_switch'
+package_name = 'kill_switch'
 
 setup(
     name=package_name,
@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'kill_switch = 05_kill_switch.kill_switch:main'
+            "kill_switch = kill_switch.kill_switch:main",
+            "kill_switch_dummy = kill_switch.kill_switch_dummy:main",
         ],
     },
 )

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>05_kill_switch</name>
+  <name>kill_switch</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
   <maintainer email="wagrandprix@todo.todo">wagrandprix</maintainer>
@@ -11,7 +11,7 @@
 	<exec_depend>wagrandprix_vehicle_msgs</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
-  <exec_depend>sng_driver</exec_depend>
+  <exec_depend>sbg_driver</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

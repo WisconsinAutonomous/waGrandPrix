@@ -7,7 +7,7 @@ from wagrandprix_vehicle_msgs.msg import MotorPower
 from wagrandprix_control_msgs.msg import SteeringCommand, ThrottleCommand, BrakingCommand
 from sensor_msgs.msg import PointCloud2, Imu
 from geometry_msgs.msg import TwistStamped
-from sng_driver.msg import SbgGpsPos
+from sbg_driver.msg import SbgGpsPos
 
 import time
 
@@ -143,6 +143,19 @@ class Kill_Switch_Publisher(Node):
 
 
     def timer_callback(self):
+        if min(self.last_brake, self.last_gps, self.last_imu, 
+        self.last_steer, self.last_imu, self.last_vel, self.last_zed) - time.time() > .3: # If any messages are beyond maximum threshold
+            msg = MotorPower()
+            msg.value = -2.0
+            self.publisher_handles[self.motor_relay_topic].publish(msg)
+            self.get_logger().info(f"Sent {msg} on topic {self.motor_relay_topic}")
+
+            msg2 = BrakingCommand()
+            msg.value = 0.6
+            self.publisher_handles[self.e_brake_topic].publish(msg2)
+            self.get_logger().info(f"Sent {msg2} on topic {self.e_brake_topic}")  
+
+
         msg = MotorPower()
         # if statement here that parses topics for errors
         # error found: msg.value = -2.0
