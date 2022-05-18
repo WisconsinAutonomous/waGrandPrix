@@ -48,7 +48,7 @@ def generate_launch_description():
     )
 
     sim_vehicle_state_topic_arg = DeclareLaunchArgument(
-        "sim_vehicle_state_topic", default_value=TextSubstitution(text="/vehicle/state")
+        "sim_vehicle_state_topic", default_value=TextSubstitution(text="/sim/vehicle/state")
     )
 
     sim_track_topic_arg = DeclareLaunchArgument(
@@ -87,9 +87,10 @@ def generate_launch_description():
     track_mapper_node = Node(
         package='localization_py',
         namespace='localization',
-        executable='track_publisher',
-        name='track_publisher',
+        executable='track_mapper',
+        name='track_mapper',
         parameters=[{
+            "fake_with_sim": LaunchConfiguration("fake_with_sim"),
         }],
         output="screen",
     )

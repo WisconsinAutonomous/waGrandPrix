@@ -40,12 +40,12 @@ class PlanningNode(Node):
         # Parse params
         # ------------
         vehicle_state_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that provides vehicle state information")
-        self.declare_parameter("vehicle_state_topic", "/vehicle/state", vehicle_state_topic_descriptor)
+        self.declare_parameter("vehicle_state_topic", "/sim/vehicle/state", vehicle_state_topic_descriptor)
         self.vehicle_state_topic = self.get_parameter("vehicle_state_topic").value
 
-        mapped_track_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that provides track information")
-        self.declare_parameter("mapped_track_topic", "/track/visible", mapped_track_topic_descriptor)
-        self.mapped_track_topic = self.get_parameter("mapped_track_topic").value
+        track_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that provides track information")
+        self.declare_parameter("track_topic", "/sim/track/visible", track_topic_descriptor)
+        self.track_topic = self.get_parameter("track_topic").value
         # ------------
         # ROS Entities
         # ------------
@@ -58,7 +58,10 @@ class PlanningNode(Node):
         # Create subcriber handles
         self.subscriber_handles = {}
 
-        self.subscriber_handles[self.mapped_track_topic] = self.create_subscription(WATrack, self.mapped_track_topic, self._receive_track, 1)
+        self.logger.info(f"vehicle_state_topic: {self.vehicle_state_topic}")
+        self.logger.info(f"track_topic: {self.track_topic}")
+
+        self.subscriber_handles[self.track_topic] = self.create_subscription(WATrack, self.track_topic, self._receive_track, 1)
         self.subscriber_handles[self.vehicle_state_topic] = self.create_subscription(WAVehicle, self.vehicle_state_topic, self._receive_state, 1)
 
         # makes it so that nodes with timers use simulation time published in /clock instead of the cpu wall clock
@@ -99,7 +102,7 @@ class PlanningNode(Node):
             if waypoint != None:
                 self.msg_waypoint.x, self.msg_waypoint.y, self.msg_waypoint.z = waypoint
                 self.publisher_handles["planning"].publish(self.msg_waypoint)
-            self.logger.info('Publishing waypoint')
+            # self.logger.info('Publishing waypoint')
 
 
 # Entry point

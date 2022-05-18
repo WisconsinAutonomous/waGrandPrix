@@ -51,7 +51,7 @@ class TrackDetector(Node):
         # This can be done in simulation, and essentially grabs the simulation state and determines the track absent of any perception algorithm
         if self.fake_with_sim:
             from wa_simulator_ros_msgs.msg import WATrack
-
+            
             self.logger.info(f"sim_track_topic: {self.sim_track_topic}")
 
             self.subscriber_handles[self.sim_track_topic] = self.create_subscription(WATrack, self.sim_track_topic, self.sim_track_callback, 1)
@@ -83,8 +83,21 @@ class TrackDetector(Node):
         Callback for the sim track data
         """
         self.logger.debug(f"Received {msg} on topic {self.sim_track_topic}")
+        left_points = []
+        for point in msg.left_visible_points:
+            left_points.append(Point())
+            left_points[-1].x = point.x
+            left_points[-1].y = point.y
+            left_points[-1].z = point.z
 
-        detected_track = DetectedTrack(left_points=msg.left_points, right_points=msg.right_points)
+        right_points = []
+        for point in msg.right_visible_points:
+            right_points.append(Point())
+            right_points[-1].x = point.x
+            right_points[-1].y = point.y
+            right_points[-1].z = point.z
+
+        detected_track = DetectedTrack(left_points=left_points, right_points=right_points)
         self.publisher_handles["detected/track"].publish(detected_track)
 
 
