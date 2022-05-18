@@ -48,7 +48,14 @@ class Kill_Switch_Dummy(Node):
         self.declare_parameter("gps_topic", "/sbg/gps_pos", gps_descriptor)
         self.gps_topic = self.get_parameter("gps_topic").value
 
+        self.publisher_handles = {}
         self.publisher_handles[self.braking_topic] = self.create_publisher(BrakingCommand, self.braking_topic, 1)
+        self.publisher_handles[self.steering_topic] = self.create_publisher(SteeringCommand, self.steering_topic, 1)
+        self.publisher_handles[self.throttle_topic] = self.create_publisher(ThrottleCommand, self.throttle_topic, 1)
+        self.publisher_handles[self.zed_topic] = self.create_publisher(PointCloud2, self.zed_topic, 1)
+        self.publisher_handles[self.imu_data_topic] = self.create_publisher(Imu, self.imu_data_topic, 1)
+        self.publisher_handles[self.velocity_topic] = self.create_publisher(TwistStamped, self.velocity_topic, 1)
+        self.publisher_handles[self.gps_topic] = self.create_publisher(SbgGpsPos, self.gps_topic, 1)
 
         # Timer to make sure we publish at a controlled rate
         timer_period = 0.01  # 100 Hz
@@ -71,38 +78,38 @@ class Kill_Switch_Dummy(Node):
         self.get_logger().info(f"Sent {msg} on topic {self.throttle_topic}")
 
         msg = PointCloud2()
-        msg.value = 0.0
+        msg.height = 0
         self.publisher_handles[self.zed_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.zed_topic}")
 
         msg = Imu()
-        msg.value = 0.0
+        msg.angular_velocity.x = 0.0
         self.publisher_handles[self.imu_data_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.imu_data_topic}")
 
         msg = TwistStamped()
-        msg.value = 0.0
+        msg.twist.linear.x = 0.0
         self.publisher_handles[self.velocity_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.velocity_topic}")
 
         msg = SbgGpsPos()
-        msg.value = 0.0
+        msg.time_stamp = 0
         self.publisher_handles[self.gps_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.gps_topic}")
 
-    def main(args=None):
-        rclpy.init(args=args)
+def main(args=None):
+    rclpy.init(args=args)
 
-        kill_switch_dummy = Kill_Switch_Dummy()
+    kill_switch_dummy = Kill_Switch_Dummy()
 
-        rclpy.spin(kill_switch_dummy)
+    rclpy.spin(kill_switch_dummy)
 
-        # Destroy the node explicitly
-        # (optional - otherwise it will be done automatically
-        # when the garbage collector destroys the node object)
-        kill_switch_dummy.destroy_node()
-        rclpy.shutdown()
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    kill_switch_dummy.destroy_node()
+    rclpy.shutdown()
 
 
-    if __name__ == '__main__':
-        main()
+if __name__ == '__main__':
+    main()

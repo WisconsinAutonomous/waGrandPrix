@@ -73,6 +73,13 @@ class Kill_Switch_Publisher(Node):
         super().__init__('kill_switch_publisher')
 
         self.logger = rclpy.logging.get_logger(self.get_name())
+        self.kill_value = 0.0
+        self.kill_value2 = 0.0
+        self.kill_value3 = 0.0
+        self.kill_value4 = 0.0
+        self.kill_value5 = 0.0
+        self.kill_value6 = 0.0
+        self.kill_value7 = 0.0
 
         # ------------
         # Parse params
@@ -84,6 +91,10 @@ class Kill_Switch_Publisher(Node):
         braking_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the braking msg will be shipped on.")
         self.declare_parameter("braking_topic", "/control/braking", braking_descriptor)
         self.braking_topic = self.get_parameter("braking_topic").value
+
+        e_brake_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the e_brake msg will be shipped on.")
+        self.declare_parameter("e_brake_topic", "/control/e_brake", e_brake_descriptor)
+        self.e_brake_topic = self.get_parameter("e_brake_topic").value
 
         steering_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the steering msg will be shipped on.")
         self.declare_parameter("steering_topic", "/control/steering", steering_descriptor)
@@ -174,19 +185,19 @@ class Kill_Switch_Publisher(Node):
             self.get_logger().info(f"Sent {msg2} on topic {self.e_brake_topic}")    
 
 
-    def main(args=None):
-        rclpy.init(args=args)
+def main(args=None):
+    rclpy.init(args=args)
 
-        kill_switch_publisher = Kill_Switch_Publisher()
+    kill_switch_publisher = Kill_Switch_Publisher()
 
-        rclpy.spin(kill_switch_publisher)
+    rclpy.spin(kill_switch_publisher)
 
-        # Destroy the node explicitly
-        # (optional - otherwise it will be done automatically
-        # when the garbage collector destroys the node object)
-        kill_switch_publisher.destroy_node()
-        rclpy.shutdown()
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    kill_switch_publisher.destroy_node()
+    rclpy.shutdown()
 
 
-    if __name__ == '__main__':
-        main()
+if __name__ == '__main__':
+    main()
