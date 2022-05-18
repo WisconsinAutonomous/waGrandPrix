@@ -226,8 +226,8 @@ class PIDLateralController(wa.WAController):
         # self.f.write("sentinel: " + str(self._sentinel) + "  ")
         # self.f.flush()
 
-        self.f.write("sentinel: " + str(self._sentinel) + "\n")
-        self.f.flush()
+        # self.f.write("sentinel: " + str(self._sentinel) + "\n")
+        # self.f.flush()
 
         self._target = self.target_point
         # self.f.write("target: " + str(self.target_point) + "  ")
