@@ -12,74 +12,63 @@ from sbg_driver.msg import SbgGpsPos
 import time
 
 class Kill_Switch_Publisher(Node):
+    
+    def publish_kill(self):
+        msg = MotorPower()
+        msg.value = -2.0
+        self.publisher_handles[self.motor_relay_topic].publish(msg)
+        self.get_logger().info(f"Sent {msg} on topic {self.motor_relay_topic}")
+        msg = BrakingCommand()
+        msg.value = 0.6
+        self.publisher_handles[self.e_brake_topic].publish(msg)
+        self.get_logger().info(f"Sent {msg} on topic {self.e_brake_topic}")
 
     def braking_subscriber_callback(self, msg):
         self.latest_throttle = time.time() # time received of current message
         if self.latest_throttle - self.last_throttle > 0.015: # if time between messages is greater than 0.015 seconds, kill
-            self.kill_value = -2.0
-        else:
-            self.kill_value = 0.0
+            self.publish_kill
         self.last_throttle = self.latest_throttle
 
     def steering_subscriber_callback(self, msg):
         self.latest_steer = time.time() # time received of current message
         if self.latest_steer - self.last_steer > 0.015: # if time between messages is greater than 0.015 seconds, kill
-            self.kill_value2 = -2.0
-        else:
-            self.kill_value2 = 0.0
+            self.publish_kill
         self.last_steer = self.latest_steer
 
     def throttle_subscriber_callback(self, msg):
         self.latest_throttle = time.time() # time received of current message
         if self.latest_throttle - self.last_throttle > 0.015: # if time between messages is greater than 0.015 seconds, kill
-            self.kill_value3 = -2.0
-        else:
-            self.kill_value3 = 0.0
+            self.publish_kill
         self.last_throttle = self.latest_throttle
 
     def zed_subscriber_callback(self, msg):
         self.latest_zed = time.time() # time received of current message
         if self.latest_zed - self.last_zed > 0.3: # if time between messages is greater than 0.28 seconds, kill
-            self.kill_value4 = -2.0
-        else:
-            self.kill_value4 = 0.0
+            self.publish_kill
         self.last_zed = self.latest_zed
 
     def imu_subscriber_callback(self, msg):
         self.latest_imu = time.time() # time received of current message
         if self.latest_imu - self.last_imu > 0.06: # if time between messages is greater than 0.06 seconds, kill
-            self.kill_value5 = -2.0
-        else:
-            self.kill_value5 = 0.0
+            self.publish_kill
         self.last_imu = self.latest_imu
 
     def vel_subscriber_callback(self, msg):
         self.latest_vel = time.time() # time received of current message
         if self.latest_vel - self.last_vel > 0.015: # if time between messages is greater than 0.28 seconds, kill
-            self.kill_value6 = -2.0
-        else:
-            self.kill_value6 = 0.0
+            self.publish_kill
         self.last_vel = self.latest_vel
 
     def gps_subscriber_callback(self, msg):
         self.latest_gps = time.time() # time received of current message
         if self.latest_gps - self.last_gps > 0.3: # if time between messages is greater than 0.28 seconds, kill
-            self.kill_value7 = -2.0
-        else:
-            self.kill_value7 = 0.0
+            self.publish_kill
         self.last_gps = self.latest_gps
 
     def __init__(self):
         super().__init__('kill_switch_publisher')
 
         self.logger = rclpy.logging.get_logger(self.get_name())
-        self.kill_value = 0.0
-        self.kill_value2 = 0.0
-        self.kill_value3 = 0.0
-        self.kill_value4 = 0.0
-        self.kill_value5 = 0.0
-        self.kill_value6 = 0.0
-        self.kill_value7 = 0.0
 
         # ------------
         # Parse params
@@ -91,10 +80,6 @@ class Kill_Switch_Publisher(Node):
         braking_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the braking msg will be shipped on.")
         self.declare_parameter("braking_topic", "/control/braking", braking_descriptor)
         self.braking_topic = self.get_parameter("braking_topic").value
-
-        e_brake_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the e_brake msg will be shipped on.")
-        self.declare_parameter("e_brake_topic", "/control/e_brake", e_brake_descriptor)
-        self.e_brake_topic = self.get_parameter("e_brake_topic").value
 
         steering_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the steering msg will be shipped on.")
         self.declare_parameter("steering_topic", "/control/steering", steering_descriptor)
@@ -152,38 +137,14 @@ class Kill_Switch_Publisher(Node):
         timer_period = 0.01  # 100 Hz
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
-
     def timer_callback(self):
         if min(self.last_brake, self.last_gps, self.last_imu, 
         self.last_steer, self.last_imu, self.last_vel, self.last_zed) - time.time() > .3: # If any messages are beyond maximum threshold
-            msg = MotorPower()
-            msg.value = -2.0
-            self.publisher_handles[self.motor_relay_topic].publish(msg)
-            self.get_logger().info(f"Sent {msg} on topic {self.motor_relay_topic}")
-
-            msg2 = BrakingCommand()
-            msg.value = 0.6
-            self.publisher_handles[self.e_brake_topic].publish(msg2)
-            self.get_logger().info(f"Sent {msg2} on topic {self.e_brake_topic}")  
-
-
+            self.publish_kill
         msg = MotorPower()
-        # if statement here that parses topics for errors
-        # error found: msg.value = -2.0
-        # nothing found: msg.value = 0.0
-        msg.value = min(self.kill_value, self.kill_value2, self.kill_value3, 
-        self.kill_value4, self.kill_value5, self.kill_value6, self.kill_value7)
+        msg.value = 0.0
         self.publisher_handles[self.motor_relay_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.motor_relay_topic}")
-
-        msg2 = BrakingCommand()
-        # if something goes wrong, publish .6 to e_brake
-        if min(self.kill_value, self.kill_value2, self.kill_value3, 
-        self.kill_value4, self.kill_value5, self.kill_value6, self.kill_value7) == -2.0:  # add new kills to min
-            msg2.value = .6 # apply e_brakes if error is found, do not publish anything to brakes if nothing is wrong
-            self.publisher_handles[self.e_brake_topic].publish(msg2)
-            self.get_logger().info(f"Sent {msg2} on topic {self.e_brake_topic}")    
-
 
 def main(args=None):
     rclpy.init(args=args)
