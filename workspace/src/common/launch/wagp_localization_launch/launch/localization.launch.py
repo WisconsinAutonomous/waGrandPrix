@@ -90,10 +90,7 @@ def generate_launch_description():
         executable='track_mapper',
         name='track_mapper',
         parameters=[{
-            "detected_track_topic": LaunchConfiguration("detected_track_topic"),
-            "vehicle_state_topic": LaunchConfiguration("vehicle_state_topic"),
             "fake_with_sim": LaunchConfiguration("fake_with_sim"),
-            "sim_track_topic": LaunchConfiguration("sim_track_topic"),
         }],
         output="screen",
     )

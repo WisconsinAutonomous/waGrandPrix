@@ -65,6 +65,8 @@ class VehicleStateEstimator(Node):
 
             self.subscriber_handles[self.sim_vehicle_state_topic] = self.create_subscription(WAVehicle, self.sim_vehicle_state_topic, self.sim_vehicle_state_callback, 1)
         else:
+            from sbg_driver.msg import SbgGpsPos
+            
             self.logger.info(f"imu_topic: {self.imu_topic}")
             self.logger.info(f"gps_topic: {self.gps_topic}")
             self.logger.info(f"wheel_encoder_topic: {self.wheel_encoder_topic}")
@@ -80,6 +82,20 @@ class VehicleStateEstimator(Node):
         # ------------------------
 
         self.vehicle_state = VehicleState()
+
+        self.timer = self.create_timer(0.5, self.publishData)
+
+        self.received_velocity = False
+        self.received_imu = False
+        self.received_gps = False
+
+    def publishData(self):
+        if (self.received_velocity and self.received_imu and self.received_gps) or self.fake_with_sim:
+            self.publisher_handles["vehicle/state"].publish(self.vehicle_state)
+            self.received_velocity = False
+            self.received_imu = False
+            self.received_gps = False
+
 
     def imu_callback(self, msg):
         """
