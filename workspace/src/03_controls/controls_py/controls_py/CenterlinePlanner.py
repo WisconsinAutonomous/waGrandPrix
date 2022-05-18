@@ -24,7 +24,7 @@ class CenterlinePlanner():
         #     midpoints.append([midpoint_x, midpoint_y, 0])
         # return midpoints[-1]
 
-        midpoint_x = (self.track_right[-1][0] + self.track_left[-1][0]) / 2
-        midpoint_y = (self.track_right[-1][1] + self.track_left[-1][1]) / 2
-        midpoint_z = (self.track_right[-1][2] + self.track_left[-1][2]) / 2
+        midpoint_x = (self.track_right[0][0] + self.track_left[0][0]) / 2
+        midpoint_y = (self.track_right[0][1] + self.track_left[0][1]) / 2
+        midpoint_z = (self.track_right[0][2] + self.track_left[0][2]) / 2
         return [midpoint_x, midpoint_y, midpoint_z]

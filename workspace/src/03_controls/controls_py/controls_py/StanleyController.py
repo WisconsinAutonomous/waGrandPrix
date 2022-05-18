@@ -247,6 +247,7 @@ class StanleyLateralController():
         # vector and the target vector (with origin at vehicle location).
         sign = self._calc_sign(pos)
 
+        # print("pos", pos)
         # print("sign", sign)
         # Calculate current error (magnitude)
         err = sign * err_vec.length

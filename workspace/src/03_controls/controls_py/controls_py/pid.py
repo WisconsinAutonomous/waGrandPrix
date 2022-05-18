@@ -107,6 +107,9 @@ class PIDController(wa.WAController):
         self._lat_controller.target_point = self.target_point
         self._long_controller.target_point = self.target_point
 
+        self._lat_controller.VehicleState = self.VehicleState
+        self._long_controller.VehicleState = self.VehicleState
+
         self._lat_controller.advance(step)
         self._long_controller.advance(step)
 
@@ -171,7 +174,7 @@ class PIDLateralController(wa.WAController):
         self.VehicleState = vehicle_state
         self.target_point = target_point
 
-        self.f = open("control_log.txt", "x")
+        # self.f = open("control_log.txt", "x")
 
     def set_gains(self, Kp: float, Ki: float, Kd: float):
         """Set the gains
@@ -209,8 +212,9 @@ class PIDLateralController(wa.WAController):
         pos = wa.WAVector([self.VehicleState.pose.position.x, self.VehicleState.pose.position.y, self.VehicleState.pose.position.z])
         temp = [self.VehicleState.pose.orientation.x, self.VehicleState.pose.orientation.y, self.VehicleState.pose.orientation.z, self.VehicleState.pose.orientation.w]
         _, _, yaw = wa.WAQuaternion(temp).to_euler()
-        self.f.write("yaw: " + str(yaw) + "\n")
-        self.f.flush()
+        # self.f.write("vehicle state: " + str((self.VehicleState.pose.position.x, self.VehicleState.pose.position.y, self.VehicleState.pose.position.z)) + "  ")
+        # self.f.write("yaw: " + str(yaw) + "\n")
+        # self.f.flush()
 
         self._sentinel = wa.WAVector(
             [
@@ -219,11 +223,15 @@ class PIDLateralController(wa.WAController):
                 0,
             ]
         )
+        # self.f.write("sentinel: " + str(self._sentinel) + "  ")
+        # self.f.flush()
 
         self.f.write("sentinel: " + str(self._sentinel) + "\n")
         self.f.flush()
 
         self._target = self.target_point
+        # self.f.write("target: " + str(self.target_point) + "  ")
+        # self.f.flush()
 
         # The "error" vector is the projection onto the horizontal plane (z=0) of
         # vector between sentinel and target
@@ -251,6 +259,7 @@ class PIDLateralController(wa.WAController):
         self.f.write("steering: " + str(steering) + "\n")
         self.f.flush()
         self.steering = np.clip(steering, -1.0, 1.0)
+        
 
     def _calc_sign(self, pos: wa.WAVector) -> int:
         """Calculate the sign of the angle between the projections of the sentinel vector
