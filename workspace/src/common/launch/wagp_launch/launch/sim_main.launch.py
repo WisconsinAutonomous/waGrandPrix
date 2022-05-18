@@ -20,7 +20,7 @@ def generate_launch_description():
         # WA Simulator-ROS bridge
         Node(
             package='wa_simulator_ros_bridge',
-            namespace='wa_simulator_ros_bridge',
+            namespace='sim',
             executable='bridge',
             name='bridges'
         ),
@@ -32,6 +32,20 @@ def generate_launch_description():
                     FindPackageShare('wagp_localization_launch'),
                     'launch',
                     'localization.launch.py'
+                ])
+            ]),
+            launch_arguments={
+                "fake_with_sim": 'True'
+            }.items()
+        ),
+
+        # perception
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([
+                PathJoinSubstitution([
+                    FindPackageShare('wagp_perception_launch'),
+                    'launch',
+                    'perception.launch.py'
                 ])
             ]),
             launch_arguments={

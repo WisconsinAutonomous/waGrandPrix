@@ -9,7 +9,6 @@ from std_msgs.msg import Float64
 from sensor_msgs.msg import NavSatFix, Imu
 from wa_simulator_ros_msgs.msg import WAVehicle
 from geometry_msgs.msg import TwistStamped
-from sbg_driver.msg import SbgGpsPos
 
 
 class VehicleStateEstimator(Node):
@@ -47,7 +46,7 @@ class VehicleStateEstimator(Node):
         self.fake_with_sim = self.get_parameter("fake_with_sim").value
 
         sim_vehicle_state_topic_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic sim data is published that provides vehicle state information")
-        self.declare_parameter("sim_vehicle_state_topic", "/vehicle/state", sim_vehicle_state_topic_descriptor)
+        self.declare_parameter("sim_vehicle_state_topic", "/sim/vehicle/state", sim_vehicle_state_topic_descriptor)
         self.sim_vehicle_state_topic = self.get_parameter("sim_vehicle_state_topic").value
        
         self.logger.info(f"fake_with_sim: {self.fake_with_sim}")
@@ -72,6 +71,8 @@ class VehicleStateEstimator(Node):
 
             self.subscriber_handles[self.sim_vehicle_state_topic] = self.create_subscription(WAVehicle, self.sim_vehicle_state_topic, self.sim_vehicle_state_callback, 1)
         else:
+            from sbg_driver.msg import SbgGpsPos
+            
             self.logger.info(f"imu_topic: {self.imu_topic}")
             self.logger.info(f"imu_velocity_topic: {self.imu_velocity_topic}")
             self.logger.info(f"gps_topic: {self.gps_topic}")
@@ -97,8 +98,7 @@ class VehicleStateEstimator(Node):
         self.received_gps = False
 
     def publishData(self):
-        # self.logger.info(str(self.received_velocity) + " " + str(self.received_imu) + " " + str(self.received_gps))
-        if(self.received_velocity and self.received_imu and self.received_gps):
+        if (self.received_velocity and self.received_imu and self.received_gps) or self.fake_with_sim:
             self.publisher_handles["vehicle/state"].publish(self.vehicle_state)
             self.received_velocity = False
             self.received_imu = False
