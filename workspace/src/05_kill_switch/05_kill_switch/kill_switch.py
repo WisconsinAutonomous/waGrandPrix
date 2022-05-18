@@ -15,7 +15,7 @@ class Kill_Switch_Publisher(Node):
 
     def braking_subscriber_callback(self, msg):
         self.latest_throttle = time.time() # time received of current message
-        if self.last_throttle - self.latest_throttle > 0.015: # if time between messages is greater than 0.015 seconds, kill
+        if self.latest_throttle - self.last_throttle > 0.015: # if time between messages is greater than 0.015 seconds, kill
             self.kill_value = -2.0
         else:
             self.kill_value = 0.0
@@ -23,7 +23,7 @@ class Kill_Switch_Publisher(Node):
 
     def steering_subscriber_callback(self, msg):
         self.latest_steer = time.time() # time received of current message
-        if self.last_steer - self.latest_steer > 0.015: # if time between messages is greater than 0.015 seconds, kill
+        if self.latest_steer - self.last_steer > 0.015: # if time between messages is greater than 0.015 seconds, kill
             self.kill_value2 = -2.0
         else:
             self.kill_value2 = 0.0
@@ -31,7 +31,7 @@ class Kill_Switch_Publisher(Node):
 
     def throttle_subscriber_callback(self, msg):
         self.latest_throttle = time.time() # time received of current message
-        if self.last_throttle - self.latest_throttle > 0.015: # if time between messages is greater than 0.015 seconds, kill
+        if self.latest_throttle - self.last_throttle > 0.015: # if time between messages is greater than 0.015 seconds, kill
             self.kill_value3 = -2.0
         else:
             self.kill_value3 = 0.0
@@ -39,7 +39,7 @@ class Kill_Switch_Publisher(Node):
 
     def zed_subscriber_callback(self, msg):
         self.latest_zed = time.time() # time received of current message
-        if self.last_zed - self.latest_zed > 0.3: # if time between messages is greater than 0.28 seconds, kill
+        if self.latest_zed - self.last_zed > 0.3: # if time between messages is greater than 0.28 seconds, kill
             self.kill_value4 = -2.0
         else:
             self.kill_value4 = 0.0
@@ -47,7 +47,7 @@ class Kill_Switch_Publisher(Node):
 
     def imu_subscriber_callback(self, msg):
         self.latest_imu = time.time() # time received of current message
-        if self.last_imu - self.latest_imu > 0.06: # if time between messages is greater than 0.06 seconds, kill
+        if self.latest_imu - self.last_imu > 0.06: # if time between messages is greater than 0.06 seconds, kill
             self.kill_value5 = -2.0
         else:
             self.kill_value5 = 0.0
@@ -55,7 +55,7 @@ class Kill_Switch_Publisher(Node):
 
     def vel_subscriber_callback(self, msg):
         self.latest_vel = time.time() # time received of current message
-        if self.last_vel - self.latest_vel > 0.015: # if time between messages is greater than 0.28 seconds, kill
+        if self.latest_vel - self.last_vel > 0.015: # if time between messages is greater than 0.28 seconds, kill
             self.kill_value6 = -2.0
         else:
             self.kill_value6 = 0.0
@@ -63,7 +63,7 @@ class Kill_Switch_Publisher(Node):
 
     def gps_subscriber_callback(self, msg):
         self.latest_gps = time.time() # time received of current message
-        if self.last_gps - self.latest_gps > 0.3: # if time between messages is greater than 0.28 seconds, kill
+        if self.latest_gps - self.last_gps > 0.3: # if time between messages is greater than 0.28 seconds, kill
             self.kill_value7 = -2.0
         else:
             self.kill_value7 = 0.0
@@ -136,7 +136,6 @@ class Kill_Switch_Publisher(Node):
         self.subscriber_handles[self.imu_data_topic] = self.create_subscription(Imu, self.imu_data_topic, self.imu_subscriber_callback, 1)
         self.subscriber_handles[self.velocity_topic] = self.create_subscription(TwistStamped, self.velocity_topic, self.vel_subscriber_callback, 1)
         self.subscriber_handles[self.gps_topic] = self.create_subscription(SbgGpsPos, self.gps_topic, self.gps_subscriber_callback, 1)
-        # UPDATE MESSAGE TYPES FOR NEW TOPICS
 
         # Timer to make sure we publish at a controlled rate
         timer_period = 0.01  # 100 Hz
@@ -146,8 +145,8 @@ class Kill_Switch_Publisher(Node):
     def timer_callback(self):
         msg = MotorPower()
         # if statement here that parses topics for errors
-        # error found: self.i = -2.0
-        # nothing found: self.i = 0.0
+        # error found: msg.value = -2.0
+        # nothing found: msg.value = 0.0
         msg.value = min(self.kill_value, self.kill_value2, self.kill_value3, 
         self.kill_value4, self.kill_value5, self.kill_value6, self.kill_value7)
         self.publisher_handles[self.motor_relay_topic].publish(msg)
@@ -157,26 +156,24 @@ class Kill_Switch_Publisher(Node):
         # if something goes wrong, publish .6 to e_brake
         if min(self.kill_value, self.kill_value2, self.kill_value3, 
         self.kill_value4, self.kill_value5, self.kill_value6, self.kill_value7) == -2.0:  # add new kills to min
-            msg2.value = .6 # apply e_brakes if error is found
-        else:
-            return # do not publish anything to brakes if nothing is wrong
-        self.publisher_handles[self.e_brake_topic].publish(msg2)
-        self.get_logger().info(f"Sent {msg2} on topic {self.e_brake_topic}")
+            msg2.value = .6 # apply e_brakes if error is found, do not publish anything to brakes if nothing is wrong
+            self.publisher_handles[self.e_brake_topic].publish(msg2)
+            self.get_logger().info(f"Sent {msg2} on topic {self.e_brake_topic}")    
 
 
-def main(args=None):
-    rclpy.init(args=args)
+    def main(args=None):
+        rclpy.init(args=args)
 
-    kill_switch_publisher = Kill_Switch_Publisher()
+        kill_switch_publisher = Kill_Switch_Publisher()
 
-    rclpy.spin(kill_switch_publisher)
+        rclpy.spin(kill_switch_publisher)
 
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-    kill_switch_publisher.destroy_node()
-    rclpy.shutdown()
+        # Destroy the node explicitly
+        # (optional - otherwise it will be done automatically
+        # when the garbage collector destroys the node object)
+        kill_switch_publisher.destroy_node()
+        rclpy.shutdown()
 
 
-if __name__ == '__main__':
-    main()
+    if __name__ == '__main__':
+        main()
