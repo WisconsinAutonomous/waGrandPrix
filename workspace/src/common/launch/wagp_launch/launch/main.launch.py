@@ -16,35 +16,22 @@ from launch.conditions import IfCondition
 def generate_launch_description():
     ld = LaunchDescription()
 
-<<<<<<< HEAD
-        # vehicle integration
-        # IncludeLaunchDescription(
-        #     PythonLaunchDescriptionSource([
-        #         PathJoinSubstitution([
-        #             FindPackageShare('wagp_vehicle_integration_launch'),
-        #             'launch',
-        #             'vehicle_integration.launch.py'
-        #         ])
-        #     ])
-        # ),
-=======
     # record argument
     ld.add_action(DeclareLaunchArgument("record", default_value="False"))
     record = LaunchConfiguration("record")
 
 
     # vehicle integration
-    vehicle_integration_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            PathJoinSubstitution([
-                FindPackageShare('wagp_vehicle_integration_launch'),
-                'launch',
-                'vehicle_integration.launch.py'
-            ])
-        ])
-    )
-    ld.add_action(vehicle_integration_launch)
->>>>>>> controls
+    # vehicle_integration_launch = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource([
+    #         PathJoinSubstitution([
+    #             FindPackageShare('wagp_vehicle_integration_launch'),
+    #             'launch',
+    #             'vehicle_integration.launch.py'
+    #         ])
+    #     ])
+    # )
+    # ld.add_action(vehicle_integration_launch)
 
     # perception
     perception_launch = IncludeLaunchDescription(

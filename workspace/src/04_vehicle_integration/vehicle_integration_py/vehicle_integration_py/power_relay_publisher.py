@@ -18,11 +18,11 @@ class PowerRelayPublisher(Node):
         # Parse params
         # ------------
         motor_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the motor relay msg will be shipped on.")
-        self.declare_parameter("motor_relay_topic", "/control/motor_relay", motor_relay_descriptor)
+        self.declare_parameter("motor_relay_topic", "/controls/motor_relay", motor_relay_descriptor)
         self.motor_relay_topic = self.get_parameter("motor_relay_topic").value
 
         actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the actuator relay msg will be shipped on.")
-        self.declare_parameter("actuator_relay_topic", "/control/actuator_relay", actuator_relay_descriptor)
+        self.declare_parameter("actuator_relay_topic", "/controls/actuator_relay", actuator_relay_descriptor)
         self.actuator_relay_topic = self.get_parameter("actuator_relay_topic").value
 
         # Create publisher handles

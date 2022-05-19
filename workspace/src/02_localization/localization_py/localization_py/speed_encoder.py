@@ -40,7 +40,7 @@ class SpeedEncoder(Node):
         self.speed = 0.0
 
         # Set up serial connection with Arduino
-        self.ser = serial.Serial("/dev/ttyACM0", baudrate=9600, timeout=None)
+        self.ser = serial.Serial("/dev/ttyACM2", baudrate=9600, timeout=None)
 
 
     def timer_callback(self):

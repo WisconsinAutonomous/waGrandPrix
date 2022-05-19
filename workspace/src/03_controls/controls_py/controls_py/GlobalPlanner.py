@@ -1,6 +1,5 @@
 from cProfile import label
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 from numpy.core.fromnumeric import size
 from scipy import interpolate

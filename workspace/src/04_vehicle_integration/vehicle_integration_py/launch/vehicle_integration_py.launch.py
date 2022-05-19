@@ -27,6 +27,16 @@ def generate_launch_description():
     # Nodes
     # -----
 
+    power_relay = Node(
+        package='vehicle_integration_py',
+        namespace='vehicle_integration',
+        executable='power_relay',
+        name='power_relay',
+        parameters=[{
+        }],
+        output="screen",
+    )
+
     brake_actuation = Node(
         package='vehicle_integration_py',
         namespace='vehicle_integration',
@@ -57,6 +67,7 @@ def generate_launch_description():
         output="screen",
     )
 
+    launch_description.add_action(power_relay)
     launch_description.add_action(brake_actuation)
     launch_description.add_action(steering_actuation)
     launch_description.add_action(throttle_actuation)

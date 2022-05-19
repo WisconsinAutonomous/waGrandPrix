@@ -6,7 +6,7 @@ from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 from wagrandprix_control_msgs.msg import ThrottleCommand
 
 
-class ThrottlePublisher(Node):
+class ThrottlePublisher0(Node):
 
     def __init__(self):
         super().__init__('throttle_publisher')
@@ -34,7 +34,7 @@ class ThrottlePublisher(Node):
 
     def timer_callback(self):
         msg = ThrottleCommand()
-        msg.value = 0.1
+        msg.value = 0.0
         self.publisher_handles[self.throttle_cmd_topic].publish(msg)
         self.get_logger().info(f"Sent {msg} on topic {self.throttle_cmd_topic}")
         self.i += 0.05
@@ -48,7 +48,7 @@ class ThrottlePublisher(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    throttle_publisher = ThrottlePublisher()
+    throttle_publisher = ThrottlePublisher0()
 
     rclpy.spin(throttle_publisher)
 

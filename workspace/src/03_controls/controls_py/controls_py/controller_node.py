@@ -54,9 +54,9 @@ class ControllerNode(Node):
         # Create publisher handles
         self.publisher_handles = {}
 
-        self.publisher_handles["steering"] = self.create_publisher(SteeringCommand,'steering',1)
-        self.publisher_handles["braking"] = self.create_publisher(BrakingCommand,'braking',1)
-        self.publisher_handles["throttle"] = self.create_publisher(ThrottleCommand,'throttle',1)
+        self.publisher_handles["steering"] = self.create_publisher(SteeringCommand,'/controls/steering',1)
+        self.publisher_handles["braking"] = self.create_publisher(BrakingCommand,'/controls/braking',1)
+        self.publisher_handles["throttle"] = self.create_publisher(ThrottleCommand,'/controls/throttle',1)
 
         # Create subcriber handles
         self.subscriber_handles = {}
@@ -91,10 +91,9 @@ class ControllerNode(Node):
         self.timer = self.create_timer(0.01, self.send_control)
 
         # # Use sim time by default
-        # # sim_time = Parameter('use_sim_time', Parameter.Type.BOOL, True)
-        # # self.set_parameters([sim_time])
-
-        # # self.controller = StanleyController(VehicleState(), [0,0,0]) #need to add target point info
+        # # sim_time = Parameter('use_sim_time', Parameter_handles["steering"].publish(self.vehicle_command.steering)
+        # self.publisher_handles["braking"].publish(self.vehicle_command.braking)
+        # self.publisher_handles["throttle"].publishtate(), [0,0,0]) #need to add target point info
         # self.controller = StanleyController(wa.WASystem(), VehicleState(), [1,1,1], wa.WAVehicleInputs())
         # # We could just use cars current pos as a placeholder for target to initialize it if we need
         # # So [vehicle_state.pose.position.x, ...y, ...z]

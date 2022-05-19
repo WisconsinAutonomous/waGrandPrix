@@ -24,7 +24,6 @@ from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 from rclpy.parameter import Parameter
 from rclpy.node import Node
 from controls_py.GlobalPlanner import GlobalPlanner
-import numpy as np
 
 from wagrandprix_vehicle_msgs.msg import VehicleState
 from geometry_msgs.msg import Point

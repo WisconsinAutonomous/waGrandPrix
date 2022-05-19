@@ -5,6 +5,7 @@ from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 
 # Import specific message types
 from wagrandprix_control_msgs.msg import ThrottleCommand
+from std_msgs.msg import Bool
 
 # ------------
 # port from ROS1
@@ -20,13 +21,19 @@ class ThrottleActuation(Node):
         super().__init__('throttle_actuation')
 
         self.logger = rclpy.logging.get_logger(self.get_name())
+
+        self.is_stop = False
         
         # ------------
         # Parse params
         # ------------
         throttle_cmd_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the throttle command msg will be shipped on.")
-        self.declare_parameter("throttle_cmd_topic", "/control/throttle", throttle_cmd_descriptor)
+        self.declare_parameter("throttle_cmd_topic", "/controls/throttle", throttle_cmd_descriptor)
         self.throttle_cmd_topic = self.get_parameter("throttle_cmd_topic").value
+
+        throttle_stop_cmd_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the throttle stop command msg will be shipped on.")
+        self.declare_parameter("throttle_stop_cmd_topic", "/controls/throttle_stop", throttle_stop_cmd_descriptor)
+        self.throttle_stop_cmd_topic = self.get_parameter("throttle_stop_cmd_topic").value
 
         # ------------
         # port from ROS1
@@ -37,7 +44,7 @@ class ThrottleActuation(Node):
         # Load params from actuator_throttle.launch file (if those parameters do not exist, defaults are used instead)
         self.declare_parameter("~throttle_min", 0)
         self.declare_parameter("~throttle_max", 4095)
-        self.declare_parameter("~serial_port", "/dev/ttyACM1")
+        self.declare_parameter("~serial_port", "/dev/ttyACM0")
         self.declare_parameter("~baudrate", 115200)
         throttle_min = int(self.get_parameter("~throttle_min").value)
         throttle_max = int(self.get_parameter("~throttle_max").value)
@@ -60,6 +67,7 @@ class ThrottleActuation(Node):
         # Create subscriber handles
         self.subscriber_handles = {}
         self.subscriber_handles[self.throttle_cmd_topic] = self.create_subscription(ThrottleCommand, self.throttle_cmd_topic, self.throttle_cmd_callback, 1)
+        self.subscriber_handles[self.throttle_stop_cmd_topic] = self.create_subscription(Bool, self.throttle_stop_cmd_topic, self.throttle_stop_cmd_callback, 1)
 
 
     def throttle_cmd_callback(self, msg):
@@ -78,7 +86,15 @@ class ThrottleActuation(Node):
         scaled_throttle = self.scale_value(throttle)
 
         # Send to dac 
-        self.write_value(scaled_throttle)
+        if not self.is_stop:
+            self.write_value(scaled_throttle)
+    
+    def throttle_stop_cmd_callback(self, msg):
+        if msg.data:
+            self.is_stop = True
+            self.write_value(0)
+        else:
+            self.is_stop = False
 
     # ------------
     # port from ROS1

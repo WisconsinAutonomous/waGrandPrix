@@ -174,7 +174,7 @@ class PIDLateralController(wa.WAController):
         self.VehicleState = vehicle_state
         self.target_point = target_point
 
-        # self.f = open("control_log.txt", "x")
+        self.f = open("control_log.txt", "x")
 
     def set_gains(self, Kp: float, Ki: float, Kd: float):
         """Set the gains
@@ -212,9 +212,9 @@ class PIDLateralController(wa.WAController):
         pos = wa.WAVector([self.VehicleState.pose.position.x, self.VehicleState.pose.position.y, self.VehicleState.pose.position.z])
         temp = [self.VehicleState.pose.orientation.x, self.VehicleState.pose.orientation.y, self.VehicleState.pose.orientation.z, self.VehicleState.pose.orientation.w]
         _, _, yaw = wa.WAQuaternion(temp).to_euler()
-        # self.f.write("vehicle state: " + str((self.VehicleState.pose.position.x, self.VehicleState.pose.position.y, self.VehicleState.pose.position.z)) + "  ")
-        # self.f.write("yaw: " + str(yaw) + "\n")
-        # self.f.flush()
+        self.f.write("vehicle state: " + str((self.VehicleState.pose.position.x, self.VehicleState.pose.position.y, self.VehicleState.pose.position.z)) + "  ")
+        self.f.write("yaw: " + str(yaw) + "  ")
+        self.f.flush()
 
         self._sentinel = wa.WAVector(
             [
@@ -223,15 +223,12 @@ class PIDLateralController(wa.WAController):
                 0,
             ]
         )
-        # self.f.write("sentinel: " + str(self._sentinel) + "  ")
-        # self.f.flush()
-
-        # self.f.write("sentinel: " + str(self._sentinel) + "\n")
-        # self.f.flush()
+        self.f.write("sentinel: " + str(self._sentinel) + "  ")
+        self.f.flush()
 
         self._target = self.target_point
-        # self.f.write("target: " + str(self.target_point) + "  ")
-        # self.f.flush()
+        self.f.write("target: " + str(self.target_point) + "  ")
+        self.f.flush()
 
         # The "error" vector is the projection onto the horizontal plane (z=0) of
         # vector between sentinel and target
@@ -262,7 +259,7 @@ class PIDLateralController(wa.WAController):
             steering = 0
 
         rclpy.logging.get_logger('PIDErr').info(f"{err_vec.length}, {self.target_point},{self._sentinel}")
-        self.steering = np.clip(steering, -1.0, 1.0)
+        self.steering = np.clip(steering, -0.65, 0.65)
         
 
     def _calc_sign(self, pos: wa.WAVector) -> int:
@@ -359,7 +356,7 @@ class PIDLongitudinalController(wa.WAController):
 
         # Return PID output (steering value)
         throttle = np.clip(
-            self._Kp * self._err + self._Ki * self._erri + self._Kd * self._errd, -1.0, 1.0
+            self._Kp * self._err + self._Ki * self._erri + self._Kd * self._errd, -1.0, 0.1
         )
 
         if throttle > 0:

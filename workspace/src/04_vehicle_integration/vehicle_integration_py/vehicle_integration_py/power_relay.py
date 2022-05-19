@@ -77,7 +77,7 @@ class PowerRelay(Node):
         def timer_callback(self, ser):
             if self.relay_restart:
                 self.logger.info("restart!!!")
-                ser.write(self.RESTART)
+                ser.write(self.RESTART)                                                                 
                 self.relay_restart = False
                 self.relay_off = False
             elif self.relay_off:
@@ -95,15 +95,15 @@ class PowerRelay(Node):
         self.actuator_relay = self.ActuationRelayData(self.logger)
 
         motor_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the motor relay msg will be shipped on.")
-        self.declare_parameter("motor_relay_topic", "/control/motor_relay", motor_relay_descriptor)
+        self.declare_parameter("motor_relay_topic", "/controls/motor_relay", motor_relay_descriptor)
         self.motor_relay_topic = self.get_parameter("motor_relay_topic").value
 
         brake_actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the brake actuator relay msg will be shipped on.")
-        self.declare_parameter("brake_actuator_relay_topic", "/control/brake_actuator_relay", brake_actuator_relay_descriptor)
+        self.declare_parameter("brake_actuator_relay_topic", "/controls/brake_actuator_relay", brake_actuator_relay_descriptor)
         self.brake_actuator_relay_topic = self.get_parameter("brake_actuator_relay_topic").value
 
         steering_actuator_relay_descriptor = ParameterDescriptor(type=ParameterType.PARAMETER_STRING, description="The topic that the steering actuator relay msg will be shipped on.")
-        self.declare_parameter("steering_actuator_relay_topic", "/control/steering_actuator_relay", steering_actuator_relay_descriptor)
+        self.declare_parameter("steering_actuator_relay_topic", "/controls/steering_actuator_relay", steering_actuator_relay_descriptor)
         self.steering_actuator_relay_topic = self.get_parameter("steering_actuator_relay_topic").value
 
         self.subscriber_handles = {}
