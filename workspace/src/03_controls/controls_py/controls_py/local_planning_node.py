@@ -77,13 +77,6 @@ class PlanningNode(Node):
         self.received_track = False
         self.received_state = False
 
-        # self.pointList = [[55,132.9,0], [55.2,134,0], [55.4,134.1,0], [55.6,133.5,0], [55.8,133,0], [56,130,0], [56.2,128,0]]
-        # self.pointList = [[40.43747729776361, -86.94419320655354, 0.0], [40.43746096602283, -86.94420929980735, 0.0], [40.437444634278066, -86.94422002864324, 0.0]]
-        # self.idx = 0
-        # self.idx2 = 0
-
-        # [ 54.8 132.9   0. ]
-
     # Recieve set of track waypoints
     def _receive_track(self, msg):
         self.received_track = True
@@ -104,21 +97,6 @@ class PlanningNode(Node):
 
     # Publish waypoint to follow
     def send_waypoint(self):
-        # if self.received_track and self.received_state and self.idx < len(self.pointList):
-        #     self.msg_waypoint.x, self.msg_waypoint.y, self.msg_waypoint.z = [float(self.pointList[self.idx][0]), float(self.pointList[self.idx][1]), float(self.pointList[self.idx][2])]
-        #     self.publisher_handles["planning"].publish(self.msg_waypoint)
-        #     self.idx += 1
-        
-        # if self.received_state:
-        #     self.msg_waypoint.x, self.msg_waypoint.y, self.msg_waypoint.z = [float(self.pointList[self.idx][0]), float(self.pointList[self.idx][1]), float(self.pointList[self.idx][2])]
-        #     self.publisher_handles["planning"].publish(self.msg_waypoint)
-        #     self.idx2 += 1
-        #     if self.idx2 % 10 == 0:
-        #         self.idx += 1
-
-
-
-
         if self.received_track and self.received_state:
             waypoint = self.cp.get_waypoint()
             if waypoint != None:

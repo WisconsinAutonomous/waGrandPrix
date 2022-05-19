@@ -1,6 +1,6 @@
 # Import the WASimulator
 import wa_simulator as wa
-
+import rclpy
 # Other imports
 import numpy as np
 
@@ -27,14 +27,14 @@ class PIDController(wa.WAController):
         # Lateral controller (steering)
         if lat_controller is None:
             lat_controller = PIDLateralController(VehicleState, target_point, system, vehicle_inputs)
-            lat_controller.set_gains(Kp=0.4, Ki=0, Kd=0)
+            lat_controller.set_gains(Kp=0.4/(25), Ki=0, Kd=0.2/(25))
             lat_controller.set_lookahead_distance(dist=5)
         self._lat_controller = lat_controller
 
         if long_controller is None:
             # Longitudinal controller (throttle and braking)
             long_controller = PIDLongitudinalController(VehicleState, target_point, system, vehicle_inputs)
-            long_controller.set_gains(Kp=0.4, Ki=0, Kd=0)
+            long_controller.set_gains(Kp=0.4, Ki=0, Kd=0.4/6)
             long_controller.set_target_speed(speed=7.0)
         self._long_controller = long_controller
 
@@ -244,7 +244,7 @@ class PIDLateralController(wa.WAController):
 
         # Calculate current error (magnitude)
         err = sign * err_vec.length
-
+        
         # Estimate error derivative (backward FD approximation).
         self._errd = (err - self._err) / step
 
@@ -256,8 +256,12 @@ class PIDLateralController(wa.WAController):
 
         # Return PID output (steering value)
         steering = self._Kp * self._err + self._Ki * self._erri + self._Kd * self._errd
-        self.f.write("steering: " + str(steering) + "\n")
-        self.f.flush()
+        # self.f.write("steering: " + str(steering) + "\n")
+        # self.f.flush()
+        if err_vec.length < 0.01:
+            steering = 0
+
+        rclpy.logging.get_logger('PIDErr').info(f"{err_vec.length}, {self.target_point},{self._sentinel}")
         self.steering = np.clip(steering, -1.0, 1.0)
         
 
