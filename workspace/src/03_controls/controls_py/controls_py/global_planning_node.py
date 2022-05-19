@@ -66,7 +66,7 @@ class PlanningNode(Node):
         self.msg_waypoint = Point()
 
         # Create Centerline Planner class
-        self.gp = GlobalPlanner("/home/wagrandprix/wagrandprix/workspace/src/03_controls/controls_py/resource/sample_medium_loop.csv")
+        self.gp = GlobalPlanner("/home/wagrandprix/wagrandprix/workspace/src/03_controls/controls_py/resource/evgrandprix_center_gps.csv")
 
         self.received_state = False
 
